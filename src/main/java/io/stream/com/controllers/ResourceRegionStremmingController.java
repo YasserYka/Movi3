@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.stream.com.models.Movie;
 import io.stream.com.services.MovieService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/v1/region/")
@@ -25,15 +27,15 @@ public class ResourceRegionStremmingController {
 	private MovieService service;
 
 	@GetMapping("{id}")
-	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") String id) throws MalformedURLException {
+	public Mono<ResponseEntity<UrlResource>> getManifest(@PathVariable("id") String id) throws MalformedURLException {
 		
 		Optional<Movie> optionalMovie = service.getById();
 		
 		if(!optionalMovie.isPresent()) 
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 				
 		UrlResource movieResource = new UrlResource(String.format("file:movies/%s", optionalMovie.get().getUrl()));
 			
-		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(movieResource);
+		return  Mono.just(ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(movieResource));
 	}
 }
