@@ -16,7 +16,5 @@ public class MovieService {
 
 	public Optional<Movie> getById(Long id) { return repository.findById(id); }
 
-	public void uploadMultipartFile() {}
-
-
+	public void save() {  }
 }
