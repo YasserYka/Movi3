@@ -32,7 +32,7 @@ public class AdaptiveStreamingController {
 		if(!optionalManifest.isPresent()) 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
-		UrlResource manifestResource = new UrlResource(String.format("file:movies/%s", optionalManifest.get().getUrl()));
+		UrlResource manifestResource = new UrlResource(String.format("file:movies/%s", optionalManifest.get().getOriginalFilename()));
 			
 		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType("application/dash+xml").orElse(MediaType.APPLICATION_OCTET_STREAM)).body(manifestResource);
 	}

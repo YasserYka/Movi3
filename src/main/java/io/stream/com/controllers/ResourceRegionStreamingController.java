@@ -19,7 +19,7 @@ import io.stream.com.services.MovieService;
 
 @RestController
 @RequestMapping("/api/v1/region")
-public class ResourceRegionStremmdingController {
+public class ResourceRegionStreamingController {
 
 	@Autowired
 	private MovieService service;
@@ -32,7 +32,7 @@ public class ResourceRegionStremmdingController {
 		if(!optionalMovie.isPresent()) 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				
-		UrlResource movieResource = new UrlResource(String.format("file:movies/%s", optionalMovie.get().getUrl()));
+		UrlResource movieResource = new UrlResource(String.format("file:movies/%s", optionalMovie.get().getOriginalFilename()));
 			
 		return	ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(movieResource);
 	}
