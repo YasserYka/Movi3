@@ -1,9 +1,9 @@
 package io.stream.com.repositories;
 
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 import io.stream.com.models.Movie;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MovieRepository extends ReactiveMongoRepository<Movie, Long>{
-
-}
+@Repository
+public interface MovieRepository extends JpaRepository<Movie, Long> { }

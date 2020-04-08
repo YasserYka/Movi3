@@ -18,16 +18,16 @@ import io.stream.com.models.Movie;
 import io.stream.com.services.MovieService;
 
 @RestController
-@RequestMapping("/api/v1/manifest/")
+@RequestMapping("/api/v1/manifest")
 public class AdaptiveStreamingController {
 	
 	@Autowired
 	private MovieService service;
 
-	@GetMapping("{id}")
-	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") String id) throws MalformedURLException {
+	@GetMapping("/{id}")
+	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") Long id) throws MalformedURLException {
 		
-		Optional<Movie> optionalManifest = service.getById();
+		Optional<Movie> optionalManifest = service.getById(id);
 		
 		if(!optionalManifest.isPresent()) 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
