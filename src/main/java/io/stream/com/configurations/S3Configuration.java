@@ -15,7 +15,7 @@ public class S3Configuration {
     @Value("${s3.access.name}")
     private String accessKey;
 
-    @Value("s3.access.secret")
+    @Value("${s3.access.secret}")
     private String accessSecret;
 
     @Bean
