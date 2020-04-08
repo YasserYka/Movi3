@@ -1,17 +1,19 @@
 package io.stream.com.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Movie {
 
