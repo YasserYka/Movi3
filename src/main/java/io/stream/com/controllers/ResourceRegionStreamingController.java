@@ -16,26 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.stream.com.models.Movie;
 import io.stream.com.services.MovieService;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/v1/region/")
-public class ResourceRegionStremmingController {
+@RequestMapping("/api/v1/region")
+public class ResourceRegionStreamingController {
 
 	@Autowired
 	private MovieService service;
 
-	@GetMapping("{id}")
-	public Mono<ResponseEntity<UrlResource>> getManifest(@PathVariable("id") String id) throws MalformedURLException {
+	@GetMapping("/{id}")
+	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") Long id) throws MalformedURLException {
 		
-		Optional<Movie> optionalMovie = service.getById();
+		Optional<Movie> optionalMovie = service.getById(id);
 		
 		if(!optionalMovie.isPresent()) 
-			return Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 				
-		UrlResource movieResource = new UrlResource(String.format("file:movies/%s", optionalMovie.get().getUrl()));
+		UrlResource movieResource = new UrlResource(String.format("file:movies/%s", optionalMovie.get().getOriginalFilename()));
 			
-		return  Mono.just(ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(movieResource));
+		return	ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(movieResource);
 	}
 }

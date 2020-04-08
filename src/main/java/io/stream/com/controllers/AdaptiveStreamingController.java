@@ -18,21 +18,21 @@ import io.stream.com.models.Movie;
 import io.stream.com.services.MovieService;
 
 @RestController
-@RequestMapping("/api/v1/manifest/")
+@RequestMapping("/api/v1/manifest")
 public class AdaptiveStreamingController {
 	
 	@Autowired
 	private MovieService service;
 
-	@GetMapping("{id}")
-	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") String id) throws MalformedURLException {
+	@GetMapping("/{id}")
+	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") Long id) throws MalformedURLException {
 		
-		Optional<Movie> optionalManifest = service.getById();
+		Optional<Movie> optionalManifest = service.getById(id);
 		
 		if(!optionalManifest.isPresent()) 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
-		UrlResource manifestResource = new UrlResource(String.format("file:movies/%s", optionalManifest.get().getUrl()));
+		UrlResource manifestResource = new UrlResource(String.format("file:movies/%s", optionalManifest.get().getOriginalFilename()));
 			
 		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType("application/dash+xml").orElse(MediaType.APPLICATION_OCTET_STREAM)).body(manifestResource);
 	}

@@ -1,22 +1,26 @@
 package io.stream.com.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
-@Data 
-@AllArgsConstructor
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Movie {
 
-	@Id
-	private Long id;
-	private String filename;
-	private boolean storedInS3;
-	private String extension;
-	private String resolution;
-	private String url;
-	private String originalFilename;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private boolean storedInS3;
+    private String originalFilename;
 
 }
