@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,9 @@ public class AdaptiveStreamingController {
 	@Autowired
 	private MovieService service;
 
+	@Value("${upload.path}")
+	private String uploadPath;
+
 	@GetMapping("/{id}")
 	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") Long id) throws MalformedURLException {
 		
@@ -32,7 +36,7 @@ public class AdaptiveStreamingController {
 		if(!optionalManifest.isPresent()) 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
-		UrlResource manifestResource = new UrlResource(String.format("file:movies/%s", optionalManifest.get().getOriginalFilename()));
+		UrlResource manifestResource = new UrlResource(String.format("file:%s%s", uploadPath, optionalManifest.get().getOriginalFilename()));
 			
 		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType("application/dash+xml").orElse(MediaType.APPLICATION_OCTET_STREAM)).body(manifestResource);
 	}

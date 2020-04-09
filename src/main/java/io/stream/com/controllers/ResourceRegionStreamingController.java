@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +25,9 @@ public class ResourceRegionStreamingController {
 	@Autowired
 	private MovieService service;
 
+	@Value("${upload.path}")
+	private String uploadPath;
+
 	@GetMapping("/{id}")
 	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") Long id) throws MalformedURLException {
 		
@@ -31,8 +35,8 @@ public class ResourceRegionStreamingController {
 		
 		if(!optionalMovie.isPresent()) 
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-				
-		UrlResource movieResource = new UrlResource(String.format("file:movies/%s", optionalMovie.get().getOriginalFilename()));
+
+		UrlResource movieResource = new UrlResource(String.format("file:%s%s", uploadPath, optionalMovie.get().getOriginalFilename()));
 			
 		return	ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(movieResource);
 	}
