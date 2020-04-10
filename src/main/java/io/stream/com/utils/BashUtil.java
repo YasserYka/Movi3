@@ -1,23 +1,21 @@
 package io.stream.com.utils;
 
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class BashUtil {
 
-    @Value("${bash.path}")
-    private static String bashPath;
+    private static final String BASH_SCRIPTS_PATH = "src/main/resources/bash/";
 
-    @Value("${bash.extract.filename}")
-    private static String bashExtractFilename;
+    private static final String AUDIO_EXTRACTOR_BASH_FILENAME = "audio_extractor";
 
     public static ProcessBuilder processBuilder(ProcessType processType, String... args){
         String[] commands = new String[args.length + 2];
         int i = 0;
-        
+
         commands[i++] = "/bin/bash";
         commands[i++] = pathOfBashScript(processType);
 
@@ -28,13 +26,18 @@ public class BashUtil {
 
     private static String pathOfBashScript(ProcessType processType){
         if(processType == ProcessType.extract_audio)
-            return bashPath + bashExtractFilename;
+            return BASH_SCRIPTS_PATH + AUDIO_EXTRACTOR_BASH_FILENAME;
         return null;
     }
 
     @SneakyThrows(IOException.class)
-    public static InputStream runProcess(ProcessBuilder processBuilder){
+    public static void runProcess(ProcessBuilder processBuilder){
         Process process = processBuilder.start();
-        return process.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
     }
 }

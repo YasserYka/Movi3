@@ -3,6 +3,7 @@ package io.stream.com.services;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 import io.stream.com.repositories.MovieRepository;
@@ -26,7 +27,7 @@ public class MovieService {
 	public Optional<Movie> getById(Long id) { return repository.findById(id); }
 
 	@SneakyThrows(IOException.class)
-	public void upload(MultipartFile multipartFile) { Files.copy(multipartFile.getInputStream(), Paths.get(uploadPath + multipartFile.getOriginalFilename())); }
+	public void upload(MultipartFile multipartFile) { Files.copy(multipartFile.getInputStream(), Paths.get(uploadPath + multipartFile.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING); }
 
 	public void save(Movie movie) { repository.save(movie); }
 }

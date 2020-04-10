@@ -37,7 +37,7 @@ public class ResourceRegionStreamingController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 		UrlResource movieResource = new UrlResource(String.format("file:%s%s", uploadPath, optionalMovie.get().getOriginalFilename()));
-			
+
 		return	ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(movieResource);
 	}
 }

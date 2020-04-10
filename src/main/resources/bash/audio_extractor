@@ -1,16 +1,19 @@
 #!/bin/bash
 
 extract () {
-	ffmpeg -i $1 -c:a copy -vn audio_$1 || { echo "Something went wrong trying to extract audio form $1"; exit 1; }
+ 	ffmpeg -i "${PWD}$1" -c:a copy -vn ${PWD}/src/main/resources/movies/audio.mp4
 }
 
-if [[ ! -f $1 ]]
+echo $1
+echo $PWD
+
+if [[ ! -f ${PWD}$1 ]]
 then 
 	echo "File not found" >&2
-elif [[ $1 = *.webm ]]
+elif [[ ${PWD}$1 = *.webm ]]
 then 
 	echo "Webm extension is not supported yet" >&2
-elif [[ $1 = *.mp4 ]]
+elif [[ ${PWD}$1 = *.mp4 ]]
 then 
 	extract $1
 	echo "Audio extraction succeeded and produced audio_$1"
