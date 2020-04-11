@@ -38,7 +38,8 @@ public class UploadService {
         else
             movieService.upload(multipartFile);
 
-        mediaManipulatingService.startExtractionProcess(movie.getOriginalFilename());
+        //mediaManipulatingService.startExtractionProcess(movie.getOriginalFilename());
+        mediaManipulatingService.startConvertingProcess(movie.getOriginalFilename());
     }
 
 

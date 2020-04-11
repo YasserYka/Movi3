@@ -13,6 +13,6 @@ public class MediaManipulatingService {
 
     public void startExtractionProcess(String originalFilename){ BashUtil.runProcess(BashUtil.processBuilder(ProcessType.extract_audio, movieDirectory+originalFilename)); }
 
-    public  void startConvertingProcess(String originalFilename){ }
+    public  void startConvertingProcess(String originalFilename){ BashUtil.runProcess(BashUtil.processBuilder(ProcessType.convert, movieDirectory+originalFilename));}
 
 }

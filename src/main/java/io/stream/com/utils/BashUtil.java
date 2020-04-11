@@ -12,6 +12,8 @@ public class BashUtil {
 
     private static final String AUDIO_EXTRACTOR_BASH_FILENAME = "audio_extractor";
 
+    private static final String MEDIA_CONVERTER_BASH_FILENAME = "converter";
+
     public static ProcessBuilder processBuilder(ProcessType processType, String... args){
         String[] commands = new String[args.length + 2];
         int i = 0;
@@ -27,6 +29,8 @@ public class BashUtil {
     private static String pathOfBashScript(ProcessType processType){
         if(processType == ProcessType.extract_audio)
             return BASH_SCRIPTS_PATH + AUDIO_EXTRACTOR_BASH_FILENAME;
+        if(processType == ProcessType.convert)
+            return BASH_SCRIPTS_PATH + MEDIA_CONVERTER_BASH_FILENAME;
         return null;
     }
 
@@ -36,8 +40,6 @@ public class BashUtil {
         BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
 
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
+        while ((line = br.readLine()) != null) { System.out.println(line); }
     }
 }

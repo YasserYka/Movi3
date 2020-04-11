@@ -4,9 +4,6 @@ extract () {
  	ffmpeg -i "${PWD}$1" -c:a copy -vn ${PWD}/src/main/resources/movies/audio.mp4
 }
 
-echo $1
-echo $PWD
-
 if [[ ! -f ${PWD}$1 ]]
 then 
 	echo "File not found" >&2
