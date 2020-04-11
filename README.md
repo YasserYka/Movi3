@@ -33,6 +33,6 @@ The important endpoints are described below
   curl -F 'file=@path-to-meida' http://localhost:8080/api/v1/upload
   ```
   
-  # What happens behind the scene?
+# What happens behind the scene?
   
-When movie is uploaded one process are started (so far) for extracting audio from the movie
+When movie is uploaded two process (so far) are triggered one for extracting audio from the movie and the other converts the movie to lower resolution
