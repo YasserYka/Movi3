@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/v1")
 public class UploadController {
 
     @Autowired
     private UploadService service;
 
-    @PostMapping("/upload")
+    @PostMapping("/api/v1/upload")
     public void uploadMovie(@RequestParam("file") MultipartFile file) { service.upload(file); }
 
 }

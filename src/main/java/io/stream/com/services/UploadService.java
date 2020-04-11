@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadService {
 
     @Autowired
-    private MovieService service;
+    private MovieService movieService;
 
     @Autowired
     private S3Client s3Client;
@@ -21,18 +21,27 @@ public class UploadService {
     @Value("#{new Boolean('${s3.enabled}')}")
     private Boolean s3Enabled;
 
+    @Autowired
+    private MediaManipulatingService mediaManipulatingService;
+
     public void upload(MultipartFile multipartFile){
 
         if(isNotSupported(multipartFile.getOriginalFilename()))
             return;
 
-        service.save(Movie.builder().originalFilename(multipartFile.getOriginalFilename()).storedInS3(s3Enabled).build());
+        Movie movie = Movie.builder().originalFilename(multipartFile.getOriginalFilename()).storedInS3(s3Enabled).build();
+
+        movieService.save(movie);
 
         if(s3Enabled)
             s3Client.upload(multipartFile);
         else
-            service.upload(multipartFile);
+            movieService.upload(multipartFile);
+
+        //mediaManipulatingService.startExtractionProcess(movie.getOriginalFilename());
+        mediaManipulatingService.startConvertingProcess(movie.getOriginalFilename());
     }
+
 
     private boolean isNotSupported(String filename) {
         if(MediaUtil.isFormatSupported(filename))

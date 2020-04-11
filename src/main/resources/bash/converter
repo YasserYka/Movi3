@@ -1,0 +1,18 @@
+#!/bin/bash
+
+convert_to_360p () {
+	ffmpeg -i "${PWD}$1" -an -c:v libx264 -x264opts 'keyint=24:min-keyint=24:no-scenecut' -vf 'scale=-1:360' -crf 27 ${PWD}/src/main/resources/movies/360.mp4 || { echo "Something went wrong trying to convert $1"; exit 1; }
+}
+
+if [[ ! -f ${PWD}$1 ]]
+then 
+	echo "File not found" >&2
+elif [[ ${PWD}$1 = *.webm ]]
+then 
+	echo "Webm extension is not supported yet" >&2
+elif [[ ${PWD}$1 = *.mp4 ]]
+then 
+	convert_to_360p $1
+fi
+
+exit 1
