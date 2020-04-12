@@ -24,15 +24,10 @@ public class ResourceRegionStreamingController {
 	@Value("${upload.path}")
 	private String uploadPath;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<ResourceRegion> getManifest(@PathVariable("id") Long id,  @RequestHeader HttpHeaders headers) throws MalformedURLException {
-		
-		Optional<Movie> optionalMovie = service.getById(id);
-		
-		if(!optionalMovie.isPresent()) 
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	@GetMapping("/{originalFilename}")
+	public ResponseEntity<ResourceRegion> getManifest(@PathVariable("originalFilename") String originalFilename,  @RequestHeader HttpHeaders headers) throws MalformedURLException {
 
-		UrlResource movieResource = new UrlResource(String.format("file:%s%s", uploadPath, optionalMovie.get().getOriginalFilename()));
+		UrlResource movieResource = new UrlResource(String.format("file:%s%s", uploadPath, originalFilename));
 
 		return	ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(getRange(headers, movieResource));
 	}
