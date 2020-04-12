@@ -1,7 +1,9 @@
 package io.stream.com;
 
 import io.stream.com.models.Movie;
+import io.stream.com.models.User;
 import io.stream.com.repositories.MovieRepository;
+import io.stream.com.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,8 +17,9 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner loadBooks(MovieRepository movieRepository) {
+	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository) {
 		return (args) -> {
+			userRepository.save(User.builder().username("user").password("pass").email("user@gmail.com").accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build());
 			movieRepository.save(Movie.builder().originalFilename("sample.mp4").storedInS3(false).build());
 		};
 	}
