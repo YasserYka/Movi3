@@ -38,15 +38,16 @@ public class UploadService {
         else
             movieService.upload(multipartFile);
 
-        //mediaManipulatingService.startExtractionProcess(movie.getOriginalFilename());
+        mediaManipulatingService.startExtractionProcess(movie.getOriginalFilename());
         mediaManipulatingService.startConvertingProcess(movie.getOriginalFilename());
     }
 
-
     private boolean isNotSupported(String filename) {
-        if(MediaUtil.isFormatSupported(filename))
+        if(!MediaUtil.isFormatSupported(filename))
             return false;
         log.warn("File With Not Supported Format Was Uploaded {}", filename);
         return true;
     }
+
+
 }
