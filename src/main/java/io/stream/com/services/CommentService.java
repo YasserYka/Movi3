@@ -1,6 +1,6 @@
 package io.stream.com.services;
 
-import io.stream.com.models.dtos.Comment;
+import io.stream.com.models.Comment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

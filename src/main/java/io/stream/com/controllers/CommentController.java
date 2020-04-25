@@ -1,6 +1,6 @@
 package io.stream.com.controllers;
 
-import io.stream.com.models.dtos.Comment;
+import io.stream.com.models.Comment;
 import io.stream.com.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +23,5 @@ public class CommentController {
     public ResponseEntity<List<Comment>>  getAll(){ return ResponseEntity.ok(service.getAllComments()); }
 
     @GetMapping("movie/{id}")
-    public ResponseEntity<List<Comment>> getAllCommentsOfMovieId(@PathVariable Long id){
-
-        return  ResponseEntity.ok(service.getAllCommentsOfMovieId(id));
-    }
+    public ResponseEntity<List<Comment>> getAllCommentsOfMovieId(@PathVariable Long id){ return  ResponseEntity.ok(service.getAllCommentsOfMovieId(id)); }
 }
