@@ -13,17 +13,17 @@ import io.stream.com.models.Movie;
 import io.stream.com.services.MovieService;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/movies")
 public class MovieController {
 	
     @Autowired
     private MovieService service;
 
 
-    @RequestMapping("/movies")
+    @RequestMapping
     public List<Movie> getAll(){ return service.getAll(); }
     
-    @RequestMapping("/movies/{id}")
+    @RequestMapping("/{id}")
     public ResponseEntity<Movie> getMovie(@RequestParam("id") Long id) {
     	return Optional.ofNullable(service.getById(id))
     			.map(movie -> ResponseEntity.ok(movie.get()))
