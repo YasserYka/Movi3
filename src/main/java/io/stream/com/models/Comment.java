@@ -31,6 +31,10 @@ public class Comment {
     @JoinColumn(name="userId", referencedColumnName="userId")
     private User user;
 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="movieId", referencedColumnName="movieId")
+    private Movie movie;
+
     private Instant date;
 
 }

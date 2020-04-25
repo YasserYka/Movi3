@@ -17,7 +17,13 @@ public class CommentController {
     private CommentService service;
 
     @PostMapping
-    public ResponseEntity<?> addComment(@RequestBody Comment comment){ return new ResponseEntity<>(HttpStatus.CREATED); }
+    public ResponseEntity<?> addComment(@RequestBody Comment comment){
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    public void save(){
+
+    }
 
     @GetMapping
     public ResponseEntity<List<Comment>>  getAll(){ return ResponseEntity.ok(service.getAllComments()); }
