@@ -22,5 +22,6 @@ public class Movie {
     private Long id;
     private boolean storedInS3;
     private String originalFilename;
+    private String description;
 
 }

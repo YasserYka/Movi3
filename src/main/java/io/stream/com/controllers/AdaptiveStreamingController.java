@@ -19,7 +19,7 @@ import io.stream.com.models.Movie;
 import io.stream.com.services.MovieService;
 
 @RestController
-@RequestMapping("/api/v1/manifest")
+@RequestMapping("/api/v1/manifests")
 public class AdaptiveStreamingController {
 	
 	@Autowired
