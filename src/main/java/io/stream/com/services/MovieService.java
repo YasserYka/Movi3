@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 
 import io.stream.com.repositories.MovieRepository;
@@ -23,6 +24,10 @@ public class MovieService {
 
 	@Value("${upload.path}")
 	private String uploadPath;
+
+	public List<Movie> getAll(){
+		return repository.findAll();
+	}
 
 	public Optional<Movie> getById(Long id) { return repository.findById(id); }
 

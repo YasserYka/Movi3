@@ -28,15 +28,10 @@ public class AdaptiveStreamingController {
 	@Value("${upload.path}")
 	private String uploadPath;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<UrlResource> getManifest(@PathVariable("id") Long id) throws MalformedURLException {
+	@GetMapping("/{originalFilename}")
+	public ResponseEntity<UrlResource> getManifest(@PathVariable("originalFilename") String originalFilename) throws MalformedURLException {
 		
-		Optional<Movie> optionalManifest = service.getById(id);
-		
-		if(!optionalManifest.isPresent()) 
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
-		UrlResource manifestResource = new UrlResource(String.format("file:%s%s", uploadPath, optionalManifest.get().getOriginalFilename()));
+		UrlResource manifestResource = new UrlResource(String.format("file:%s%s", uploadPath, originalFilename));
 			
 		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType("application/dash+xml").orElse(MediaType.APPLICATION_OCTET_STREAM)).body(manifestResource);
 	}
