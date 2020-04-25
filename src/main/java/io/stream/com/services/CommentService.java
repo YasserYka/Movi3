@@ -1,8 +1,10 @@
 package io.stream.com.services;
 
 import com.amazonaws.services.kms.model.NotFoundException;
+import io.stream.com.mappers.CommentMapper;
 import io.stream.com.models.Comment;
 import io.stream.com.models.Movie;
+import io.stream.com.models.dtos.CommentDto;
 import io.stream.com.repositories.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +29,21 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     public List<Comment> getAllComments() {
-        return null;
+        return commentRepository.findAll();
     }
 
     public List<Comment> getAllCommentsOfMovieId(Long movieId) {
         Optional<Movie> optionalMovie = movieService.getById(movieId);
 
-        if(!optionalMovie.isPresent())
-            return null;
+        if(optionalMovie.isPresent())
+            return commentRepository.findByMovie(optionalMovie.get());
+        return null;
+    }
 
-        return commentRepository.findByMovie(optionalMovie.get());
+    public void save(CommentDto commentDto){
+        Optional<Movie> optionalMovie = movieService.getById(commentDto.getMovieId());
+
+        if(optionalMovie.isPresent())
+            commentRepository.save(CommentMapper.map(optionalMovie.get(), commentDto, userService.getCurrentLoggedInUser()));
     }
 }
