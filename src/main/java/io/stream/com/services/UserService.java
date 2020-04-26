@@ -40,7 +40,7 @@ public class UserService implements UserDetailsService {
     public void signup(SignUpDto signUpDto){
 
         //TODO: Encode password
-        repository.save(UserMapper.map(signUpDto, ""));
+        repository.save(UserMapper.mapSignUp(signUpDto, ""));
     }
 
     public void login(){}
