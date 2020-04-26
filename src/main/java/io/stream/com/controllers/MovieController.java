@@ -29,5 +29,9 @@ public class MovieController {
     			.map(movie -> ResponseEntity.ok(movie.get()))
     			.orElseGet(() -> ResponseEntity.notFound().build());
     }
-    
+
+    @RequestMapping("/beingwatched")
+    public ResponseEntity<List<Movie>> getMovie(){
+        return null;
+    }
 }

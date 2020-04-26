@@ -20,7 +20,7 @@ public class Application {
 	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository) {
 		return (args) -> {
 			userRepository.save(User.builder().username("user").password("pass").email("user@gmail.com").accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build());
-			movieRepository.save(Movie.builder().originalFilename("sample.mp4").storedInS3(false).build());
+			movieRepository.save(Movie.builder().originalFilename("sample.mp4").storedInS3(false).description("idk romantic?").build());
 		};
 	}
 
