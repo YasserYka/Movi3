@@ -11,7 +11,6 @@ public class CommentDto {
 
     private Long id;
     private Long movieId;
-    private Instant date;
     private String username;
     private String body;
 

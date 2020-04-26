@@ -1,5 +1,8 @@
 package io.stream.com.models.dtos;
 
-public class LikeDto {
-    public Long getMovieId;
-}
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class LikeDto { public Long getMovieId; }

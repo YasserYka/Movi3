@@ -1,9 +1,7 @@
 package io.stream.com.controllers;
 
 import java.net.MalformedURLException;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -15,15 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.stream.com.models.Movie;
-import io.stream.com.services.MovieService;
-
 @RestController
 @RequestMapping("/api/v1/manifests")
 public class AdaptiveStreamingController {
-	
-	@Autowired
-	private MovieService service;
 
 	@Value("${upload.path}")
 	private String uploadPath;

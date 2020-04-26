@@ -2,6 +2,7 @@ package io.stream.com.services;
 
 import io.stream.com.mappers.UserMapper;
 import io.stream.com.models.User;
+import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +22,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
 
-    public User getCurrentLoggedInUser(){
-        return loadUserByUsername(getUsernameFromSecurityContextHolder());
-    }
+    public User getCurrentLoggedInUser(){ return loadUserByUsername(getUsernameFromSecurityContextHolder()); }
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,7 +42,9 @@ public class UserService implements UserDetailsService {
         repository.save(UserMapper.mapSignUp(signUpDto, ""));
     }
 
-    public void login(){}
+    public void login(){ }
 
     private String getUsernameFromSecurityContextHolder(){ return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); }
+
+    public ProfileDto profile(){ return UserMapper.mapProfile(getCurrentLoggedInUser()); }
 }

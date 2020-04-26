@@ -1,6 +1,7 @@
 package io.stream.com.mappers;
 
 import io.stream.com.models.User;
+import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 
 public class UserMapper {
@@ -15,5 +16,12 @@ public class UserMapper {
                 .enabled(true)
                 .password(password)
                 .build();
+    }
+
+    public static ProfileDto mapProfile(User user){
+        return ProfileDto.builder()
+            .username(user.getUsername())
+            .email(user.getEmail())
+            .build();
     }
 }

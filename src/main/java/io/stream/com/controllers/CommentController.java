@@ -1,6 +1,7 @@
 package io.stream.com.controllers;
 
 import io.stream.com.models.Comment;
+import io.stream.com.models.dtos.CommentDto;
 import io.stream.com.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,12 +18,11 @@ public class CommentController {
     private CommentService service;
 
     @PostMapping
-    public ResponseEntity<?> addComment(@RequestBody Comment comment){
+    public ResponseEntity<?> add(@RequestBody CommentDto commentDto){
+        
+        service.save(commentDto);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    public void save(){
-
     }
 
     @GetMapping
