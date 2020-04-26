@@ -24,6 +24,6 @@ public class LikeController {
     @PostMapping
     public ResponseEntity<?> add(LikeDto likeDto){
         service.save(likeDto);
-        new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

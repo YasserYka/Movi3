@@ -21,7 +21,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    private Long commentId;
 
     @Length(max=140, message="Can't post more than 140 character")
     @NotEmpty
