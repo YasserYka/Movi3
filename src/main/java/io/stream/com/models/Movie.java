@@ -20,10 +20,14 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long movieId;
+    private String title;
     private boolean storedInS3;
     private String originalFilename;
     private String description;
     private int likeCount;
+    private float rating;
+    private int release;
+    private String imagePath;
 
     public void incrementLike(){ likeCount++; }
 }

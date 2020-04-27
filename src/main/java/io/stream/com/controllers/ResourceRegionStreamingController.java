@@ -2,31 +2,24 @@ package io.stream.com.controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import io.stream.com.models.Movie;
-import io.stream.com.services.MovieService;
-
 @RestController
 @RequestMapping("/api/v1/region")
 public class ResourceRegionStreamingController {
-
-	@Autowired
-	private MovieService service;
 
 	@Value("${upload.path}")
 	private String uploadPath;
 
 	@GetMapping("/{originalFilename}")
-	public ResponseEntity<ResourceRegion> getManifest(@PathVariable("originalFilename") String originalFilename,  @RequestHeader HttpHeaders headers) throws MalformedURLException {
+	public ResponseEntity<ResourceRegion> getRegion(@PathVariable("originalFilename") String originalFilename,  @RequestHeader HttpHeaders headers) throws MalformedURLException {
 
+		System.out.println(originalFilename);
 		UrlResource movieResource = new UrlResource(String.format("file:%s%s", uploadPath, originalFilename));
 
 		return	ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(getRange(headers, movieResource));
