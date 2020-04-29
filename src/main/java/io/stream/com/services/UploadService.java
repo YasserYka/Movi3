@@ -2,7 +2,6 @@ package io.stream.com.services;
 
 import io.stream.com.models.MQMessage;
 import io.stream.com.models.Movie;
-import io.stream.com.utils.MQMessageUtil;
 import io.stream.com.utils.MediaUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ public class UploadService {
     @Value("#{new Boolean('${s3.enabled}')}")
     private Boolean s3Enabled;
 
-    /*@Autowired
-    private MediaManipulatingService mediaManipulatingService;*/
-
     @Autowired
     private MQService mqService;
 
@@ -43,19 +39,14 @@ public class UploadService {
         else
             movieService.upload(multipartFile);
 
-        //startProcess(movie.getOriginalFilename());
+        notifyMQ(movie.getOriginalFilename(), movie.isStoredInS3());
     }
 
-    private void sendToMQ(String originalFilename){
+    private void notifyMQ(String originalFilename, boolean isStoredInS3){
         //TODO: enums would be better
-        mqService.send(new MQMessage("extract", originalFilename, false).toString());
+        mqService.send(new MQMessage("extract", originalFilename, isStoredInS3).toString());
     }
-    /*
-    private void startProcess(String originalFilename){
-        mediaManipulatingService.startExtractionProcess(originalFilename);
-        mediaManipulatingService.startConvertingProcess(originalFilename);
-    }
-    */
+
     private boolean isNotSupported(String filename) {
         if(!MediaUtil.isFormatSupported(filename))
             return false;

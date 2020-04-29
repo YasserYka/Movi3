@@ -4,6 +4,7 @@ import io.stream.com.models.Movie;
 import io.stream.com.models.User;
 import io.stream.com.repositories.MovieRepository;
 import io.stream.com.repositories.UserRepository;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

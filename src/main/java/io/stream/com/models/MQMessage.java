@@ -11,7 +11,9 @@ public class MQMessage {
 
     @Override
     public String toString(){
-        return null;
+        return "{\"event\" :" + event + "," +
+        "\"url\" : " + url + "," + 
+        "\"storedInS3\" : " + storedInS3 + "}";
     }
     
 }

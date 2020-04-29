@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import io.stream.com.components.Receiver;
 
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.TopicExchange;
@@ -44,7 +43,10 @@ public class RabbitMQConfiguration{
     }
 
     @Bean
-    MessageListenerAdapter listenerAdapter(Receiver receiver) {
+    public TopicExchange topicExchange(){ return new TopicExchange(exchangeName); }
+
+    @Bean
+    public MessageListenerAdapter listenerAdapter(Receiver receiver) {
       return new MessageListenerAdapter(receiver, "receiver");
     }
 
