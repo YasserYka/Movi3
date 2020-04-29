@@ -27,7 +27,9 @@ public class Movie {
     private int likeCount;
     private float rating;
     private int release;
-    private String imagePath;
+    private String imageUrl;
+    private int viewCount;
+    
 
     public void incrementLike(){ likeCount++; }
 }

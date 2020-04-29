@@ -10,6 +10,7 @@ public class UserMapper {
         return User.builder()
                 .username(signUpDto.getUsername())
                 .email(signUpDto.getEmail())
+                .profileImageId(0)
                 .accountNonExpired(true)
                 .accountNotLocked(true)
                 .credentialsNonExpired(true)
@@ -22,6 +23,7 @@ public class UserMapper {
         return ProfileDto.builder()
             .username(user.getUsername())
             .email(user.getEmail())
+            .profileImageId(user.getProfileImageId())
             .build();
     }
 }

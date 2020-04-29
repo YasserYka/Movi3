@@ -23,6 +23,7 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private int profileImageId;
     private boolean accountNonExpired;
     private boolean accountNotLocked;
     private boolean credentialsNonExpired;
