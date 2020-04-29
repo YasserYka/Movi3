@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.stream.com.components.Receiver;
+
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.TopicExchange;
@@ -28,7 +31,7 @@ public class RabbitMQConfiguration{
     public Queue queue(){ return new Queue(queueName, false); }
 
     @Bean
-    public Binding biniding(Queue queue, TopicExchange exchange){ return BindingBuilder.bind(queue).to(exchange).with("process"); }
+    public Binding biniding(Queue queue, TopicExchange exchange){ return BindingBuilder.bind(queue).to(exchange).with(routingKey); }
 
     @Bean
     public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter messageListenerAdapter){
@@ -36,6 +39,7 @@ public class RabbitMQConfiguration{
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
         container.setMessageListener(messageListenerAdapter);
+        container.setPrefetchCount(1);
         return container;
     }
 
