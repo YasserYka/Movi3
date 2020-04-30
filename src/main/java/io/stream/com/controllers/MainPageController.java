@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.stream.com.models.Movie;
 import io.stream.com.services.MainPageService;
 
-import org.springframework.web.bind.annotation.RequestBody;
-
-
 @RestController
 @RequestMapping("/api/v1/beingwatchrightnow")
 public class MainPageController {
@@ -33,9 +30,9 @@ public class MainPageController {
     }
 
     @GetMapping("/beingwatchedrightnow")
-    public ResponseEntity<Movie> get10MoviesBeingWatched(){
+    public ResponseEntity<Movie> get6MoviesBeingWatched(){
 
-        List<Movie> list = service.get10MoviesBeingWatched();
+        List<Movie> list = service.get6MoviesBeingWatched();
         
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);    
     }
