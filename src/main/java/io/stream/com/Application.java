@@ -10,9 +10,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableElasticsearchRepositories
 @EnableJpaRepositories(basePackages="io.stream.com.repositories")
 public class Application {
 
@@ -37,12 +39,12 @@ public class Application {
 			movieRepository.save(movie5);
 			movieRepository.save(movie6);
 
-			mainPageService.addToMoviesBeingWatched(movie1);
+			/*mainPageService.addToMoviesBeingWatched(movie1);
 			mainPageService.addToMoviesBeingWatched(movie2);
 			mainPageService.addToMoviesBeingWatched(movie3);
 			mainPageService.addToMoviesBeingWatched(movie4);
 			mainPageService.addToMoviesBeingWatched(movie5);
-			mainPageService.addToMoviesBeingWatched(movie6);
+			mainPageService.addToMoviesBeingWatched(movie6);*/
 
 		};
 	}
