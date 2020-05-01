@@ -14,27 +14,21 @@ import io.stream.com.models.Movie;
 import io.stream.com.services.MainPageService;
 
 @RestController
-@RequestMapping("/api/v1/beingwatchrightnow")
+@RequestMapping("/api/v1/mainpage")
 public class MainPageController {
 
 
     @Autowired
     private MainPageService service;
 
-
     @PostMapping("/beingwatchedrightnow")
     public ResponseEntity<?> addMovieBeingWatched(){
-
-        
+        //TODO: DTO with id movie?
+        //service.addToMoviesBeingWatched();
         return new ResponseEntity<>(HttpStatus.CREATED);    
     }
 
     @GetMapping("/beingwatchedrightnow")
-    public ResponseEntity<Movie> get6MoviesBeingWatched(){
-
-        List<Movie> list = service.get6MoviesBeingWatched();
-        
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);    
-    }
+    public List<Movie> get6MoviesBeingWatched(){ return service.get6MoviesBeingWatched(); }
 
 }
