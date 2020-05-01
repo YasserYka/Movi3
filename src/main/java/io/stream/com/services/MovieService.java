@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import io.stream.com.repositories.MovieRepository;
 import lombok.SneakyThrows;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,4 +36,5 @@ public class MovieService {
 	public void upload(MultipartFile multipartFile) { Files.copy(multipartFile.getInputStream(), Paths.get(uploadPath + multipartFile.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING); }
 
 	public void save(Movie movie) { repository.save(movie); }
+
 }
