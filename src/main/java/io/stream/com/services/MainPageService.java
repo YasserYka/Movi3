@@ -12,7 +12,7 @@ import io.stream.com.models.Movie;
 public class MainPageService {
 
 	@Autowired
-	private RedisService redisService;
+	private CacheService cacheService;
 
     @Value("${redis.list.beingwatchedrightnow}")
 	private String redisListNameOfMoviesBeingWatched;
@@ -22,13 +22,13 @@ public class MainPageService {
 
 	private static final int NUMBER_OF_MOVIES_BEING_WATCHED = 6;
 	
-	public List<Movie> get6MoviesBeingWatched() { return redisService.getListOfMovies(redisListNameOfMoviesBeingWatched); }
+	public List<Movie> get6MoviesBeingWatched() { return cacheService.getListOfMovies(redisListNameOfMoviesBeingWatched); }
 
     public void addToMoviesBeingWatched(Movie movie){
-        if(redisService.getSizeOf(redisListNameOfMoviesBeingWatched) == NUMBER_OF_MOVIES_BEING_WATCHED)
-			redisService.rightPopMovieOf(redisListNameOfMoviesBeingWatched);
-		redisService.leftPushMovieOf(redisListNameOfMoviesBeingWatched, movie);
+        if(cacheService.getSizeOf(redisListNameOfMoviesBeingWatched) == NUMBER_OF_MOVIES_BEING_WATCHED)
+			cacheService.rightPopMovieOf(redisListNameOfMoviesBeingWatched);
+		cacheService.leftPushMovieOf(redisListNameOfMoviesBeingWatched, movie);
     }
 
-	public List<Movie> get6MostViewedMovies() { return redisService.getListOfMovies(redisListMostViewedMovies); }
+	public List<Movie> get6MostViewedMovies() { return cacheService.getListOfMovies(redisListMostViewedMovies); }
 }

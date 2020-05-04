@@ -15,7 +15,7 @@ public class UserMapper {
                 .accountNotLocked(true)
                 .credentialsNonExpired(true)
                 .enabled(true)
-                .password(password)
+                .password(signUpDto.getPassword())
                 .build();
     }
 

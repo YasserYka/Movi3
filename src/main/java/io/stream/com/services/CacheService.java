@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import io.stream.com.models.Movie;
 
 @Service
-public class RedisService {
+public class CacheService {
 
     @Autowired
     private RedisTemplate<String, Movie> moviesTemplate;
