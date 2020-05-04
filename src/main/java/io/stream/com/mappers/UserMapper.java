@@ -6,7 +6,7 @@ import io.stream.com.models.dtos.SignUpDto;
 
 public class UserMapper {
 
-    public static User mapSignUp(SignUpDto signUpDto, String password){
+    public static User mapSignUp(SignUpDto signUpDto){
         return User.builder()
                 .username(signUpDto.getUsername())
                 .email(signUpDto.getEmail())

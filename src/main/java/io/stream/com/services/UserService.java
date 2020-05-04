@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -33,6 +34,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private JWTService jwtService;
+
+    @Autowired 
+    private PasswordEncoder passwordEncoder;
 
     public User getCurrentLoggedInUser(){ return loadUserByUsername(getUsernameFromSecurityContextHolder()); }
 
@@ -51,12 +55,14 @@ public class UserService implements UserDetailsService {
     public AuthenticationDto authenticate(LoginDto loginDto){
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
+        
         return new AuthenticationDto(jwtService.generateToken((User) authenticate.getPrincipal()));
     }
 
     public void signup(SignUpDto signUpDto){
-        //TODO: Encode password
-        repository.save(UserMapper.mapSignUp(signUpDto, ""));
+        signUpDto.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
+
+        repository.save(UserMapper.mapSignUp(signUpDto));
     }
 
     private String getUsernameFromSecurityContextHolder(){ return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); }

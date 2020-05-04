@@ -8,11 +8,13 @@ import io.stream.com.models.User;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class JWTService {
 
     @Value("${service.jwt.key}")

@@ -1,5 +1,6 @@
 package io.stream.com.configurations;
 
+import io.stream.com.securities.JWTFilter;
 import io.stream.com.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +10,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,9 +21,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JWTFilter jwtFilter;
+
     @Override
     public void configure(AuthenticationManagerBuilder authentication) throws Exception {
-        authentication.userDetailsService(userService);
+        authentication.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -31,9 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //.antMatchers("/**").authenticated()
                 //.antMatchers("/api/v1/**").permitAll()
-                .antMatchers("/**").permitAll()
-                .and()
-                .formLogin();
+                .antMatchers("/**").permitAll();
+                http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -41,5 +45,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception { return super.authenticationManagerBean(); }
 
     @Bean
-    public PasswordEncoder getPasswordEncoder() { return NoOpPasswordEncoder.getInstance(); }
+    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 }

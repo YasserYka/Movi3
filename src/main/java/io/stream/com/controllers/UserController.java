@@ -28,7 +28,6 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpDto signUpDto){
         
-        //TODO: Check if email, username already taken?
         userService.signup(signUpDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);    
@@ -37,8 +36,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationDto> login(@RequestBody LoginDto loginDto){ return new ResponseEntity<>(userService.authenticate(loginDto), HttpStatus.OK); }
 
-    public ResponseEntity<?> logout(){
-        return null;
-    }
+    public ResponseEntity<?> logout(){ return new ResponseEntity<>(HttpStatus.OK); }
 
 }
