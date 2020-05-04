@@ -1,9 +1,11 @@
 package io.stream.com;
 
+import io.stream.com.models.Email;
 import io.stream.com.models.Movie;
 import io.stream.com.models.User;
 import io.stream.com.repositories.MovieRepository;
 import io.stream.com.repositories.UserRepository;
+import io.stream.com.services.EmailService;
 import io.stream.com.services.MainPageService;
 
 import org.springframework.boot.CommandLineRunner;
@@ -18,7 +20,7 @@ public class Application {
 	public static void main(String[] args) { SpringApplication.run(Application.class, args); }
 
 	@Bean
-	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository, MainPageService mainPageService) {
+	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository, MainPageService mainPageService, EmailService emailService) {
 		return (args) -> {
 			userRepository.save(User.builder().username("user").password(new BCryptPasswordEncoder().encode("pass")).email("user@gmail.com").profileImageId(0).accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build());
 
@@ -43,6 +45,8 @@ public class Application {
 			mainPageService.addToMoviesBeingWatched(movie5);
 			mainPageService.addToMoviesBeingWatched(movie6);
 */
+
+			emailService.send(Email.builder().from("Yasser").message("Hi").subject("Test").to("Yasseryka@gmail.com").build());
 		};
 	}
 
