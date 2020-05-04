@@ -21,4 +21,6 @@ public class RedisService {
     public Long getSizeOf(String key) { return moviesTemplate.opsForList().size(key); }
 
     public void rightPopMovieOf(String key){ moviesTemplate.opsForList().rightPop(key); }
+
+    public void leftPushAllMoviesOf(String key, List<Movie> movies){ moviesTemplate.opsForList().leftPushAll(key, movies); }
 }

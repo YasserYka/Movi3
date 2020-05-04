@@ -31,4 +31,7 @@ public class MainPageController {
     @GetMapping("/beingwatchedrightnow")
     public List<Movie> get6MoviesBeingWatched(){ return service.get6MoviesBeingWatched(); }
 
+    @GetMapping("/mostviewed")
+    public List<Movie> get6MostViewedMovies(){ return service.get6MostViewedMovies(); }
+
 }

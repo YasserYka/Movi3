@@ -17,6 +17,9 @@ public class MainPageService {
     @Value("${redis.list.beingwatchedrightnow}")
 	private String redisListNameOfMoviesBeingWatched;
 
+	@Value("${redis.list.mostviewed}")
+	private String redisListMostViewedMovies;
+
 	private static final int NUMBER_OF_MOVIES_BEING_WATCHED = 6;
 	
 	public List<Movie> get6MoviesBeingWatched() { return redisService.getListOfMovies(redisListNameOfMoviesBeingWatched); }
@@ -27,4 +30,5 @@ public class MainPageService {
 		redisService.leftPushMovieOf(redisListNameOfMoviesBeingWatched, movie);
     }
 
+	public List<Movie> get6MostViewedMovies() { return redisService.getListOfMovies(redisListMostViewedMovies); }
 }
