@@ -1,5 +1,10 @@
 package io.stream.com.models.dtos;
 
-public class AuthenticationDto {
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
+public class AuthenticationDto {
+    private String token;
 }

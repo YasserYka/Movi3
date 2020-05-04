@@ -2,6 +2,8 @@ package io.stream.com.services;
 
 import io.stream.com.mappers.UserMapper;
 import io.stream.com.models.User;
+import io.stream.com.models.dtos.AuthenticationDto;
+import io.stream.com.models.dtos.LoginDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.repositories.UserRepository;
@@ -9,6 +11,8 @@ import io.stream.com.securities.JWTService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,8 +48,13 @@ public class UserService implements UserDetailsService {
         return  userOptional.get();
     }
 
-    public void signup(SignUpDto signUpDto){
+    public AuthenticationDto authenticate(LoginDto loginDto){
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        return new AuthenticationDto(jwtService.generateToken((User) authenticate.getPrincipal()));
+    }
 
+    public void signup(SignUpDto signUpDto){
         //TODO: Encode password
         repository.save(UserMapper.mapSignUp(signUpDto, ""));
     }
