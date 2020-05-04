@@ -5,8 +5,10 @@ import io.stream.com.models.User;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.repositories.UserRepository;
+import io.stream.com.securities.JWTService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +23,12 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTService jwtService;
 
     public User getCurrentLoggedInUser(){ return loadUserByUsername(getUsernameFromSecurityContextHolder()); }
 
@@ -41,8 +49,6 @@ public class UserService implements UserDetailsService {
         //TODO: Encode password
         repository.save(UserMapper.mapSignUp(signUpDto, ""));
     }
-
-    public void login(){ }
 
     private String getUsernameFromSecurityContextHolder(){ return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); }
 

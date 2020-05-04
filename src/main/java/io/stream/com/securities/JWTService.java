@@ -18,23 +18,26 @@ public class JWTService {
     @Value("${service.jwt.key}")
     private String key;
 
-	public String extractUsername(String token) { return extractClaim(token, Claims::getSubject); }
+    private final static int DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 12;
 
-    public Date extractExpiration(String token) { return extractClaim(token, Claims::getExpiration); }
+	public String getUsername(String token) { return getClaim(token, Claims::getSubject); }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) { return claimsResolver.apply(extractAllClaims(token)); }
-    private Claims extractAllClaims(String token) { return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody(); }
+    public Date getExpirationDate(String token) { return getClaim(token, Claims::getExpiration); }
 
-    private Boolean isTokenExpired(String token) { return extractExpiration(token).before(new Date()); }
+    public <T> T getClaim(String token, Function<Claims, T> claimsResolver) { return claimsResolver.apply(getAllClaims(token)); }
+
+    private Claims getAllClaims(String token) { return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody(); }
+
+    private Boolean isExpired(String token) { return getExpirationDate(token).before(new Date()); }
 
     public String generateToken(User user) { return createToken(new HashMap<String, Object>(), user.getUsername()); }
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 12))
+                .setExpiration(new Date(System.currentTimeMillis() + DAY_IN_MILLISECONDS))
                 .signWith(SignatureAlgorithm.HS256, key).compact();
     }
 
-    public Boolean validateToken(String token, User user) { return (extractUsername(token).equals(user.getUsername()) && !isTokenExpired(token)); }
+    public Boolean validateToken(String token, User user) { return (getUsername(token).equals(user.getUsername()) && !isExpired(token)); }
     
 }

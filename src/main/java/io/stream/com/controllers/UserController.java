@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.stream.com.models.dtos.AuthenticationDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.services.UserService;
@@ -32,5 +33,13 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);    
     }
 
-    
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticationDto AuthenticationDto){
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> logout(){
+        return null;
+    }
+
 }
