@@ -46,7 +46,7 @@ public class Application {
 			mainPageService.addToMoviesBeingWatched(movie6);
 */
 
-			emailService.send(Email.builder().from("Yasser").message("Hi").subject("Test").to("Yasseryka@gmail.com").build());
+			//emailService.send(Email.builder().from("Yasser").message("Hi").subject("Test").to("Yasseryka@gmail.com").build());
 		};
 	}
 

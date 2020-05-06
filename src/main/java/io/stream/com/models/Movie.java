@@ -31,6 +31,5 @@ public class Movie {
     private String imageUrl;
     private int viewCount;
     
-
     public void incrementLike(){ likeCount++; }
 }
