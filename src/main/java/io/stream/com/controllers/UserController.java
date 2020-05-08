@@ -14,6 +14,7 @@ import io.stream.com.models.dtos.LoginDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.services.UserService;
+import io.stream.com.validators.UserValidator;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -28,6 +29,12 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpDto signUpDto){
         
+        if(userService.emailExists(signUpDto.getEmail()))
+            return new ResponseEntity<>("This email already exists", HttpStatus.CONFLICT);
+    
+        if(userService.isMatching(signUpDto.getPassword(), signUpDto.getConfirmedPassword()))
+            return new ResponseEntity<>("The confirm password does not match", HttpStatus.NOT_ACCEPTABLE);
+
         userService.signup(signUpDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);    

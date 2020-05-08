@@ -32,8 +32,11 @@ public class MovieController {
     			.orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/query")
-    public List<Movie> query(@RequestParam Optional<String> title, @RequestParam Optional<Float> rating, @RequestParam Optional<Integer> release){
-        return service.query(title.orElse(null), rating.orElse(0.0f), release.orElse(0));
+    @GetMapping("/advancedsearch")
+    public List<Movie> advancedSearch(@RequestParam Optional<String> title, @RequestParam Optional<Float> rating, @RequestParam Optional<Integer> release){
+        return service.advancedSearch(title.orElse(null), rating.orElse(0.0f), release.orElse(0));
     }
+
+    @GetMapping("/quicksearch")
+    public List<Movie> quickSearch(@RequestParam Optional<String> title){ return service.findByTitle(title.orElse(null)); }
 }

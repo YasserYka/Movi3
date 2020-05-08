@@ -52,20 +52,24 @@ public class UserService implements UserDetailsService {
         return  userOptional.get();
     }
 
-    public AuthenticationDto authenticate(LoginDto loginDto){
+    public boolean isMatching(String password, String confirmedPassword){ return password.equals(confirmedPassword); }
+
+    public AuthenticationDto authenticate(LoginDto loginDto) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         
         return new AuthenticationDto(jwtService.generateToken((User) authenticate.getPrincipal()));
     }
 
-    public void signup(SignUpDto signUpDto){
+    public void signup(SignUpDto signUpDto) {
         signUpDto.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
         repository.save(UserMapper.mapSignUp(signUpDto));
     }
 
-    private String getUsernameFromSecurityContextHolder(){ return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); }
+    private String getUsernameFromSecurityContextHolder() { return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); }
 
-    public ProfileDto profile(){ return UserMapper.mapProfile(getCurrentLoggedInUser()); }
+    public ProfileDto profile() { return UserMapper.mapProfile(getCurrentLoggedInUser()); }
+
+    public boolean emailExists(String email) { return repository.existsByEmail(email); }
 }

@@ -39,7 +39,10 @@ public class MovieService {
 
 	public void save(Movie movie) { repository.save(movie); }
 
-	public List<Movie> query(String title, float rating, int release){
-		return repository.query(title, rating, release);
+	public List<Movie> advancedSearch(String title, float rating, int release){
+		return repository.advancedSearch(title, rating, release);
 	}
+
+	public List<Movie> findByTitle(String title){  return repository.findByTitle(title); }
+
 }

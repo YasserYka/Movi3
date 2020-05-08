@@ -14,6 +14,9 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     public List<Movie> findTop6ByOrderByViewCountDesc();
 
     @Query("SELECT a FROM Movie a WHERE (:title is null or a.title like :title) AND (:rating = 0.0f or a.rating >= :rating) AND (:release = 0 or a.release >= :release)")
-    public List<Movie> query(String title, float rating, int release);
+    public List<Movie> advancedSearch(String title, float rating, int release);
 
+
+    @Query("SELECT a FROM Movie a WHERE a.title LIKE title")
+    public List<Movie> findByTitle(String title);
 }
