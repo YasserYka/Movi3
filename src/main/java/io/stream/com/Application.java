@@ -1,8 +1,11 @@
 package io.stream.com;
 
 import io.stream.com.models.Email;
+import io.stream.com.models.Genre;
 import io.stream.com.models.Movie;
 import io.stream.com.models.User;
+import io.stream.com.models.enums.GenreType;
+import io.stream.com.repositories.GenreRepository;
 import io.stream.com.repositories.MovieRepository;
 import io.stream.com.repositories.UserRepository;
 import io.stream.com.services.EmailService;
@@ -20,7 +23,7 @@ public class Application {
 	public static void main(String[] args) { SpringApplication.run(Application.class, args); }
 
 	@Bean
-	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository, MainPageService mainPageService, EmailService emailService) {
+	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository, MainPageService mainPageService, EmailService emailService, GenreRepository genreRepository) {
 		return (args) -> {
 			userRepository.save(User.builder().username("user").password(new BCryptPasswordEncoder().encode("pass")).email("user@gmail.com").profileImageId(0).accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build());
 
@@ -31,12 +34,20 @@ public class Application {
 			Movie movie5 = Movie.builder().release(2009).title("EUROPA").viewCount(177).likeCount(0).rating(7.3f).imageUrl("posters/457474.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
 			Movie movie6 = Movie.builder().release(1969).title("The WASP WOMAN").viewCount(663).likeCount(0).rating(8.5f).imageUrl("posters/854243.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
 
+			Genre genre1 = Genre.builder().type(GenreType.horror).movie(movie1).build();
+			Genre genre2 = Genre.builder().type(GenreType.action).movie(movie1).build();
+
 			movieRepository.save(movie1);
 			movieRepository.save(movie2);
 			movieRepository.save(movie3);
 			movieRepository.save(movie4);
 			movieRepository.save(movie5);
 			movieRepository.save(movie6);
+
+			genreRepository.save(genre1);
+			genreRepository.save(genre2);
+
+			genreRepository.findByMovie(movie1).forEach(g -> { System.out.println(g.getType()); });
 /*
 			mainPageService.addToMoviesBeingWatched(movie1);
 			mainPageService.addToMoviesBeingWatched(movie2);

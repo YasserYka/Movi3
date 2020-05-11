@@ -2,6 +2,9 @@ package io.stream.com.models;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -18,7 +21,12 @@ import io.stream.com.models.enums.GenreType;
 @AllArgsConstructor
 @Entity
 public class Genre {
-    private GenreType genre;
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long genreId;
+
+    private GenreType type;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="movieId", referencedColumnName="movieId")
