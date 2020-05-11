@@ -14,7 +14,6 @@ import io.stream.com.models.dtos.LoginDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.services.UserService;
-import io.stream.com.validators.UserValidator;
 
 @RestController
 @RequestMapping("/api/v1/users")
