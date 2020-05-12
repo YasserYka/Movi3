@@ -11,6 +11,10 @@ import io.stream.com.repositories.UserRepository;
 import io.stream.com.services.EmailService;
 import io.stream.com.services.MainPageService;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,9 +37,18 @@ public class Application {
 			Movie movie4 = Movie.builder().release(2020).title("EARTH").viewCount(166).likeCount(0).rating(6.5f).imageUrl("posters/374575.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
 			Movie movie5 = Movie.builder().release(2009).title("EUROPA").viewCount(177).likeCount(0).rating(7.3f).imageUrl("posters/457474.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
 			Movie movie6 = Movie.builder().release(1969).title("The WASP WOMAN").viewCount(663).likeCount(0).rating(8.5f).imageUrl("posters/854243.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
+		
+			movie1.setGenres(new HashSet<Genre>());
+
+			/*List<Genre> genres1 = new ArrayList<Genre>(2);
+			genres1.add(genre1);
+			genres1.add(genre2);*/
 
 			Genre genre1 = Genre.builder().type(GenreType.horror).movie(movie1).build();
 			Genre genre2 = Genre.builder().type(GenreType.action).movie(movie1).build();
+
+			movie1.getGenres().add(genre1);
+			movie1.getGenres().add(genre2);
 
 			movieRepository.save(movie1);
 			movieRepository.save(movie2);
@@ -44,20 +57,16 @@ public class Application {
 			movieRepository.save(movie5);
 			movieRepository.save(movie6);
 
-			genreRepository.save(genre1);
-			genreRepository.save(genre2);
-
-			genreRepository.findByMovie(movie1).forEach(g -> { System.out.println(g.getType()); });
-/*
+			/*
 			mainPageService.addToMoviesBeingWatched(movie1);
 			mainPageService.addToMoviesBeingWatched(movie2);
 			mainPageService.addToMoviesBeingWatched(movie3);
 			mainPageService.addToMoviesBeingWatched(movie4);
 			mainPageService.addToMoviesBeingWatched(movie5);
 			mainPageService.addToMoviesBeingWatched(movie6);
-*/
+			emailService.send(Email.builder().from("Yasser").message("Hi").subject("Test").to("Yasseryka@gmail.com").build());
+			*/
 
-			//emailService.send(Email.builder().from("Yasser").message("Hi").subject("Test").to("Yasseryka@gmail.com").build());
 		};
 	}
 

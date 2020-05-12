@@ -3,15 +3,26 @@ package io.stream.com.models;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +41,9 @@ public class Movie {
     private int release;
     private String imageUrl;
     private int viewCount;
+    @OneToMany(mappedBy="movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Genre> genres;
     
     public void incrementLike(){ likeCount++; }
+
 }

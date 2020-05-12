@@ -10,4 +10,5 @@ import io.stream.com.models.Movie;
 public interface GenreRepository extends JpaRepository<Genre, Long>{ 
 
     public List<Genre> findByMovie(Movie movie);
+
 }
