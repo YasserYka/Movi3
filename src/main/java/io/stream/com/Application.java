@@ -39,6 +39,7 @@ public class Application {
 			Movie movie6 = Movie.builder().release(1969).title("The WASP WOMAN").viewCount(663).likeCount(0).rating(8.5f).imageUrl("posters/854243.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
 		
 			movie1.setGenres(new HashSet<Genre>());
+			movie2.setGenres(new HashSet<Genre>());
 
 			/*List<Genre> genres1 = new ArrayList<Genre>(2);
 			genres1.add(genre1);
@@ -47,8 +48,14 @@ public class Application {
 			Genre genre1 = Genre.builder().type(GenreType.horror).movie(movie1).build();
 			Genre genre2 = Genre.builder().type(GenreType.action).movie(movie1).build();
 
+			Genre genre3 = Genre.builder().type(GenreType.horror).movie(movie2).build();
+			Genre genre4 = Genre.builder().type(GenreType.action).movie(movie2).build();
+
 			movie1.getGenres().add(genre1);
 			movie1.getGenres().add(genre2);
+
+			movie2.getGenres().add(genre3);
+			movie2.getGenres().add(genre4);
 
 			movieRepository.save(movie1);
 			movieRepository.save(movie2);

@@ -45,6 +45,6 @@ public class MovieService {
 
 	public List<Movie> findByTitle(String title){  return repository.findByTitle(title); }
 
-	public List<Movie> test() { return repository.test(GenreType.horror); }
+	public List<Movie> getByGenreType(GenreType genre) { return repository.findByGenreType(genre); }
 
 }

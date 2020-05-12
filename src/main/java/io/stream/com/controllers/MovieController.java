@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.stream.com.models.Movie;
+import io.stream.com.models.enums.GenreType;
 import io.stream.com.services.MovieService;
 
 @RestController
@@ -42,7 +43,7 @@ public class MovieController {
 
 
     @GetMapping("/test")
-    public List<Movie> test(){
-        return service.test();
+    public List<Movie> getByGenreType(@RequestParam Optional<GenreType> genre){
+        return service.getByGenreType(genre.orElse(null));
     }
 }

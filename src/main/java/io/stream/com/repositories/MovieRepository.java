@@ -22,5 +22,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     public List<Movie> findByTitle(String title);
 
     @Query("SELECT a FROM Movie a join a.genres g where g.type = :genreType")
-    public List<Movie> test(GenreType genreType);
+    public List<Movie> findByGenreType(GenreType genreType);
 }

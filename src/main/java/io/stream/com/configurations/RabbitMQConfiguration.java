@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.stream.com.components.Receiver;
+import io.stream.com.components.MQReceiver;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.Binding;
@@ -46,7 +46,7 @@ public class RabbitMQConfiguration{
     public TopicExchange topicExchange(){ return new TopicExchange(exchangeName); }
 
     @Bean
-    public MessageListenerAdapter listenerAdapter(Receiver receiver) {
+    public MessageListenerAdapter listenerAdapter(MQReceiver receiver) {
       return new MessageListenerAdapter(receiver, "receiver");
     }
 
