@@ -1,6 +1,7 @@
 package io.stream.com.repositories;
 
 import io.stream.com.models.Movie;
+import io.stream.com.models.enums.GenreType;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @Query("SELECT a FROM Movie a WHERE a.title LIKE title")
     public List<Movie> findByTitle(String title);
+
+    @Query("SELECT a FROM Movie a join a.genres g where g.type = :genreType")
+    public List<Movie> test(GenreType genreType);
 }

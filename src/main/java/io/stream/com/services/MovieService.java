@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.stream.com.models.Movie;
+import io.stream.com.models.enums.GenreType;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -42,5 +44,7 @@ public class MovieService {
 	}
 
 	public List<Movie> findByTitle(String title){  return repository.findByTitle(title); }
+
+	public List<Movie> test() { return repository.test(GenreType.horror); }
 
 }
