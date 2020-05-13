@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.stream.com.models.Genre;
+import io.stream.com.models.Movie;
 import io.stream.com.repositories.GenreRepository;
 
 @Service
@@ -15,5 +16,7 @@ public class GenreService {
     private GenreRepository repository;
 
     public void saveAll(List<Genre> genres){ repository.saveAll(genres); }
+
+    public List<Genre> getByMovie(Movie movie){ return repository.findByMovie(movie); }
     
 }

@@ -52,9 +52,12 @@ public class UserService implements UserDetailsService {
         return  userOptional.get();
     }
 
-    public boolean isMatching(String password, String confirmedPassword){ return password.equals(confirmedPassword); }
+    public boolean isNotMatching(String password, String confirmedPassword){ return !password.equals(confirmedPassword); }
 
     public AuthenticationDto authenticate(LoginDto loginDto) {
+
+        System.out.println(repository.findByUsername(loginDto.getUsername().toString()));
+
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         

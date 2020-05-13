@@ -13,7 +13,6 @@ import io.stream.com.services.MainPageService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

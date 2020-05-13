@@ -27,11 +27,11 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpDto signUpDto){
-        
+
         if(userService.emailExists(signUpDto.getEmail()))
             return new ResponseEntity<>("This email already exists", HttpStatus.CONFLICT);
     
-        if(userService.isMatching(signUpDto.getPassword(), signUpDto.getConfirmedPassword()))
+        if(userService.isNotMatching(signUpDto.getPassword(), signUpDto.getConfirmedPassword()))
             return new ResponseEntity<>("The confirm password does not match", HttpStatus.NOT_ACCEPTABLE);
 
         userService.signup(signUpDto);
@@ -41,7 +41,4 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationDto> login(@RequestBody LoginDto loginDto){ return new ResponseEntity<>(userService.authenticate(loginDto), HttpStatus.OK); }
-
-    public ResponseEntity<?> logout(){ return new ResponseEntity<>(HttpStatus.OK); }
-
 }
