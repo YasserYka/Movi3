@@ -19,8 +19,6 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import org.springframework.data.annotation.CreatedDate;
-
 @Getter
 @Setter
 @Builder

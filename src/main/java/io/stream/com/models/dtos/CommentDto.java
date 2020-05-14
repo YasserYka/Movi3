@@ -3,8 +3,6 @@ package io.stream.com.models.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.Instant;
-
 @Data
 @AllArgsConstructor
 public class CommentDto {

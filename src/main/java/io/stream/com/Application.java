@@ -11,7 +11,6 @@ import io.stream.com.services.EmailService;
 import io.stream.com.services.MovieService;
 import io.stream.com.utils.TimeUtil;
 
-import java.util.Date;
 import java.util.HashSet;
 
 import org.springframework.boot.CommandLineRunner;

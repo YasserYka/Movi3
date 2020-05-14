@@ -62,12 +62,13 @@ public class MovieService {
 
 	public List<Movie> get6MostViewedMovies() { return cacheService.getListOfMoviesBeingWatched(); }
 
-	public void movieViewed(String ip, Long movieId) { cacheService.putRecentViewedMovie(ip, movieId); }
-
-	public void updateViewCount(Long movieId, int newViews){ repository.updateViewCount(movieId, newViews); }
-
 	public void updatePopularityScore(Long movieId, double popularityScore){ repository.updatePopularityScore(movieId, popularityScore); }
 
 	public List<Movie> trending() { return repository.findAllByOrderByPopularityScoreDesc(); }
+
+
+	public void viewed(String ip, Long movieId) { cacheService.putRecentViewedMovie(ip, movieId); }
+
+	public void updateViewCount(Long movieId, int newViews){ repository.updateViewCount(movieId, newViews); }
 
 }
