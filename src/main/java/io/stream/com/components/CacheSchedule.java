@@ -1,7 +1,9 @@
 package io.stream.com.components;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,20 +24,21 @@ public class CacheSchedule {
     private CacheService cacheService;
 
     @Autowired
-    private MovieService MovieService;
+    private MovieService movieService;
 
     @Scheduled(fixedDelay=THIRTY_MINUTES)
     public void updateViewCounts(){
-        List<Movie> movies = cacheService.getRecentViewdMoviesValues();
 
-        movies.forEach(movie -> {
-            
-        });
+        HashMap<Long, Integer> reduce = new HashMap<Long, Integer>();
+
+        cacheService.getRecentViewdMoviesValues().forEach(movie -> { reduce.merge(movie.getMovieId(), 1, Integer::sum); });
+
+        reduce.entrySet().forEach(entry -> { movieService.updateViewCount(entry.getKey(), entry.getValue()); });
     }
 
     @Scheduled(fixedDelay=TWO_HOURS)
     public void updateTrendingMovies(){
-        List<Movie> movies = MovieService.getAll();
+        List<Movie> movies = movieService.getAll();
 
     }
 
