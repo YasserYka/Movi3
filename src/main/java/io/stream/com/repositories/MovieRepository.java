@@ -6,8 +6,10 @@ import io.stream.com.models.enums.GenreType;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
@@ -23,4 +25,9 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @Query("SELECT a FROM Movie a join a.genres g where g.type = :genre")
     public List<Movie> findByGenreType(GenreType genre);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Movie a set a.viewCount = a.viewCount + 1 WHERE a.id = :id")
+    public void updateViewCount(Long id);
 }

@@ -36,6 +36,8 @@ public class Application {
 			Movie movie5 = Movie.builder().uploadDate(new Date()).release(2009).title("EUROPA").viewCount(177).likeCount(0).rating(7.3f).imageUrl("posters/457474.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
 			Movie movie6 = Movie.builder().uploadDate(new Date()).release(1969).title("The WASP WOMAN").viewCount(663).likeCount(0).rating(8.5f).imageUrl("posters/854243.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
 		
+			movieRepository.updateViewCount(movie1.getMovieId());
+
 			movie1.setGenres(new HashSet<Genre>());
 			movie2.setGenres(new HashSet<Genre>());
 

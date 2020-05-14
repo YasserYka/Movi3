@@ -62,4 +62,6 @@ public class MovieService {
 
 	public List<Movie> get6MostViewedMovies() { return cacheService.getListOfMoviesBeingWatched(); }
 
+	public void movieViewed(String ip, Long movieId) { cacheService.putRecentViewedMovie(ip, movieId); }
+
 }

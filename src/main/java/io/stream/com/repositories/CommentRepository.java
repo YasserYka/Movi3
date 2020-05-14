@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long>{
-    public List<Comment> findByMovie(Movie movie);
-}
+public interface CommentRepository extends JpaRepository<Comment, Long>{ public List<Comment> findByMovie(Movie movie); }

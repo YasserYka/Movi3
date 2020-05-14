@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ViewController {
 
 	@GetMapping("/{movieId}")
-	public ResponseEntity<?> getRegion(@PathVariable("movieId") int movieId){
+	public ResponseEntity<?> getRegion(@PathVariable("movieId") Long movieId){
+
+
+
         return new ResponseEntity<>(HttpStatus.OK);    
     }
     

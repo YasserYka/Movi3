@@ -16,7 +16,7 @@ public class CacheService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Value("${redis.list.beingwatched}")
+    @Value("${redis.list.beingwatched.key}")
 	private String beingwatchedListKey;
 
     @Value("${redis.hash.recentviews.key}")
@@ -28,7 +28,7 @@ public class CacheService {
     public void leftPushAllMoviesBeingWatched(List<Movie> movies){ redisTemplate.opsForList().leftPushAll(beingwatchedListKey, movies); }
     public Long getSizeMoviesBeingWatched() { return redisTemplate.opsForList().size(beingwatchedListKey); }
 
-    public void putRecentViewKey(String ip, Movie movie){ redisTemplate.opsForHash().putIfAbsent(recentviewsHashKey, ip + movie.getMovieId(), movie); }
-    public List<Movie> getRecentViewValues() { return (List<Movie>) (List) redisTemplate.opsForHash().values(recentviewsHashKey); }
+    public void putRecentViewedMovie(String ip, Long movieId){ redisTemplate.opsForHash().putIfAbsent(recentviewsHashKey, ip + movieId, movieId); }
+    public List<Movie> getRecentViewdMoviesValues() { return (List<Movie>) (List) redisTemplate.opsForHash().values(recentviewsHashKey); }
 
 }
