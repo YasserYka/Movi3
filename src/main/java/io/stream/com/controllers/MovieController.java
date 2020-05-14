@@ -40,6 +40,8 @@ public class MovieController {
     @GetMapping("/quicksearch")
     public List<Movie> quickSearch(@RequestParam Optional<String> title){ return service.findByTitle(title.orElse(null)); }
 
+    @GetMapping("/trending")
+    public List<Movie> trending(){ return service.trending(); }
 
     @GetMapping("/test")
     public List<Movie> getByGenreType(@RequestParam Optional<GenreType> genre){

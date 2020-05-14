@@ -1,9 +1,7 @@
 package io.stream.com.components;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,10 +10,12 @@ import org.springframework.stereotype.Component;
 import io.stream.com.models.Movie;
 import io.stream.com.services.CacheService;
 import io.stream.com.services.MovieService;
-import io.stream.com.utils.TimeUtil;
+import io.stream.com.utils.PopularityUtil;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
-public class CacheSchedule {
+public class ScheduledTasks {
 
     private final static int TWO_HOURS = 200000;
 
@@ -39,5 +39,8 @@ public class CacheSchedule {
 
     @Scheduled(fixedDelay=TWO_HOURS)
     public void updatePopularityScore(){
+        movieService.getAll().forEach(movie -> {
+            movieService.updatePopularityScore(movie.getMovieId(), PopularityUtil.calculateScore(movie.getLikeCount(), movie.getUploadDate()));
+        });
     }
 }

@@ -53,7 +53,7 @@ public class Movie {
 
     private Date uploadDate;
 
-    private int popularityScore;
+    private double popularityScore;
 
     @JsonManagedReference
     @OneToMany(mappedBy="movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

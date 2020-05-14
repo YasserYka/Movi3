@@ -1,6 +1,7 @@
 package io.stream.com.utils;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class TimeUtil {
 
@@ -10,8 +11,7 @@ public class TimeUtil {
 
     public static Long dateToMilliseconds(Date date) { return date.getTime(); }
 
-    public static Long millisecondsToHours(Long milliseconds){ return (milliseconds / (1000*60*60)) % 24; }
-
     public static int creationDateInHours(Date date){ return (getCreationTimeInMilliseconds(date) / (1000*60*60)) % 24; }    
     
+    public static Date dateAfter(int hours){ return new Date(new Date().getTime() + TimeUnit.HOURS.toMillis(hours));}
 }

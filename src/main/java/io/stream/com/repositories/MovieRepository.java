@@ -30,4 +30,11 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Modifying
     @Query("UPDATE Movie a set a.viewCount = a.viewCount + :newViews WHERE a.id = :id")
     public void updateViewCount(Long id, int newViews);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Movie a set a.popularityScore = :score WHERE a.id = :id")
+    public void updatePopularityScore(Long id, double score);
+
+    public List<Movie> findAllByOrderByPopularityScoreDesc();
 }
