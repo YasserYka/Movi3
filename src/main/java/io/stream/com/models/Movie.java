@@ -53,6 +53,8 @@ public class Movie {
 
     private Date uploadDate;
 
+    private int popularityScore;
+
     @JsonManagedReference
     @OneToMany(mappedBy="movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Genre> genres;

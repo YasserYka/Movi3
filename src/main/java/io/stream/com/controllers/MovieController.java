@@ -22,7 +22,6 @@ public class MovieController {
     @Autowired
     private MovieService service;
 
-
     @GetMapping
     public List<Movie> getAll(){ return service.getAll(); }
     

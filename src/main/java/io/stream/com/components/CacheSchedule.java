@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import io.stream.com.models.Movie;
 import io.stream.com.services.CacheService;
 import io.stream.com.services.MovieService;
+import io.stream.com.utils.TimeUtil;
 
 @Component
 public class CacheSchedule {
@@ -37,17 +38,6 @@ public class CacheSchedule {
     }
 
     @Scheduled(fixedDelay=TWO_HOURS)
-    public void updateTrendingMovies(){
-        List<Movie> movies = movieService.getAll();
-
+    public void updatePopularityScore(){
     }
-
-    public double calculatePopularityScore(int numberOfLikes, Date creationDate){
-        return (numberOfLikes - 1) / Math.pow(dateToHours(creationDate) + 2, 1.5);
-    }
-
-    public int dateToHours(Date creationDate){
-        return 0;
-    }
-
 }
