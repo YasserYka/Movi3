@@ -19,7 +19,7 @@ public class ScheduledTasks {
 
     private final static int THIRTY_MINUTES = 30000;
 
-    private final static int TWO_MINUTES = 2000;
+    private final static int ONE_MINUTE = 10000;
 
     @Autowired
     private CacheService cacheService;
@@ -27,13 +27,17 @@ public class ScheduledTasks {
     @Autowired
     private MovieService movieService;
 
-    @Scheduled(fixedDelay=THIRTY_MINUTES)
+    @Scheduled(fixedDelay=ONE_MINUTE)
     public void updateViewCounts(){
-        HashMap<Long, Integer> reduce = new HashMap<Long, Integer>();
+        log.info("SCHEDULED TASK: UPDATING VIEW COUNT");
 
-        cacheService.getRecentViewdMoviesValues().forEach(movie -> { reduce.merge(movie.getMovieId(), 1, Integer::sum); });
+        HashMap<Integer, Integer> reduce = new HashMap<Integer, Integer>();
 
-        reduce.entrySet().forEach(entry -> { movieService.updateViewCount(entry.getKey(), entry.getValue()); });
+        cacheService.getRecentViewdMoviesValues().forEach(id -> { 
+            reduce.put(id, reduce.getOrDefault(id, 1));
+        });
+
+        reduce.entrySet().forEach(entry -> { movieService.updateViewCount(Long.valueOf(entry.getKey()), entry.getValue()); });
     }
 
     @Scheduled(fixedDelay=TWO_HOURS)
@@ -43,10 +47,5 @@ public class ScheduledTasks {
         movieService.getAll().forEach(movie -> {
             movieService.updatePopularityScore(movie.getMovieId(), PopularityUtil.calculateScore(movie.getLikeCount(), movie.getUploadDate()));
         });
-    }
-
-    @Scheduled(fixedDelay=TWO_MINUTES)
-    public void healthCheck(){
-        
     }
 }

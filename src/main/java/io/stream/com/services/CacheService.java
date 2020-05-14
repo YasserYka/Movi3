@@ -29,6 +29,6 @@ public class CacheService {
     public Long getSizeMoviesBeingWatched() { return redisTemplate.opsForList().size(beingwatchedListKey); }
 
     public void putRecentViewedMovie(String ip, Long movieId){ redisTemplate.opsForHash().putIfAbsent(recentviewsHashKey, ip + movieId, movieId); }
-    public List<Movie> getRecentViewdMoviesValues() { return (List<Movie>) (List) redisTemplate.opsForHash().values(recentviewsHashKey); }
+    public List<Integer> getRecentViewdMoviesValues() { return (List<Integer>) (List) redisTemplate.opsForHash().values(recentviewsHashKey); }
 
 }
