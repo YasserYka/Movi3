@@ -3,24 +3,26 @@ package io.stream.com.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import io.stream.com.models.Movie;
 
 @Service
+@SuppressWarnings({ "unchecked", "rawtypes" }) 
 public class CacheService {
 
     @Autowired
-    private RedisTemplate<String, Movie> moviesTemplate;
+    private RedisTemplate<String, Object> moviesTemplate;
 
-    public void leftPushMovieOf(String key, Movie movie){ moviesTemplate.opsForList().leftPush(key, movie); }
+    @Value("${redis.list.beingwatched}")
+	private String beingwatchedListKey;
 
-    public List<Movie> getListOfMovies(String key){ return moviesTemplate.opsForList().range(key, 0, -1); }
+    public void leftPushMovieBeingWatched(Movie movie){ moviesTemplate.opsForList().leftPush(beingwatchedListKey, movie); }
+    public List<Movie> getListOfMoviesBeingWatched(){ return (List<Movie>) (List) moviesTemplate.opsForList().range(beingwatchedListKey, 0, -1); }
+    public void rightPopMovieBeingWatched(){ moviesTemplate.opsForList().rightPop(beingwatchedListKey); }
+    public void leftPushAllMoviesBeingWatched(List<Movie> movies){ moviesTemplate.opsForList().leftPushAll(beingwatchedListKey, movies); }
+    public Long getSizeMoviesBeingWatched() { return moviesTemplate.opsForList().size(beingwatchedListKey); }
 
-    public Long getSizeOf(String key) { return moviesTemplate.opsForList().size(key); }
-
-    public void rightPopMovieOf(String key){ moviesTemplate.opsForList().rightPop(key); }
-
-    public void leftPushAllMoviesOf(String key, List<Movie> movies){ moviesTemplate.opsForList().leftPushAll(key, movies); }
 }

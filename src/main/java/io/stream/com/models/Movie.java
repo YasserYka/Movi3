@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +18,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import org.springframework.data.annotation.CreatedDate;
 
 @Getter
 @Setter
@@ -47,6 +50,8 @@ public class Movie {
     private String imageUrl;
 
     private int viewCount;
+
+    private Date uploadDate;
 
     @JsonManagedReference
     @OneToMany(mappedBy="movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

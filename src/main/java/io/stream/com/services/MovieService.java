@@ -25,8 +25,13 @@ public class MovieService {
 	@Autowired
 	private MovieRepository repository;
 
+	@Autowired
+	private CacheService cacheService;
+
 	@Value("${upload.path}")
 	private String uploadPath;
+
+	private static final int NUMBER_OF_MOVIES_BEING_WATCHED = 6;
 
 	public List<Movie> getAll(){
 		return repository.findAll();
@@ -46,5 +51,15 @@ public class MovieService {
 	public List<Movie> findByTitle(String title){  return repository.findByTitle(title); }
 
 	public List<Movie> getByGenreType(GenreType genre) { return repository.findByGenreType(genre); }
+	
+	public List<Movie> get6MoviesBeingWatched() { return cacheService.getListOfMoviesBeingWatched(); }
+
+    public void addToMoviesBeingWatched(Movie movie){
+        if(cacheService.getSizeMoviesBeingWatched() == NUMBER_OF_MOVIES_BEING_WATCHED)
+			cacheService.rightPopMovieBeingWatched();
+		cacheService.leftPushMovieBeingWatched(movie);
+    }
+
+	public List<Movie> get6MostViewedMovies() { return cacheService.getListOfMoviesBeingWatched(); }
 
 }
