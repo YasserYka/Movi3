@@ -1,6 +1,5 @@
 package io.stream.com;
 
-import io.stream.com.models.Email;
 import io.stream.com.models.Genre;
 import io.stream.com.models.Movie;
 import io.stream.com.models.User;
@@ -9,10 +8,8 @@ import io.stream.com.repositories.GenreRepository;
 import io.stream.com.repositories.MovieRepository;
 import io.stream.com.repositories.UserRepository;
 import io.stream.com.services.EmailService;
-import io.stream.com.services.MainPageService;
 import io.stream.com.services.MovieService;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 

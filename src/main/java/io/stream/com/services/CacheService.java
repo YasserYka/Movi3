@@ -14,15 +14,21 @@ import io.stream.com.models.Movie;
 public class CacheService {
 
     @Autowired
-    private RedisTemplate<String, Object> moviesTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Value("${redis.list.beingwatched}")
 	private String beingwatchedListKey;
 
-    public void leftPushMovieBeingWatched(Movie movie){ moviesTemplate.opsForList().leftPush(beingwatchedListKey, movie); }
-    public List<Movie> getListOfMoviesBeingWatched(){ return (List<Movie>) (List) moviesTemplate.opsForList().range(beingwatchedListKey, 0, -1); }
-    public void rightPopMovieBeingWatched(){ moviesTemplate.opsForList().rightPop(beingwatchedListKey); }
-    public void leftPushAllMoviesBeingWatched(List<Movie> movies){ moviesTemplate.opsForList().leftPushAll(beingwatchedListKey, movies); }
-    public Long getSizeMoviesBeingWatched() { return moviesTemplate.opsForList().size(beingwatchedListKey); }
+    @Value("${redis.hash.recentviews.key}")
+    private String recentviewsHashKey;
+    
+    public void leftPushMovieBeingWatched(Movie movie){ redisTemplate.opsForList().leftPush(beingwatchedListKey, movie); }
+    public List<Movie> getListOfMoviesBeingWatched(){ return (List<Movie>) (List) redisTemplate.opsForList().range(beingwatchedListKey, 0, -1); }
+    public void rightPopMovieBeingWatched(){ redisTemplate.opsForList().rightPop(beingwatchedListKey); }
+    public void leftPushAllMoviesBeingWatched(List<Movie> movies){ redisTemplate.opsForList().leftPushAll(beingwatchedListKey, movies); }
+    public Long getSizeMoviesBeingWatched() { return redisTemplate.opsForList().size(beingwatchedListKey); }
+
+    public void putRecentViewKey(String ip, Movie movie){ redisTemplate.opsForHash().putIfAbsent(recentviewsHashKey, ip + movie.getMovieId(), movie); }
+    public List<Movie> getRecentViewValues() { return (List<Movie>) (List) redisTemplate.opsForHash().values(recentviewsHashKey); }
 
 }
