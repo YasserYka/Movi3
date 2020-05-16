@@ -1,7 +1,9 @@
 package io.stream.com.services;
 
+import io.stream.com.mappers.MovieMapper;
 import io.stream.com.models.MQMessage;
 import io.stream.com.models.Movie;
+import io.stream.com.models.dtos.MovieDto;
 import io.stream.com.utils.MediaUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,15 @@ public class UploadService {
     @Autowired
     private MQService mqService;
 
-    public void upload(MultipartFile multipartFile){
+    public void upload(MultipartFile multipartFile, MovieDto movieDto){
 
         if(isNotSupported(multipartFile.getOriginalFilename()))
             return;
 
-        Movie movie = Movie.builder().originalFilename(multipartFile.getOriginalFilename()).storedInS3(s3Enabled).build();
+        Movie movie = MovieMapper.map(movieDto);
+
+        movie.setOriginalFilename(multipartFile.getOriginalFilename());
+        movie.setStoredInS3(s3Enabled);
 
         movieService.save(movie);
 
