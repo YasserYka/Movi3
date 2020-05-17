@@ -30,5 +30,5 @@ public class CacheService {
 
     public void putRecentViewedMovie(String ip, Long movieId){ redisTemplate.opsForHash().putIfAbsent(recentviewsHashKey, ip + movieId, movieId); }
     public List<Integer> getRecentViewdMoviesValues() { return (List<Integer>) (List) redisTemplate.opsForHash().values(recentviewsHashKey); }
-
+    
 }
