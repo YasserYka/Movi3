@@ -8,6 +8,7 @@ import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.repositories.UserRepository;
 import io.stream.com.securities.JWTService;
+import io.stream.com.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import com.amazonaws.client.builder.AdvancedConfig.Key;
 
 @Slf4j
 @Service
@@ -37,6 +40,12 @@ public class UserService implements UserDetailsService {
 
     @Autowired 
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private CacheService cacheService;
 
     public User getCurrentLoggedInUser(){ return loadUserByUsername(getUsernameFromSecurityContextHolder()); }
 
@@ -65,14 +74,34 @@ public class UserService implements UserDetailsService {
     }
 
     public void signup(SignUpDto signUpDto) {
+        String token = KeyUtil.generate();
+
         signUpDto.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
         repository.save(UserMapper.mapSignUp(signUpDto));
+
+        emailService.verifyEmail(signUpDto.getEmail(), token);
+
+        cacheService.addEmailVerifyingToken(token, signUpDto.getEmail());
     }
 
-    private String getUsernameFromSecurityContextHolder() { return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); }
+    public boolean isEmailTokenValid(String token){ 
+        return cacheService.isExistAndValidEmailToken(token); 
+    }
 
-    public ProfileDto profile() { return UserMapper.mapProfile(getCurrentLoggedInUser()); }
+    public void enableAccount(String token){
+        cacheService.
+    }
 
-    public boolean emailExists(String email) { return repository.existsByEmail(email); }
+    private String getUsernameFromSecurityContextHolder() { 
+        return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); 
+    }
+
+    public ProfileDto profile() { 
+        return UserMapper.mapProfile(getCurrentLoggedInUser());
+    }
+
+    public boolean emailExists(String email) { 
+        return repository.existsByEmail(email); 
+    }
 }

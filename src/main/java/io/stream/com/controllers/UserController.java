@@ -1,5 +1,7 @@
 package io.stream.com.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,13 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.stream.com.models.dtos.AuthenticationDto;
 import io.stream.com.models.dtos.LoginDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
+import io.stream.com.services.CacheService;
+import io.stream.com.services.EmailService;
 import io.stream.com.services.UserService;
+import io.stream.com.utils.KeyUtil;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -24,7 +30,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public ProfileDto getProfile(){ return userService.profile(); }
-
+    
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpDto signUpDto){
 
@@ -37,6 +43,18 @@ public class UserController {
         userService.signup(signUpDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);    
+    }
+
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> getByGenreType(@RequestParam Optional<String> token){
+
+        //TODO: Sure this is wrong status look it up
+        if(userService.isEmailTokenValid(token))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login")
