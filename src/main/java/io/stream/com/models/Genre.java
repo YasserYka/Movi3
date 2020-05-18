@@ -36,4 +36,5 @@ public class Genre {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name="movieId", referencedColumnName="movieId")
     private Movie movie;
+    
 }

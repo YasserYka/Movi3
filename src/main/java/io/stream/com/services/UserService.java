@@ -8,6 +8,7 @@ import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.repositories.UserRepository;
 import io.stream.com.securities.JWTService;
+import io.stream.com.utils.EmailUtil;
 import io.stream.com.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,23 +75,26 @@ public class UserService implements UserDetailsService {
     }
 
     public void signup(SignUpDto signUpDto) {
+
+        System.out.println("SIGNUP: " + signUpDto.toString());
+
         String token = KeyUtil.generate();
 
         signUpDto.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
         repository.save(UserMapper.mapSignUp(signUpDto));
-
-        emailService.verifyEmail(signUpDto.getEmail(), token);
+        
+        emailService.send(EmailUtil.createVerifyingEmail(signUpDto.getEmail(), token));
 
         cacheService.addEmailVerifyingToken(token, signUpDto.getEmail());
     }
 
-    public boolean isEmailTokenValid(String token){ 
-        return cacheService.isExistAndValidEmailToken(token); 
+    public boolean isEmailTokenNotValid(String token){ 
+        return !cacheService.isExistAndValidEmailToken(token); 
     }
 
     public void enableAccount(String token){
-        cacheService.
+        repository.enableAccountByEmail(cacheService.getEmailOfToken(token));
     }
 
     private String getUsernameFromSecurityContextHolder() { 

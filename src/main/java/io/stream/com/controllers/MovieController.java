@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,18 +33,22 @@ public class MovieController {
     }
 
     @GetMapping("/advancedsearch")
-    public List<Movie> advancedSearch(@RequestParam Optional<String> title, @RequestParam Optional<Float> rating, @RequestParam Optional<Integer> release){
-        return service.advancedSearch(title.orElse(null), rating.orElse(0.0f), release.orElse(0));
+    public ResponseEntity<List<Movie>> advancedSearch(@RequestParam Optional<String> title, @RequestParam Optional<Float> rating, @RequestParam Optional<Integer> release){
+        return new ResponseEntity<>(service.advancedSearch(title.orElse(null), rating.orElse(0.0f), release.orElse(0)), HttpStatus.OK); 
     }
 
     @GetMapping("/quicksearch")
-    public List<Movie> quickSearch(@RequestParam Optional<String> title){ return service.findByTitle(title.orElse(null)); }
+    public ResponseEntity<List<Movie>> quickSearch(@RequestParam Optional<String> title){ 
+        return new ResponseEntity<>(service.findByTitle(title.orElse(null)), HttpStatus.OK); 
+    }
 
     @GetMapping("/trending")
-    public List<Movie> trending(){ return service.trending(); }
+    public ResponseEntity<List<Movie>> trending(){ 
+        return new ResponseEntity<>(service.trending(), HttpStatus.OK);
+    }
 
     @GetMapping("/test")
-    public List<Movie> getByGenreType(@RequestParam Optional<GenreType> genre){
-        return service.getByGenreType(genre.orElse(null));
+    public ResponseEntity<List<Movie>> getByGenreType(@RequestParam Optional<GenreType> genre){
+        return new ResponseEntity<>(service.getByGenreType(genre.orElse(null)), HttpStatus.OK);
     }
 }

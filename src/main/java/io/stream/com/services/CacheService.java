@@ -70,5 +70,9 @@ public class CacheService {
         return redisTemplate.opsForHash().hasKey(emailVerificationHashKey, token);
     }
 
+    public List<String> getall(){
+        return (List<String>) (List) redisTemplate.opsForHash().values(emailVerificationHashKey);
+    } 
+
 
 }

@@ -11,8 +11,12 @@ public class MediaManipulatingService {
     @Value("${movie.directory}")
     private String movieDirectory;
 
-    public void startExtractionProcess(String originalFilename){ BashUtil.runProcess(BashUtil.processBuilder(ProcessType.extract_audio, movieDirectory+originalFilename)); }
+    public void startExtractionProcess(String originalFilename){ 
+        BashUtil.runProcess(BashUtil.processBuilder(ProcessType.extract_audio, movieDirectory+originalFilename)); 
+    }
 
-    public  void startConvertingProcess(String originalFilename){ BashUtil.runProcess(BashUtil.processBuilder(ProcessType.convert, movieDirectory+originalFilename));}
+    public  void startConvertingProcess(String originalFilename){ 
+        BashUtil.runProcess(BashUtil.processBuilder(ProcessType.convert, movieDirectory+originalFilename));
+    }
 
 }

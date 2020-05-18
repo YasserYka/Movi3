@@ -30,7 +30,9 @@ public class RabbitMQConfiguration{
     public Queue queue(){ return new Queue(queueName, false); }
 
     @Bean
-    public Binding biniding(Queue queue, TopicExchange exchange){ return BindingBuilder.bind(queue).to(exchange).with(routingKey); }
+    public Binding biniding(Queue queue, TopicExchange exchange){ 
+      return BindingBuilder.bind(queue).to(exchange).with(routingKey); 
+    }
 
     @Bean
     public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter messageListenerAdapter){
@@ -43,7 +45,9 @@ public class RabbitMQConfiguration{
     }
 
     @Bean
-    public TopicExchange topicExchange(){ return new TopicExchange(exchangeName); }
+    public TopicExchange topicExchange(){ 
+      return new TopicExchange(exchangeName); 
+    }
 
     @Bean
     public MessageListenerAdapter listenerAdapter(MQReceiver receiver) {

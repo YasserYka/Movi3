@@ -19,15 +19,13 @@ public class ScheduledTasks {
 
     private final static int THIRTY_MINUTES = 30000;
 
-    private final static int ONE_MINUTE = 10000;
-
     @Autowired
     private CacheService cacheService;
 
     @Autowired
     private MovieService movieService;
 
-    @Scheduled(fixedDelay=ONE_MINUTE)
+    @Scheduled(fixedDelay=THIRTY_MINUTES)
     public void updateViewCounts(){
         log.info("SCHEDULED TASK: UPDATING VIEW COUNT");
 

@@ -19,5 +19,7 @@ public class S3Configuration {
     private String accessSecret;
 
     @Bean
-    public AmazonS3 amazonS3(){ return AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, accessSecret))).withRegion(Regions.DEFAULT_REGION).build(); }
+    public AmazonS3 amazonS3(){ 
+        return AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, accessSecret))).withRegion(Regions.DEFAULT_REGION).build(); 
+    }
 }

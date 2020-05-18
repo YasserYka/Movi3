@@ -6,9 +6,15 @@ public class MediaUtil {
 
     private static final HashMap<String, Boolean> supportedMediaFormats = new HashMap<>();
 
-    static { supportedMediaFormats.put("mp4", true); }
+    static { 
+        supportedMediaFormats.put("mp4", true); 
+    }
 
-    public static boolean isFormatSupported(String filename){ return !supportedMediaFormats.containsKey(getExtension(filename)); }
+    public static boolean isFormatSupported(String filename){ 
+        return !supportedMediaFormats.containsKey(getExtension(filename)); 
+    }
 
-    private static String getExtension(String filename){ return filename.substring(filename.lastIndexOf(".")); }
+    private static String getExtension(String filename){ 
+        return filename.substring(filename.lastIndexOf(".")); 
+    }
 }

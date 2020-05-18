@@ -26,8 +26,12 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Comment>>  getAll(){ return ResponseEntity.ok(service.getAllComments()); }
+    public ResponseEntity<List<Comment>>  getAll(){ 
+        return ResponseEntity.ok(service.getAllComments()); 
+    }
 
     @GetMapping("movie/{id}")
-    public ResponseEntity<List<Comment>> getAllCommentsOfMovieId(@PathVariable Long id){ return  ResponseEntity.ok(service.getAllCommentsOfMovieId(id)); }
+    public ResponseEntity<List<Comment>> getAllCommentsOfMovieId(@PathVariable Long id){ 
+        return  ResponseEntity.ok(service.getAllCommentsOfMovieId(id)); 
+    }
 }

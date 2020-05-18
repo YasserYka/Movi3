@@ -5,4 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LikeDto { public Long getMovieId; }
+public class LikeDto { 
+    public Long getMovieId; 
+}

@@ -15,8 +15,12 @@ public class GenreService {
     @Autowired
     private GenreRepository repository;
 
-    public void saveAll(List<Genre> genres){ repository.saveAll(genres); }
+    public void saveAll(List<Genre> genres){ 
+        repository.saveAll(genres); 
+    }
 
-    public List<Genre> getByMovie(Movie movie){ return repository.findByMovie(movie); }
+    public List<Genre> getByMovie(Movie movie){
+         return repository.findByMovie(movie); 
+        }
     
 }

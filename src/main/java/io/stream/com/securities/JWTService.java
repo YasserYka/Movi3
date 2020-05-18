@@ -22,17 +22,29 @@ public class JWTService {
 
     private final static int DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 12;
 
-	public String getUsername(String token) { return getClaim(token, Claims::getSubject); }
+	public String getUsername(String token) { 
+        return getClaim(token, Claims::getSubject); 
+    }
 
-    public Date getExpirationDate(String token) { return getClaim(token, Claims::getExpiration); }
+    public Date getExpirationDate(String token) { 
+        return getClaim(token, Claims::getExpiration); 
+    }
 
-    public <T> T getClaim(String token, Function<Claims, T> claimsResolver) { return claimsResolver.apply(getAllClaims(token)); }
+    public <T> T getClaim(String token, Function<Claims, T> claimsResolver) { 
+        return claimsResolver.apply(getAllClaims(token)); 
+    }
 
-    private Claims getAllClaims(String token) { return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody(); }
+    private Claims getAllClaims(String token) {
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody(); 
+    }
 
-    private Boolean isExpired(String token) { return getExpirationDate(token).before(new Date()); }
+    private Boolean isExpired(String token) {
+        return getExpirationDate(token).before(new Date()); 
+    }
 
-    public String generateToken(User user) { return createToken(new HashMap<String, Object>(), user.getUsername()); }
+    public String generateToken(User user) { 
+        return createToken(new HashMap<String, Object>(), user.getUsername()); 
+    }
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
@@ -40,6 +52,8 @@ public class JWTService {
                 .signWith(SignatureAlgorithm.HS256, key).compact();
     }
 
-    public Boolean validateToken(String token, User user) { return (getUsername(token).equals(user.getUsername()) && !isExpired(token)); }
+    public Boolean validateToken(String token, User user) { 
+        return (getUsername(token).equals(user.getUsername()) && !isExpired(token)); 
+    }
     
 }

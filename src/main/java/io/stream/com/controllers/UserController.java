@@ -41,7 +41,7 @@ public class UserController {
             return new ResponseEntity<>("The confirm password does not match", HttpStatus.NOT_ACCEPTABLE);
 
         userService.signup(signUpDto);
-
+        
         return new ResponseEntity<>(HttpStatus.CREATED);    
     }
 
@@ -50,13 +50,16 @@ public class UserController {
     public ResponseEntity<?> getByGenreType(@RequestParam Optional<String> token){
 
         //TODO: Sure this is wrong status look it up
-        if(userService.isEmailTokenValid(token))
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST)
+        if(userService.isEmailTokenNotValid(token.get()))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        
+        userService.enableAccount(token.get());
 
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Thank you for verifying your email address", HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationDto> login(@RequestBody LoginDto loginDto){ return new ResponseEntity<>(userService.authenticate(loginDto), HttpStatus.OK); }
+    public ResponseEntity<AuthenticationDto> login(@RequestBody LoginDto loginDto){ 
+        return new ResponseEntity<>(userService.authenticate(loginDto), HttpStatus.OK);
+    }
 }
