@@ -1,23 +1,15 @@
 package io.stream.com.services;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
 import io.stream.com.repositories.MovieRepository;
-import lombok.SneakyThrows;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.stream.com.models.Movie;
 import io.stream.com.models.enums.GenreType;
-
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class MovieService {
@@ -28,8 +20,6 @@ public class MovieService {
 	@Autowired
 	private CacheService cacheService;
 
-	@Value("${upload.path}")
-	private String uploadPath;
 
 	private static final int NUMBER_OF_MOVIES_BEING_WATCHED = 6;
 
@@ -39,11 +29,6 @@ public class MovieService {
 
 	public Optional<Movie> getById(Long id) {
 		 return repository.findById(id); 
-		}
-
-	@SneakyThrows(IOException.class)
-	public void upload(MultipartFile multipartFile) {
-		 Files.copy(multipartFile.getInputStream(), Paths.get(uploadPath + multipartFile.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING); 
 	}
 
 	public void save(Movie movie) {

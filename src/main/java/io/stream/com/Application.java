@@ -6,6 +6,7 @@ import io.stream.com.models.Movie;
 import io.stream.com.models.User;
 import io.stream.com.models.enums.GenreType;
 import io.stream.com.repositories.GenreRepository;
+import io.stream.com.repositories.LikeRepository;
 import io.stream.com.repositories.MovieRepository;
 import io.stream.com.repositories.UserRepository;
 import io.stream.com.services.EmailService;
@@ -26,7 +27,7 @@ public class Application {
 	public static void main(String[] args) { SpringApplication.run(Application.class, args); }
 
 	@Bean
-	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository, MovieService movieService, EmailService emailService, GenreRepository genreRepository) {
+	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository, MovieService movieService, EmailService emailService, GenreRepository genreRepository, LikeRepository likeRepository){
 		return (args) -> {
 			User user1 = User.builder().username("user").password(new BCryptPasswordEncoder().encode("pass")).email("user@gmail.com").profileImageId(0).accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build();
 			
@@ -61,8 +62,8 @@ public class Application {
 			movieRepository.save(movie5);
 			movieRepository.save(movie6);
 
-			Like like1 = new Like();
-			like1.setUser(user);
+			Like like1 = Like.builder().movie(movie1).user(user1).build();
+			likeRepository.save(like1);
 
 		};
 	}

@@ -15,6 +15,6 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     public List<Like> findByMovie(Movie movie);
     
-    @Query("SELECT a FROM Movie a WHERE a.movie.movieId = :movieId AND a.user.userId = :userId")
+    @Query("SELECT a FROM Like a WHERE a.movie.movieId = :movieId AND a.user.userId = :userId")
     public Optional<Like> findByMovieIdAndUserId(Long movieId, Long userId);
  }

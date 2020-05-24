@@ -6,7 +6,14 @@ import io.stream.com.models.Movie;
 import io.stream.com.models.dtos.MovieDto;
 import io.stream.com.utils.MediaUtil;
 import io.stream.com.utils.VideoProcessType;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,6 +35,9 @@ public class UploadService {
     @Autowired
     private MQService mqService;
 
+    @Value("${upload.path}")
+	private String uploadPath;
+
     public void upload(MultipartFile multipartFile, MovieDto movieDto){
 
         if(isNotSupported(multipartFile.getOriginalFilename()))
@@ -43,16 +53,22 @@ public class UploadService {
         if(s3Enabled)
             s3Client.upload(multipartFile);
         else
-            movieService.upload(multipartFile);
+            upload(multipartFile);
 
         notifyMQ(movie.getOriginalFilename(), movie.isStoredInS3());
     }
 
     private void notifyMQ(String originalFilename, boolean isStoredInS3){
-        //TODO: enums would be better
+
         mqService.send(new MQMessage(VideoProcessType.extract_audio, originalFilename, isStoredInS3).toString());
+        
     }
 
+	@SneakyThrows(IOException.class)
+	private void upload(MultipartFile multipartFile) {
+		 Files.copy(multipartFile.getInputStream(), Paths.get(uploadPath + multipartFile.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING); 
+    }
+    
     private boolean isNotSupported(String filename) {
         if(!MediaUtil.isFormatSupported(filename))
             return false;

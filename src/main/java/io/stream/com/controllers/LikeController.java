@@ -19,7 +19,9 @@ public class LikeController {
     private LikeService service;
 
     @GetMapping
-    public ResponseEntity<?> getAll(){ return ResponseEntity.ok(service.getAll()); }
+    public ResponseEntity<?> getAll(){ 
+        return ResponseEntity.ok(service.getAll()); 
+    }
 
     @PostMapping
     public ResponseEntity<?> add(LikeDto likeDto){

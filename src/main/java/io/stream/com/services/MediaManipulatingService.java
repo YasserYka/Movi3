@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MediaManipulatingService {
 
-    @Value("${movie.directory}")
-    private String movieDirectory;
+	@Value("${upload.path}")
+	private String uploadPath;
 
     public void startExtractionProcess(String originalFilename){ 
         //BashUtil.runProcess(BashUtil.processBuilder(ProcessType.extract_audio, movieDirectory+originalFilename)); 
