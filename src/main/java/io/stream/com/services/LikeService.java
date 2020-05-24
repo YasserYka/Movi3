@@ -3,6 +3,7 @@ package io.stream.com.services;
 import io.stream.com.mappers.LikeMapper;
 import io.stream.com.models.Like;
 import io.stream.com.models.Movie;
+import io.stream.com.models.User;
 import io.stream.com.models.dtos.LikeDto;
 import io.stream.com.repositories.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +24,19 @@ public class LikeService {
     @Autowired
     private UserService userService;
 
-    public List<Like> getAll(){ return likeRepository.findAll(); }
+    public List<Like> getAll(){ 
+        return likeRepository.findAll(); 
+    }
 
     public void save(LikeDto likeDto) {
         Optional<Movie> optionalMovie = movieService.getById(likeDto.getMovieId);
-
-        //TODO check if user already liked video?
-
         if(optionalMovie.isPresent()){
             Movie movie = optionalMovie.get();
-            likeRepository.save(LikeMapper.map(likeDto, movie, userService.getCurrentLoggedInUser()));
-            movieService.increamentViewCountById(movie.getMovieId());
+            User currentLoggedInUser = userService.getCurrentLoggedInUser();
+            if(!likeRepository.isExistByMovieIdAndUserId(movie.getMovieId(), currentLoggedInUser.getUserId())){    
+                likeRepository.save(LikeMapper.map(likeDto, movie, currentLoggedInUser));
+                movieService.increamentViewCountById(movie.getMovieId());
+            }
         }
     }
 }

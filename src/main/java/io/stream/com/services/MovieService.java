@@ -20,9 +20,6 @@ public class MovieService {
 	@Autowired
 	private CacheService cacheService;
 
-
-	private static final int NUMBER_OF_MOVIES_BEING_WATCHED = 6;
-
 	public List<Movie> getAll(){
 		return repository.findAll();
 	}
@@ -52,7 +49,7 @@ public class MovieService {
 	}
 
     public void addToMoviesBeingWatched(Movie movie){
-        if(cacheService.getSizeMoviesBeingWatched() == NUMBER_OF_MOVIES_BEING_WATCHED)
+        if(cacheService.getSizeMoviesBeingWatched() == 6)
 			cacheService.rightPopMovieBeingWatched();
 		cacheService.leftPushMovieBeingWatched(movie);
     }

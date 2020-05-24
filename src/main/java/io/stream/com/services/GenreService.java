@@ -21,6 +21,6 @@ public class GenreService {
 
     public List<Genre> getByMovie(Movie movie){
          return repository.findByMovie(movie); 
-        }
+    }
     
 }

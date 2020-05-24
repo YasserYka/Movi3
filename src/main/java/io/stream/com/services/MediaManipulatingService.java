@@ -1,10 +1,13 @@
 package io.stream.com.services;
 
-import io.stream.com.utils.BashUtil;
-import io.stream.com.utils.VideoProcessType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/*
+    This class must be deleted after AWS lambda setup
+*/
+
+@Deprecated
 @Service
 public class MediaManipulatingService {
 

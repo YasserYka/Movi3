@@ -24,8 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import com.amazonaws.client.builder.AdvancedConfig.Key;
-
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
@@ -81,7 +79,7 @@ public class UserService implements UserDetailsService {
 
         repository.save(UserMapper.mapSignUp(signUpDto));
         
-        emailService.send(EmailUtil.createVerifyingEmail(signUpDto.getEmail(), token));
+        emailService.sendVerification(signUpDto.getEmail(), token);
 
         cacheService.addEmailVerifyingToken(token, signUpDto.getEmail());
     }

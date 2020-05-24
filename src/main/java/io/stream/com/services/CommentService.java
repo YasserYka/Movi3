@@ -30,11 +30,7 @@ public class CommentService {
     }
 
     public List<Comment> getAllCommentsOfMovieId(Long movieId) {
-        Optional<Movie> optionalMovie = movieService.getById(movieId);
-
-        if(optionalMovie.isPresent())
-            return commentRepository.findByMovie(optionalMovie.get());
-        return null;
+        return commentRepository.findByMovieId(movieId);
     }
 
     public void save(CommentDto commentDto){

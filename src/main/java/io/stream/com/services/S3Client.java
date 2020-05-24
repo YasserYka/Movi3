@@ -1,5 +1,6 @@
 package io.stream.com.services;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,20 +37,14 @@ public class S3Client {
         return file;
     }
 
+    @SneakyThrows(FileNotFoundException.class)
     private void createOutputStream(File file, MultipartFile multipartFile){
-        try {
-            writeOnStream(new FileOutputStream(file), multipartFile);
-        } catch (FileNotFoundException e) {
-            log.error("File provided to Create Output Stream is not Found");
-        }
+        writeOnStream(new FileOutputStream(file), multipartFile);
     }
 
+    @SneakyThrows(IOException.class)
     private void writeOnStream(FileOutputStream stream, MultipartFile multipartFile){
-        try {
-            stream.write(multipartFile.getBytes());
-            stream.close();
-        } catch (IOException e) {
-            log.error("Error occurred while tying to write to file output stream");
-        }
+        stream.write(multipartFile.getBytes());
+        stream.close();
     }
 }

@@ -64,7 +64,6 @@ public class Application {
 
 			Like like1 = Like.builder().movie(movie1).user(user1).build();
 			likeRepository.save(like1);
-
 		};
 	}
 
