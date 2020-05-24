@@ -25,7 +25,6 @@ public class CacheService {
     @Value("${redis.hash.emailverification.key}")
     private String emailVerificationHashKey;
 
-
     public void leftPushMovieBeingWatched(Movie movie){ 
         redisTemplate.opsForList().leftPush(beingwatchedListKey, movie); 
     }
@@ -73,6 +72,5 @@ public class CacheService {
     public List<String> getall(){
         return (List<String>) (List) redisTemplate.opsForHash().values(emailVerificationHashKey);
     } 
-
 
 }

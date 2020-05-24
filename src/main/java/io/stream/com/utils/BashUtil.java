@@ -14,7 +14,7 @@ public class BashUtil {
 
     private static final String MEDIA_CONVERTER_BASH_FILENAME = "converter";
 
-    public static ProcessBuilder processBuilder(ProcessType processType, String... args){
+    public static ProcessBuilder processBuilder(VideoProcessType processType, String... args){
         String[] commands = new String[args.length + 2];
         int i = 0;
 
@@ -26,10 +26,10 @@ public class BashUtil {
         return new ProcessBuilder(commands);
     }
 
-    private static String pathOfBashScript(ProcessType processType){
-        if(processType == ProcessType.extract_audio)
+    private static String pathOfBashScript(VideoProcessType processType){
+        if(processType == VideoProcessType.extract_audio)
             return BASH_SCRIPTS_PATH + AUDIO_EXTRACTOR_BASH_FILENAME;
-        if(processType == ProcessType.convert)
+        if(processType == VideoProcessType.convert)
             return BASH_SCRIPTS_PATH + MEDIA_CONVERTER_BASH_FILENAME;
         return null;
     }

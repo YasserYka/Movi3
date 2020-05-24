@@ -92,4 +92,8 @@ public class MovieService {
 		repository.updateViewCount(movieId, newViews); 
 	}
 
+	public void increamentViewCountById(Long id){
+		repository.increamentViewCountById(id);
+	}
+
 }

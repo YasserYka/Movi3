@@ -5,6 +5,7 @@ import io.stream.com.models.MQMessage;
 import io.stream.com.models.Movie;
 import io.stream.com.models.dtos.MovieDto;
 import io.stream.com.utils.MediaUtil;
+import io.stream.com.utils.VideoProcessType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +50,7 @@ public class UploadService {
 
     private void notifyMQ(String originalFilename, boolean isStoredInS3){
         //TODO: enums would be better
-        mqService.send(new MQMessage("extract", originalFilename, isStoredInS3).toString());
+        mqService.send(new MQMessage(VideoProcessType.extract_audio, originalFilename, isStoredInS3).toString());
     }
 
     private boolean isNotSupported(String filename) {

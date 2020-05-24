@@ -48,7 +48,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private CacheService cacheService;
 
-    public User getCurrentLoggedInUser(){ return loadUserByUsername(getUsernameFromSecurityContextHolder()); }
+    public User getCurrentLoggedInUser(){ 
+        return loadUserByUsername(getUsernameFromSecurityContextHolder()); 
+    }
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -66,8 +68,6 @@ public class UserService implements UserDetailsService {
 
     public AuthenticationDto authenticate(LoginDto loginDto) {
 
-        System.out.println(repository.findByUsername(loginDto.getUsername().toString()));
-
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         
@@ -75,9 +75,6 @@ public class UserService implements UserDetailsService {
     }
 
     public void signup(SignUpDto signUpDto) {
-
-        System.out.println("SIGNUP: " + signUpDto.toString());
-
         String token = KeyUtil.generate();
 
         signUpDto.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
@@ -101,11 +98,11 @@ public class UserService implements UserDetailsService {
         return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); 
     }
 
-    public ProfileDto profile() { 
+    public ProfileDto getProfile() { 
         return UserMapper.mapProfile(getCurrentLoggedInUser());
     }
 
-    public boolean emailExists(String email) { 
+    public boolean isEmailExists(String email) { 
         return repository.existsByEmail(email); 
     }
 }

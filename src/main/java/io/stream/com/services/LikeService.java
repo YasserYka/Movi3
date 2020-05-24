@@ -32,9 +32,8 @@ public class LikeService {
 
         if(optionalMovie.isPresent()){
             Movie movie = optionalMovie.get();
-            movie.incrementLike();
             likeRepository.save(LikeMapper.map(likeDto, movie, userService.getCurrentLoggedInUser()));
-            movieService.save(movie);
+            movieService.increamentViewCountById(movie.getMovieId());
         }
     }
 }

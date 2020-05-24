@@ -1,6 +1,7 @@
 package io.stream.com;
 
 import io.stream.com.models.Genre;
+import io.stream.com.models.Like;
 import io.stream.com.models.Movie;
 import io.stream.com.models.User;
 import io.stream.com.models.enums.GenreType;
@@ -27,7 +28,9 @@ public class Application {
 	@Bean
 	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository, MovieService movieService, EmailService emailService, GenreRepository genreRepository) {
 		return (args) -> {
-			userRepository.save(User.builder().username("user").password(new BCryptPasswordEncoder().encode("pass")).email("user@gmail.com").profileImageId(0).accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build());
+			User user1 = User.builder().username("user").password(new BCryptPasswordEncoder().encode("pass")).email("user@gmail.com").profileImageId(0).accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build();
+			
+			userRepository.save(user1);
 
 			Movie movie1 = Movie.builder().uploadDate(TimeUtil.dateAfter(12)).release(2009).title("WEREWOLF IN A GIRLS").viewCount(1666).likeCount(23).rating(4.1f).imageUrl("posters/234555.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
 			Movie movie2 = Movie.builder().uploadDate(TimeUtil.dateAfter(25)).release(2013).title("THE GRAND TOUR").viewCount(414).likeCount(13).rating(3.8f).imageUrl("posters/243444.jpg").originalFilename("sample.mp4").storedInS3(false).description("something something").build();
@@ -38,10 +41,6 @@ public class Application {
 		
 			movie1.setGenres(new HashSet<Genre>());
 			movie2.setGenres(new HashSet<Genre>());
-
-			/*List<Genre> genres1 = new ArrayList<Genre>(2);
-			genres1.add(genre1);
-			genres1.add(genre2);*/
 
 			Genre genre1 = Genre.builder().type(GenreType.horror).movie(movie1).build();
 			Genre genre2 = Genre.builder().type(GenreType.action).movie(movie1).build();
@@ -62,15 +61,8 @@ public class Application {
 			movieRepository.save(movie5);
 			movieRepository.save(movie6);
 
-			/*
-			mainPageService.addToMoviesBeingWatched(movie1);
-			mainPageService.addToMoviesBeingWatched(movie2);
-			mainPageService.addToMoviesBeingWatched(movie3);
-			mainPageService.addToMoviesBeingWatched(movie4);
-			mainPageService.addToMoviesBeingWatched(movie5);
-			mainPageService.addToMoviesBeingWatched(movie6);
-			emailService.send(Email.builder().from("Yasser").message("Hi").subject("Test").to("Yasseryka@gmail.com").build());
-			*/
+			Like like1 = new Like();
+			like1.setUser(user);
 
 		};
 	}

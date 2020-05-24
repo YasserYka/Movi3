@@ -47,8 +47,9 @@ public class MovieController {
         return new ResponseEntity<>(service.trending(), HttpStatus.OK);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/searchbygenre")
     public ResponseEntity<List<Movie>> getByGenreType(@RequestParam Optional<GenreType> genre){
         return new ResponseEntity<>(service.getByGenreType(genre.orElse(null)), HttpStatus.OK);
     }
+
 }

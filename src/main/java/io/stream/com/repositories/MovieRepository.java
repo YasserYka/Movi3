@@ -37,4 +37,10 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     public void updatePopularityScore(Long id, double score);
 
     public List<Movie> findAllByOrderByPopularityScoreDesc();
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Movie a set a.viewCount = a.viewCount + 1 WHERE a.id = :id")
+    public void increamentViewCountById(Long id);
+    
 }

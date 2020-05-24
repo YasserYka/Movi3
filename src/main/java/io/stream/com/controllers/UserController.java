@@ -16,10 +16,7 @@ import io.stream.com.models.dtos.AuthenticationDto;
 import io.stream.com.models.dtos.LoginDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
-import io.stream.com.services.CacheService;
-import io.stream.com.services.EmailService;
 import io.stream.com.services.UserService;
-import io.stream.com.utils.KeyUtil;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -29,12 +26,14 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/profile")
-    public ProfileDto getProfile(){ return userService.profile(); }
+    public ProfileDto getProfile(){ 
+        return userService.getProfile(); 
+    }
     
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpDto signUpDto){
 
-        if(userService.emailExists(signUpDto.getEmail()))
+        if(userService.isEmailExists(signUpDto.getEmail()))
             return new ResponseEntity<>("This email already exists", HttpStatus.CONFLICT);
     
         if(userService.isNotMatching(signUpDto.getPassword(), signUpDto.getConfirmedPassword()))
