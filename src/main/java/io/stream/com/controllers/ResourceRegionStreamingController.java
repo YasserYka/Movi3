@@ -18,8 +18,6 @@ public class ResourceRegionStreamingController {
 
 	@GetMapping("/{originalFilename}")
 	public ResponseEntity<ResourceRegion> getRegion(@PathVariable("originalFilename") String originalFilename,  @RequestHeader HttpHeaders headers) throws MalformedURLException {
-
-		System.out.println(originalFilename);
 		UrlResource movieResource = new UrlResource(String.format("file:%s%s", uploadPath, originalFilename));
 
 		return	ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(getRange(headers, movieResource));

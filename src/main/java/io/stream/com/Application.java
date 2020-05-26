@@ -9,6 +9,7 @@ import io.stream.com.repositories.GenreRepository;
 import io.stream.com.repositories.LikeRepository;
 import io.stream.com.repositories.MovieRepository;
 import io.stream.com.repositories.UserRepository;
+import io.stream.com.services.CacheService;
 import io.stream.com.services.EmailService;
 import io.stream.com.services.MovieService;
 import io.stream.com.utils.TimeUtil;
@@ -27,7 +28,7 @@ public class Application {
 	public static void main(String[] args) { SpringApplication.run(Application.class, args); }
 
 	@Bean
-	public CommandLineRunner loadBooks(MovieRepository movieRepository, UserRepository userRepository, MovieService movieService, EmailService emailService, GenreRepository genreRepository, LikeRepository likeRepository){
+	public CommandLineRunner loadBooks(CacheService cacheService ,MovieRepository movieRepository, UserRepository userRepository, MovieService movieService, EmailService emailService, GenreRepository genreRepository, LikeRepository likeRepository){
 		return (args) -> {
 			User user1 = User.builder().username("user").password(new BCryptPasswordEncoder().encode("pass")).email("user@gmail.com").profileImageId(0).accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build();
 			
