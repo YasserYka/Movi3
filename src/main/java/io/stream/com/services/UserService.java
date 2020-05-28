@@ -93,7 +93,12 @@ public class UserService implements UserDetailsService {
     }
 
     private String getUsernameFromSecurityContextHolder() { 
-        return ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername(); 
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails)
+            return ((User)principal).getUsername();
+        else
+            return principal.toString();
     }
 
     public ProfileDto getProfile() { 

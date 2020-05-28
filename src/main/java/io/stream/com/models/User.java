@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 @ToString
@@ -28,6 +29,9 @@ public class User implements UserDetails {
     private boolean accountNotLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
+    private String bio;
+    private Date creationDate;
+    private Date lastSeen;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
