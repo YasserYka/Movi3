@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private String bio;
     private Date creationDate;
     private Date lastSeen;
+    private String fullName;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

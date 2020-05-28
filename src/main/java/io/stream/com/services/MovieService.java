@@ -6,6 +6,8 @@ import java.util.Optional;
 import io.stream.com.repositories.MovieRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import io.stream.com.models.Movie;
@@ -20,8 +22,8 @@ public class MovieService {
 	@Autowired
 	private CacheService cacheService;
 
-	public List<Movie> getAll(){
-		return repository.findAll();
+	public Page<Movie> getAll(Pageable pageable){
+		return repository.findAll(pageable);
 	}
 
 	public Optional<Movie> getById(Long id) {
@@ -30,18 +32,22 @@ public class MovieService {
 
 	public void save(Movie movie) {
 		 repository.save(movie); 
-		}
+	}
 
-	public List<Movie> advancedSearch(String title, float rating, int release){
-		return repository.advancedSearch(title, rating, release);
+	public Page<Movie> getMostViewed(Pageable pageable){
+		return repository.findAllByOrderByViewCountDesc(pageable);
+	}
+
+	public Page<Movie> advancedSearch(String title, float rating, int release, Pageable pageable){
+		return repository.advancedSearch(title, rating, release, pageable);
 	}
 
 	public List<Movie> findByTitle(String title){ 
 		return repository.findByTitle(title); 
 	}
 
-	public List<Movie> getByGenreType(GenreType genre) { 
-		return repository.findByGenreType(genre); 
+	public Page<Movie> getByGenreType(GenreType genre, Pageable pageable) { 
+		return repository.findByGenreType(genre, pageable); 
 	}
 	
 	public List<Movie> get6MoviesBeingWatched() { 
@@ -62,8 +68,8 @@ public class MovieService {
 		repository.updatePopularityScore(movieId, popularityScore); 
 	}
 
-	public List<Movie> trending() { 
-		return repository.findAllByOrderByPopularityScoreDesc(); 
+	public Page<Movie> getTrending(Pageable pageable) { 
+		return repository.findAllByOrderByPopularityScoreDesc(pageable); 
 	}
 
 	public void viewed(String ip, Long movieId) { 

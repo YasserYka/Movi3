@@ -62,7 +62,9 @@ public class UserService implements UserDetailsService {
         return  userOptional.get();
     }
 
-    public boolean isNotMatching(String password, String confirmedPassword){ return !password.equals(confirmedPassword); }
+    public boolean isNotMatching(String password, String confirmedPassword){ 
+        return !password.equals(confirmedPassword); 
+    }
 
     public AuthenticationDto authenticate(LoginDto loginDto) {
 

@@ -57,6 +57,4 @@ public class Movie {
     @OneToMany(mappedBy="movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Genre> genres;
     
-    public void incrementLike(){ likeCount++; }
-
 }

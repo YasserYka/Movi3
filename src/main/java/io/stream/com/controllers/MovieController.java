@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +26,9 @@ public class MovieController {
     private MovieService service;
 
     @GetMapping
-    public List<Movie> getAll(){ return service.getAll(); }
+    public Page<Movie> getAll( @PageableDefault(size = 10) Pageable pageable){
+        return service.getAll(pageable); 
+    }
     
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovie(@RequestParam("id") Long id) {
@@ -33,8 +38,8 @@ public class MovieController {
     }
 
     @GetMapping("/advancedsearch")
-    public ResponseEntity<List<Movie>> advancedSearch(@RequestParam Optional<String> title, @RequestParam Optional<Float> rating, @RequestParam Optional<Integer> release){
-        return new ResponseEntity<>(service.advancedSearch(title.orElse(null), rating.orElse(0.0f), release.orElse(0)), HttpStatus.OK); 
+    public ResponseEntity<Page<Movie>> advancedSearch(@RequestParam Optional<String> title, @RequestParam Optional<Float> rating, @RequestParam Optional<Integer> release, @PageableDefault(size = 10) Pageable pageable){
+        return new ResponseEntity<>(service.advancedSearch(title.orElse(null), rating.orElse(0.0f), release.orElse(0), pageable), HttpStatus.OK); 
     }
 
     @GetMapping("/quicksearch")
@@ -43,13 +48,18 @@ public class MovieController {
     }
 
     @GetMapping("/trending")
-    public ResponseEntity<List<Movie>> trending(){ 
-        return new ResponseEntity<>(service.trending(), HttpStatus.OK);
+    public ResponseEntity<Page<Movie>> trending(@PageableDefault(size = 10) Pageable pageable){ 
+        return new ResponseEntity<>(service.getTrending(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/mostviewed")
+    public ResponseEntity<Page<Movie>> getMostViewed(@PageableDefault(size = 10) Pageable pageable){ 
+        return new ResponseEntity<>(service.getMostViewed(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/searchbygenre")
-    public ResponseEntity<List<Movie>> getByGenreType(@RequestParam Optional<GenreType> genre){
-        return new ResponseEntity<>(service.getByGenreType(genre.orElse(null)), HttpStatus.OK);
+    public ResponseEntity<Page<Movie>> getByGenreType(@RequestParam Optional<GenreType> genre, @PageableDefault(size = 10) Pageable pageable){
+        return new ResponseEntity<>(service.getByGenreType(genre.orElse(null), pageable), HttpStatus.OK);
     }
 
 }
