@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 import java.time.Instant;
+import java.util.Date;
 
 @Data
 @Builder
@@ -35,6 +36,5 @@ public class Comment {
     @JoinColumn(name="movieId", referencedColumnName="movieId")
     private Movie movie;
 
-    private Instant date;
-
+    private Date date;
 }

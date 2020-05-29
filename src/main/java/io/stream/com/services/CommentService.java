@@ -29,6 +29,10 @@ public class CommentService {
         return commentRepository.findAll();
     }
 
+    public List<CommentDto> getAllCommentsDto(){
+        return commentRepository.findAllDto();
+    }
+
     public List<Comment> getAllCommentsOfMovieId(Long movieId) {
         return commentRepository.findByMovieId(movieId);
     }

@@ -26,6 +26,10 @@ public class MovieService {
 		return repository.findAll(pageable);
 	}
 
+	public List<Movie> getAll(){
+		return repository.findAll();
+	}
+
 	public Optional<Movie> getById(Long id) {
 		 return repository.findById(id); 
 	}

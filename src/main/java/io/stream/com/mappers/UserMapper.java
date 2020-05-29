@@ -3,6 +3,7 @@ package io.stream.com.mappers;
 import io.stream.com.models.User;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
+import io.stream.com.utils.TimeUtil;
 
 public class UserMapper {
 
@@ -10,7 +11,7 @@ public class UserMapper {
         return User.builder()
                 .username(signUpDto.getUsername())
                 .email(signUpDto.getEmail())
-                .profileImageId(0)
+                .avatarId(0)
                 .accountNonExpired(true)
                 .accountNotLocked(true)
                 .credentialsNonExpired(true)
@@ -23,7 +24,12 @@ public class UserMapper {
         return ProfileDto.builder()
             .username(user.getUsername())
             .email(user.getEmail())
-            .profileImageId(user.getProfileImageId())
+            .avatarId(user.getAvatarId())
+            .enabled(user.isEnabled())
+            .bio(user.getBio())
+            .creationDate(TimeUtil.convertToSimpleFormat(user.getCreationDate()))
+            .lastSeen(TimeUtil.convertToSimpleFormat(user.getLastSeen()))
+            .fullName(user.getFullName())
             .build();
     }
 }

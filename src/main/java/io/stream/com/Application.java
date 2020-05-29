@@ -1,10 +1,12 @@
 package io.stream.com;
 
+import io.stream.com.models.Comment;
 import io.stream.com.models.Genre;
 import io.stream.com.models.Like;
 import io.stream.com.models.Movie;
 import io.stream.com.models.User;
 import io.stream.com.models.enums.GenreType;
+import io.stream.com.repositories.CommentRepository;
 import io.stream.com.repositories.GenreRepository;
 import io.stream.com.repositories.LikeRepository;
 import io.stream.com.repositories.MovieRepository;
@@ -14,6 +16,7 @@ import io.stream.com.services.EmailService;
 import io.stream.com.services.MovieService;
 import io.stream.com.utils.TimeUtil;
 
+import java.util.Date;
 import java.util.HashSet;
 
 import org.springframework.boot.CommandLineRunner;
@@ -28,9 +31,9 @@ public class Application {
 	public static void main(String[] args) { SpringApplication.run(Application.class, args); }
 
 	@Bean
-	public CommandLineRunner loadBooks(CacheService cacheService ,MovieRepository movieRepository, UserRepository userRepository, MovieService movieService, EmailService emailService, GenreRepository genreRepository, LikeRepository likeRepository){
+	public CommandLineRunner loadBooks(CacheService cacheService ,MovieRepository movieRepository, UserRepository userRepository, MovieService movieService, EmailService emailService, GenreRepository genreRepository, LikeRepository likeRepository, CommentRepository commentRepository){
 		return (args) -> {
-			User user1 = User.builder().username("user").password(new BCryptPasswordEncoder().encode("pass")).email("user@gmail.com").profileImageId(0).accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build();
+			User user1 = User.builder().bio("regular movie fan").creationDate(new Date()).lastSeen(TimeUtil.dateAfter(23)).fullName("user bin user").username("user").password(new BCryptPasswordEncoder().encode("pass")).email("user@gmail.com").avatarId(0).accountNonExpired(true).accountNotLocked(true).credentialsNonExpired(true).enabled(true).build();
 			
 			userRepository.save(user1);
 
@@ -101,6 +104,10 @@ public class Application {
 
 			Like like1 = Like.builder().movie(movie1).user(user1).build();
 			likeRepository.save(like1);
+
+			Comment comment1 = Comment.builder().body("Cool!").user(user1).movie(movie1).date(new Date()).build();
+			
+			commentRepository.save(comment1);
 		};
 	}
 

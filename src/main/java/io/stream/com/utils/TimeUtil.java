@@ -1,9 +1,16 @@
 package io.stream.com.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class TimeUtil {
+
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+    public static String convertToSimpleFormat(Date date) {
+        return simpleDateFormat.format(new Date());
+    }
 
     public static Long getCurrentTimeInMilliseconds(){ 
         return new Date().getTime(); 

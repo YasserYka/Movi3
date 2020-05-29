@@ -13,6 +13,11 @@ public class ProfileDto {
 
     private String username;
     private String email;
-    private int profileImageId;
+    private int avatarId;
+    private boolean enabled;
+    private String bio;
+    private String creationDate;
+    private String lastSeen;
+    private String fullName;
     
 }
