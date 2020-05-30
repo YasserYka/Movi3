@@ -2,6 +2,7 @@ package io.stream.com.models.dtos;
 
 import java.util.Date;
 
+import io.stream.com.utils.TimeUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,8 @@ public class CommentDto {
     private String body;
 
 
+    public String getDate(){
+        return TimeUtil.convertToSimpleFormat(date);
+    }
+    
 }

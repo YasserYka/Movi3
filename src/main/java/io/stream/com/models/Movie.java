@@ -35,7 +35,7 @@ public class Movie {
 
     private boolean storedInS3;
 
-    private String originalFilename;
+    private String regularStreamingUrl;
 
     private String description;
 
@@ -45,7 +45,7 @@ public class Movie {
 
     private int release;
 
-    private String imageUrl;
+    private String posterUrl;
 
     private int viewCount;
 

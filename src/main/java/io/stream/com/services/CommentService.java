@@ -33,8 +33,12 @@ public class CommentService {
         return commentRepository.findAllDto();
     }
 
-    public List<Comment> getAllCommentsOfMovieId(Long movieId) {
+    public List<CommentDto> getAllCommentsOfMovieId(Long movieId) {
         return commentRepository.findByMovieId(movieId);
+    }
+
+    public List<CommentDto> getAllCommentsOfUsername(String username) {
+        return commentRepository.findByUsername(username);
     }
 
     public void save(CommentDto commentDto){

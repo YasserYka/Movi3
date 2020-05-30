@@ -45,7 +45,7 @@ public class UploadService {
 
         Movie movie = MovieMapper.map(movieDto);
 
-        movie.setOriginalFilename(multipartFile.getOriginalFilename());
+        movie.setRegularStreamingUrl(multipartFile.getOriginalFilename());
         movie.setStoredInS3(s3Enabled);
 
         movieService.save(movie);
@@ -55,7 +55,7 @@ public class UploadService {
         else
             upload(multipartFile);
 
-        notifyMQ(movie.getOriginalFilename(), movie.isStoredInS3());
+        notifyMQ(movie.getRegularStreamingUrl(), movie.isStoredInS3());
     }
 
     private void notifyMQ(String originalFilename, boolean isStoredInS3){
