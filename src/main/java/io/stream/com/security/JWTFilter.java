@@ -1,5 +1,4 @@
-package io.stream.com.securities;
-
+package io.stream.com.security;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;

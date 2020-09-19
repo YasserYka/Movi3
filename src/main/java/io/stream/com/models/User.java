@@ -3,11 +3,15 @@ package io.stream.com.models;
 import lombok.*;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Data
 @ToString
@@ -24,19 +28,25 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
-    private int avatarId;
-    private boolean accountNonExpired;
-    private boolean accountNotLocked;
-    private boolean credentialsNonExpired;
+
+    // if account verified via email enable it 
     private boolean enabled;
+    private int avatarId;
     private String bio;
     private Date creationDate;
     private Date lastSeen;
     private String fullName;
 
+    private String roles;
+    private boolean accountNonExpired;
+    private boolean accountNotLocked;
+    private boolean credentialsNonExpired;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Arrays.stream(roles.split(","))
+            .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -7,7 +7,7 @@ import io.stream.com.models.dtos.LoginDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
 import io.stream.com.repositories.UserRepository;
-import io.stream.com.securities.JWTService;
+import io.stream.com.security.JWTService;
 import io.stream.com.utils.EmailUtil;
 import io.stream.com.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;

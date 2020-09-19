@@ -3,6 +3,7 @@ package io.stream.com.mappers;
 import io.stream.com.models.User;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
+import io.stream.com.models.enums.Roles;
 import io.stream.com.utils.TimeUtil;
 
 public class UserMapper {
@@ -17,6 +18,7 @@ public class UserMapper {
                 .credentialsNonExpired(true)
                 .enabled(true)
                 .password(signUpDto.getPassword())
+                .roles(Roles.USER_ROLE.name())
                 .build();
     }
 

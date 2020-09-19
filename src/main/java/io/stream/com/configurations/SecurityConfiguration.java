@@ -1,6 +1,6 @@
 package io.stream.com.configurations;
 
-import io.stream.com.securities.JWTFilter;
+import io.stream.com.security.JWTFilter;
 import io.stream.com.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll();
+                .antMatchers("/**").hasRole("USER");
                 http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

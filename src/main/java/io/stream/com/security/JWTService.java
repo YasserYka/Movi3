@@ -1,4 +1,4 @@
-package io.stream.com.securities;
+package io.stream.com.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
