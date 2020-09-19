@@ -22,5 +22,16 @@ public class EmailUtil {
         
         return simpleMailMessage;
     }
+
+    public static SimpleMailMessage createContactForm(String subject, String fullname, String body, String fromEmail){
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+
+        simpleMailMessage.setTo(ORGANIZATION_NAME);
+        simpleMailMessage.setSubject(subject);
+        simpleMailMessage.setText("From: " + fullname + '\n' + body);
+        simpleMailMessage.setFrom(fromEmail);
+        
+        return simpleMailMessage;
+    }
     
 }

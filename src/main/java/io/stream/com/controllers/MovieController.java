@@ -26,7 +26,7 @@ public class MovieController {
     private MovieService service;
 
     @GetMapping
-    public Page<Movie> getAll( @PageableDefault(size = 10) Pageable pageable){
+    public Page<Movie> getAll(@PageableDefault(size = 12) Pageable pageable){
         return service.getAll(pageable); 
     }
     
@@ -48,17 +48,22 @@ public class MovieController {
     }
 
     @GetMapping("/trending")
-    public ResponseEntity<Page<Movie>> trending(@PageableDefault(size = 10) Pageable pageable){ 
+    public ResponseEntity<Page<Movie>> trending(@PageableDefault(size = 12) Pageable pageable){ 
         return new ResponseEntity<>(service.getTrending(pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/mostLiked")
+    public ResponseEntity<Page<Movie>> getMostLiked(@PageableDefault(size = 12) Pageable pageable){ 
+        return new ResponseEntity<>(service.getMostLiked(pageable), HttpStatus.OK);
+    }
+
     @GetMapping("/mostviewed")
-    public ResponseEntity<Page<Movie>> getMostViewed(@PageableDefault(size = 10) Pageable pageable){ 
+    public ResponseEntity<Page<Movie>> getMostViewed(@PageableDefault(size = 12) Pageable pageable){ 
         return new ResponseEntity<>(service.getMostViewed(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/searchbygenre")
-    public ResponseEntity<Page<Movie>> getByGenreType(@RequestParam Optional<GenreType> genre, @PageableDefault(size = 10) Pageable pageable){
+    public ResponseEntity<Page<Movie>> getByGenreType(@RequestParam Optional<GenreType> genre, @PageableDefault(size = 12) Pageable pageable){
         return new ResponseEntity<>(service.getByGenreType(genre.orElse(null), pageable), HttpStatus.OK);
     }
 

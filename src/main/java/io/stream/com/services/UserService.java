@@ -110,4 +110,8 @@ public class UserService implements UserDetailsService {
     public boolean isEmailExists(String email) { 
         return repository.existsByEmail(email); 
     }
+
+    public boolean isUsernameExists(String username) { 
+        return repository.existsByUsername(username); 
+    }
 }

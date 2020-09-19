@@ -42,6 +42,10 @@ public class MovieService {
 		return repository.findAllByOrderByViewCountDesc(pageable);
 	}
 
+	public Page<Movie> getMostLiked(Pageable pageable){
+		return repository.findAllByOrderByLikeCountDesc(pageable);
+	}
+
 	public Page<Movie> advancedSearch(String title, float rating, int release, Pageable pageable){
 		return repository.advancedSearch(title, rating, release, pageable);
 	}

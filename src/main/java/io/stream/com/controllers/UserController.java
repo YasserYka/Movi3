@@ -2,6 +2,8 @@ package io.stream.com.controllers;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.stream.com.models.dtos.AuthenticationDto;
+import io.stream.com.models.dtos.ContactFormDto;
 import io.stream.com.models.dtos.LoginDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
+import io.stream.com.services.EmailService;
 import io.stream.com.services.UserService;
 
 @RestController
@@ -25,19 +29,26 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EmailService emailService;
+
     @GetMapping("/profile")
     public ProfileDto getProfile(){ 
         return userService.getProfile(); 
     }
     
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignUpDto signUpDto){
+    public ResponseEntity<?> signup(@Valid @RequestBody SignUpDto signUpDto){
 
         if(userService.isEmailExists(signUpDto.getEmail()))
             return new ResponseEntity<>("This email already exists", HttpStatus.CONFLICT);
     
         if(userService.isNotMatching(signUpDto.getPassword(), signUpDto.getConfirmedPassword()))
-            return new ResponseEntity<>("The confirm password does not match", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("The confirmed password does not match", HttpStatus.NOT_ACCEPTABLE);
+
+
+        if(userService.isUsernameExists(signUpDto.getUsername()))
+            return new ResponseEntity<>("This Username already exists", HttpStatus.CONFLICT);
 
         userService.signup(signUpDto);
         
@@ -47,10 +58,18 @@ public class UserController {
 
     @GetMapping("/verify")
     public ResponseEntity<?> getByGenreType(@RequestParam Optional<String> token){
-
-        //TODO: Sure this is wrong status look it up
         if(userService.isEmailTokenNotValid(token.get()))
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        
+        userService.enableAccount(token.get());
+
+        return new ResponseEntity<>("Thank you for verifying your email address", HttpStatus.OK);
+    }
+
+
+    @PostMapping("/contactform")
+    public ResponseEntity<?> submitContactForm(@RequestBody ContactFormDto contactFormDto){
+        emailService.
         
         userService.enableAccount(token.get());
 

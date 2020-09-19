@@ -46,4 +46,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     public void increamentViewCountById(Long id);
     
     public Page<Movie> findAllByOrderByViewCountDesc(Pageable pageable);
+
+    public Page<Movie> findAllByOrderByLikeCountDesc(Pageable pageable);
 }
