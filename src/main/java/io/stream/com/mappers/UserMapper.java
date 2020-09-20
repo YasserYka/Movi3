@@ -1,5 +1,7 @@
 package io.stream.com.mappers;
 
+import java.util.Date;
+
 import io.stream.com.models.User;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
@@ -18,7 +20,8 @@ public class UserMapper {
                 .credentialsNonExpired(true)
                 .enabled(true)
                 .password(signUpDto.getPassword())
-                .roles(Roles.USER_ROLE.name())
+                .roles(Roles.ROLE_USER.name())
+                .lastSeen(new Date())
                 .build();
     }
 

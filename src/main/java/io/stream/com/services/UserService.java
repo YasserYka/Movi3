@@ -78,12 +78,12 @@ public class UserService implements UserDetailsService {
         String token = KeyUtil.generate();
 
         signUpDto.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-
+        
         repository.save(UserMapper.mapSignUp(signUpDto));
         
-        emailService.sendVerification(signUpDto.getEmail(), token);
+        //emailService.sendVerification(signUpDto.getEmail(), token);
 
-        cacheService.addEmailVerifyingToken(token, signUpDto.getEmail());
+        //cacheService.addEmailVerifyingToken(token, signUpDto.getEmail());
     }
 
     public boolean isEmailTokenNotValid(String token){ 

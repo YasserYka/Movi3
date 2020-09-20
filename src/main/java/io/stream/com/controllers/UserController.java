@@ -69,9 +69,8 @@ public class UserController {
 
     @PostMapping("/contactform")
     public ResponseEntity<?> submitContactForm(@RequestBody ContactFormDto contactFormDto){
-        emailService.
+        emailService.sendContactForm(contactFormDto);
         
-        userService.enableAccount(token.get());
 
         return new ResponseEntity<>("Thank you for verifying your email address", HttpStatus.OK);
     }
