@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.stream.com.models.Movie;
+import io.stream.com.models.WatchLater;
 import io.stream.com.models.enums.GenreType;
 import io.stream.com.services.MovieService;
 
@@ -67,4 +68,13 @@ public class MovieController {
         return new ResponseEntity<>(service.getByGenreType(genre.orElse(null), pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/watchlater")
+    public ResponseEntity<Page<WatchLater>> getWatchLaterList(@PageableDefault(size = 12) Pageable pageable){
+        return new ResponseEntity<>(service.getWatchLaterList(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/watchlater/{userid}")
+    public ResponseEntity<Page<WatchLater>> getWatchLaterListByUser(@PageableDefault(size = 12) Pageable pageable, @RequestParam("userid") Long userId) {
+        return new ResponseEntity<>(service.getWatchLaterListByUser(pageable, userId), HttpStatus.OK);
+    }
 }

@@ -1,6 +1,5 @@
 package io.stream.com.controllers;
 
-import io.stream.com.models.Comment;
 import io.stream.com.models.dtos.CommentDto;
 import io.stream.com.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;

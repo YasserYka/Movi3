@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import io.stream.com.repositories.MovieRepository;
+import io.stream.com.repositories.WatchLaterRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import io.stream.com.models.Movie;
+import io.stream.com.models.WatchLater;
 import io.stream.com.models.enums.GenreType;
 
 @Service
@@ -21,6 +23,9 @@ public class MovieService {
 
 	@Autowired
 	private CacheService cacheService;
+
+	@Autowired
+	private WatchLaterRepository watchLaterRepository;
 
 	public Page<Movie> getAll(Pageable pageable){
 		return repository.findAll(pageable);
@@ -92,4 +97,11 @@ public class MovieService {
 		repository.increamentViewCountById(id);
 	}
 
+	public Page<WatchLater> getWatchLaterList(Pageable pageable) {
+		return watchLaterRepository.findAll(pageable);
+	}
+
+	public Page<WatchLater> getWatchLaterListByUser(Pageable pageable, Long userId) {
+		return watchLaterRepository.findByUser(pageable, userId);
+	}
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -24,7 +26,6 @@ public class Like {
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId", referencedColumnName = "userId")
     private User user;
 
 }

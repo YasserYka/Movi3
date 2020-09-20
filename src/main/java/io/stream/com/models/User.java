@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -27,6 +29,7 @@ public class User implements UserDetails {
     private Long userId;
     private String username;
     private String email;
+    @JsonIgnore
     private String password;
 
     // if account verified via email enable it 
@@ -42,6 +45,7 @@ public class User implements UserDetails {
     private boolean accountNotLocked;
     private boolean credentialsNonExpired;
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.stream(roles.split(","))

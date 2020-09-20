@@ -34,8 +34,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/signup", "/api/v1/users/login").permitAll()
-                .antMatchers("/**").hasAnyRole("ADMIN", "USER");
+                //.antMatchers("/api/v1/users/signup", "/api/v1/users/login").permitAll()
+                //.antMatchers("/**").hasAnyRole("ADMIN", "USER");
+                .antMatchers("/**").permitAll();
                 http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
