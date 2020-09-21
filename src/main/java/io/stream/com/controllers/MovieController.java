@@ -45,7 +45,7 @@ public class MovieController {
 
     @GetMapping("/quicksearch")
     public ResponseEntity<List<Movie>> quickSearch(@RequestParam Optional<String> title){ 
-        return new ResponseEntity<>(service.findByTitle(title.orElse(null)), HttpStatus.OK); 
+        return new ResponseEntity<>(service.findByTitle(title.orElse("")), HttpStatus.OK); 
     }
 
     @GetMapping("/trending")
@@ -53,9 +53,14 @@ public class MovieController {
         return new ResponseEntity<>(service.getTrending(pageable), HttpStatus.OK);
     }
 
-    @GetMapping("/mostLiked")
+    @GetMapping("/mostliked")
     public ResponseEntity<Page<Movie>> getMostLiked(@PageableDefault(size = 12) Pageable pageable){ 
         return new ResponseEntity<>(service.getMostLiked(pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/toprated")
+    public ResponseEntity<Page<Movie>> getTopRated(@PageableDefault(size = 12) Pageable pageable){ 
+        return new ResponseEntity<>(service.getTopRated(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/mostviewed")

@@ -46,6 +46,10 @@ public class MovieService {
 	public Page<Movie> getMostViewed(Pageable pageable){
 		return repository.findAllByOrderByViewCountDesc(pageable);
 	}
+	
+	public Page<Movie> getTopRated(Pageable pageable){
+		return repository.findTopRated(pageable);
+	}
 
 	public Page<Movie> getMostLiked(Pageable pageable){
 		return repository.findAllByOrderByLikeCountDesc(pageable);

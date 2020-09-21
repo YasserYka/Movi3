@@ -22,7 +22,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     public Page<Movie> advancedSearch(String title, float rating, int release, Pageable pageable);
 
 
-    @Query("SELECT a FROM Movie a WHERE a.title LIKE title")
+    @Query(value = "SELECT * FROM Movie a WHERE title LIKE :title% LIMIT 6", nativeQuery = true)
     public List<Movie> findByTitle(String title);
 
     @Query("SELECT a FROM Movie a join a.genres g where g.type = :genre")
@@ -48,4 +48,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     public Page<Movie> findAllByOrderByViewCountDesc(Pageable pageable);
 
     public Page<Movie> findAllByOrderByLikeCountDesc(Pageable pageable);
+
+    @Query("SELECT a FROM Movie a ORDER BY rating ASC")
+    public Page<Movie> findTopRated(Pageable pageable);
 }
