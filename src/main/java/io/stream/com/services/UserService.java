@@ -22,6 +22,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -62,6 +64,9 @@ public class UserService implements UserDetailsService {
         return  userOptional.get();
     }
 
+    public List<User> getAll(){
+        return repository.findAll();
+    }
     public boolean isNotMatching(String password, String confirmedPassword){ 
         return !password.equals(confirmedPassword); 
     }
@@ -92,6 +97,10 @@ public class UserService implements UserDetailsService {
 
     public void enableAccount(String token){
         repository.enableAccountByEmail(cacheService.getEmailOfToken(token));
+    }
+
+    public void lastseen(){
+        repository.updateLastSeen(getCurrentLoggedInUser().getUserId(), new Date());
     }
 
     private String getUsernameFromSecurityContextHolder() { 

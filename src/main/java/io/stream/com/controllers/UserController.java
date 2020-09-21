@@ -1,5 +1,6 @@
 package io.stream.com.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.stream.com.models.User;
 import io.stream.com.models.dtos.AuthenticationDto;
 import io.stream.com.models.dtos.ContactFormDto;
 import io.stream.com.models.dtos.LoginDto;
@@ -78,5 +80,16 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationDto> login(@RequestBody LoginDto loginDto){ 
         return new ResponseEntity<>(userService.authenticate(loginDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/lastseen")
+    public ResponseEntity<?> lastseen(){ 
+        userService.lastseen();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAll(){ 
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 }
