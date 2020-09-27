@@ -10,7 +10,7 @@ import io.stream.com.utils.TimeUtil;
 
 public class UserMapper {
 
-    public static User mapSignUp(SignUpDto signUpDto){
+    public static User mapSignUp(SignUpDto signUpDto, String encryptedPassword){
         return User.builder()
                 .username(signUpDto.getUsername())
                 .email(signUpDto.getEmail())
@@ -19,7 +19,7 @@ public class UserMapper {
                 .accountNotLocked(true)
                 .credentialsNonExpired(true)
                 .enabled(true)
-                .password(signUpDto.getPassword())
+                .password(encryptedPassword)
                 .roles(Roles.ROLE_USER.name())
                 .lastSeen(new Date())
                 .build();

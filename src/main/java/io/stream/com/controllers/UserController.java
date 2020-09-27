@@ -51,15 +51,13 @@ public class UserController {
 
         if(userService.isUsernameExists(signUpDto.getUsername()))
             return new ResponseEntity<>("This Username already exists", HttpStatus.CONFLICT);
-
-        userService.signup(signUpDto);
         
-        return new ResponseEntity<>(HttpStatus.CREATED);    
+        return new ResponseEntity<>(userService.signup(signUpDto), HttpStatus.CREATED);    
     }
 
 
     @GetMapping("/verify")
-    public ResponseEntity<?> getByGenreType(@RequestParam Optional<String> token){
+    public ResponseEntity<?> verify(@RequestParam Optional<String> token){
         if(userService.isEmailTokenNotValid(token.get()))
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         
@@ -78,8 +76,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationDto> login(@RequestBody LoginDto loginDto){ 
-        return new ResponseEntity<>(userService.authenticate(loginDto), HttpStatus.OK);
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto){ 
+        return new ResponseEntity<>(userService.authenticate(loginDto.getUsername(), loginDto.getPassword()), HttpStatus.OK);
     }
 
     @GetMapping("/lastseen")

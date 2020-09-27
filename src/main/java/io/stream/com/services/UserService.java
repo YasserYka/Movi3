@@ -71,24 +71,25 @@ public class UserService implements UserDetailsService {
         return !password.equals(confirmedPassword); 
     }
 
-    public AuthenticationDto authenticate(LoginDto loginDto) {
+    public AuthenticationDto authenticate(String username, String password) {
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         
         return new AuthenticationDto(jwtService.generateToken((User) authenticate.getPrincipal()));
     }
 
-    public void signup(SignUpDto signUpDto) {
-        String token = KeyUtil.generate();
+    public AuthenticationDto signup(SignUpDto signUpDto) {
+        String token = KeyUtil.generate(), password = signUpDto.getPassword();
 
-        signUpDto.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
         
-        repository.save(UserMapper.mapSignUp(signUpDto));
+        repository.save(UserMapper.mapSignUp(signUpDto, passwordEncoder.encode(signUpDto.getPassword())));
         
         //emailService.sendVerification(signUpDto.getEmail(), token);
 
         //cacheService.addEmailVerifyingToken(token, signUpDto.getEmail());
+
+        return authenticate(signUpDto.getUsername(), password);
     }
 
     public boolean isEmailTokenNotValid(String token){ 
