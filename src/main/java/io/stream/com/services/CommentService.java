@@ -42,9 +42,8 @@ public class CommentService {
     }
 
     public void save(CommentDto commentDto){
-        Optional<Movie> optionalMovie = movieService.getById(commentDto.getMovieId());
+        Movie movie = movieService.getById(commentDto.getMovieId());
 
-        if(optionalMovie.isPresent())
-            commentRepository.save(CommentMapper.map(optionalMovie.get(), commentDto, userService.getCurrentLoggedInUser()));
+        commentRepository.save(CommentMapper.map(movie, commentDto, userService.getCurrentLoggedInUser()));
     }
 }

@@ -29,14 +29,13 @@ public class LikeService {
     }
 
     public void save(LikeDto likeDto) {
-        Optional<Movie> optionalMovie = movieService.getById(likeDto.getMovieId);
-        if(optionalMovie.isPresent()){
-            Movie movie = optionalMovie.get();
-            User currentLoggedInUser = userService.getCurrentLoggedInUser();
-            if(!likeRepository.isExistByMovieIdAndUserId(movie.getMovieId(), currentLoggedInUser.getUserId())){    
-                likeRepository.save(LikeMapper.map(likeDto, movie, currentLoggedInUser));
-                movieService.increamentViewCountById(movie.getMovieId());
-            }
-        }
+        Movie movie = movieService.getById(likeDto.getMovieId);
+        User currentLoggedInUser = userService.getCurrentLoggedInUser();
+
+        /*if(!likeRepository.isExistByMovieIdAndUserId(movie.getMovieId(), currentLoggedInUser.getUserId())){    
+            likeRepository.save(LikeMapper.map(likeDto, movie, currentLoggedInUser));
+            movieService.increamentViewCountById(movie.getMovieId());
+        }*/
+        
     }
 }

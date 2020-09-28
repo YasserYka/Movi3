@@ -1,22 +1,35 @@
 package io.stream.com.controllers;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 
+import java.io.IOException;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.ResourceRegion;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/region")
-public class ResourceRegionStreamingController {
+@RequestMapping("/api/v1/streaming")
+public class StreamingController {
 
 	@Value("${upload.path}")
 	private String uploadPath;
 
-	@GetMapping("/{originalFilename}")
+	@GetMapping("/manifests/{originalFilename}")
+	public ResponseEntity<UrlResource> getManifest(@PathVariable("originalFilename") String originalFilename) throws MalformedURLException {
+		
+		UrlResource manifestResource = new UrlResource(String.format("file:%s%s", uploadPath, originalFilename));
+			
+		return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType("application/dash+xml").orElse(MediaType.APPLICATION_OCTET_STREAM)).body(manifestResource);
+	}
+
+	@GetMapping("/region/{originalFilename}")
 	public ResponseEntity<ResourceRegion> getRegion(@PathVariable("originalFilename") String originalFilename,  @RequestHeader HttpHeaders headers) throws MalformedURLException {
 		UrlResource movieResource = new UrlResource(String.format("file:%s%s", uploadPath, originalFilename));
 

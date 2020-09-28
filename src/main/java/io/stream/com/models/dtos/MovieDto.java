@@ -10,4 +10,5 @@ public class MovieDto {
     private String title;
     private String description;
     private int release;
+    
 }

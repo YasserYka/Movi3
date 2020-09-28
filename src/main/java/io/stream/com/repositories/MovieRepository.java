@@ -18,37 +18,36 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     public List<Movie> findTop6ByOrderByViewCountDesc();
 
-    @Query("SELECT a FROM Movie a WHERE (:title is null or a.title like :title) AND (:rating = 0.0f or a.rating >= :rating) AND (:release = 0 or a.release >= :release)")
+    @Query("SELECT m FROM Movie m WHERE (:title is null or m.title like :title) AND (:rating = 0.0f or m.rating >= :rating) AND (:release = 0 or m.release >= :release)")
     public Page<Movie> advancedSearch(String title, float rating, int release, Pageable pageable);
 
-
     @Query(value = "SELECT * FROM Movie WHERE title LIKE :title% LIMIT 6", nativeQuery = true)
-    public List<Movie> findByTitle(String title);
+    public List<Movie> quickSearch(String title);
 
-    @Query("SELECT a FROM Movie a join a.genres g where g.type = :genre")
+    @Query("SELECT m FROM Movie m join a.genres g where g.type = :genre")
     public Page<Movie> findByGenreType(GenreType genre, Pageable pageable);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Movie a set a.viewCount = a.viewCount + :newViews WHERE a.id = :id")
+    @Query("UPDATE Movie m set m.viewCount = m.viewCount + :newViews WHERE m.id = :id")
     public void updateViewCount(Long id, int newViews);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Movie a set a.popularityScore = :score WHERE a.id = :id")
+    @Query("UPDATE Movie m set m.popularityScore = :score WHERE m.id = :id")
     public void updatePopularityScore(Long id, double score);
 
     public Page<Movie> findAllByOrderByPopularityScoreDesc(Pageable pageable);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Movie a set a.viewCount = a.viewCount + 1 WHERE a.id = :id")
+    @Query("UPDATE Movie m set m.viewCount = m.viewCount + 1 WHERE m.id = :id")
     public void increamentViewCountById(Long id);
     
     public Page<Movie> findAllByOrderByViewCountDesc(Pageable pageable);
 
     public Page<Movie> findAllByOrderByLikeCountDesc(Pageable pageable);
 
-    @Query("SELECT a FROM Movie a ORDER BY rating ASC")
+    @Query("SELECT m FROM Movie m ORDER BY rating ASC")
     public Page<Movie> findTopRated(Pageable pageable);
 }

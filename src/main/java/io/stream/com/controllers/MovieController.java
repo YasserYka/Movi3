@@ -10,12 +10,17 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.stream.com.models.Movie;
 import io.stream.com.models.WatchLater;
+import io.stream.com.models.dtos.MovieDto;
 import io.stream.com.models.enums.GenreType;
 import io.stream.com.services.MovieService;
 
@@ -27,15 +32,27 @@ public class MovieController {
     private MovieService service;
 
     @GetMapping
-    public Page<Movie> getAll(@PageableDefault(size = 12) Pageable pageable){
-        return service.getAll(pageable); 
+    public ResponseEntity<Page<Movie>> getAll(@PageableDefault(size = 12) Pageable pageable){
+
+        return new ResponseEntity<>(service.getAll(pageable), HttpStatus.OK); 
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovie(@RequestParam("id") Long id) {
-    	return Optional.ofNullable(service.getById(id))
-    			.map(movie -> ResponseEntity.ok(movie.get()))
-    			.orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Movie> getById(@PathVariable("id") Long id) {
+
+        return new ResponseEntity<>(service.getById(id), HttpStatus.OK); 
+    }
+
+    @PostMapping
+    public ResponseEntity<Movie> create(@RequestBody MovieDto movieDto){
+
+        return new ResponseEntity<>(service.create(movieDto), HttpStatus.OK); 
+    }
+
+    @PutMapping("/{id]")
+    public ResponseEntity<?> update(@RequestBody MovieDto movieDto, @PathVariable("id") Long id){
+
+        return new ResponseEntity<>(service.update(movieDto, id), HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/advancedsearch")
@@ -45,7 +62,7 @@ public class MovieController {
 
     @GetMapping("/quicksearch")
     public ResponseEntity<List<Movie>> quickSearch(@RequestParam Optional<String> title){ 
-        return new ResponseEntity<>(service.findByTitle(title.orElse("")), HttpStatus.OK); 
+        return new ResponseEntity<>(service.quickSearch(title.orElse("")), HttpStatus.OK); 
     }
 
     @GetMapping("/trending")
@@ -79,7 +96,7 @@ public class MovieController {
     }
 
     @GetMapping("/watchlater/{userid}")
-    public ResponseEntity<Page<WatchLater>> getWatchLaterListByUser(@PageableDefault(size = 12) Pageable pageable, @RequestParam("userid") Long userId) {
-        return new ResponseEntity<>(service.getWatchLaterListByUser(pageable, userId), HttpStatus.OK);
+    public ResponseEntity<Page<WatchLater>> getWatchLaterListByUserId(@PageableDefault(size = 12) Pageable pageable, @PathVariable("userid") Long userId) {
+        return new ResponseEntity<>(service.getWatchLaterListByUserId(pageable, userId), HttpStatus.OK);
     }
 }

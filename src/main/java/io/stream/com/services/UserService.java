@@ -1,5 +1,6 @@
 package io.stream.com.services;
 
+import io.stream.com.controllers.exceptions.UserNotFoundException;
 import io.stream.com.mappers.UserMapper;
 import io.stream.com.models.User;
 import io.stream.com.models.dtos.AuthenticationDto;
@@ -61,12 +62,28 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
 
-        return  userOptional.get();
+        return userOptional.get();
     }
 
     public List<User> getAll(){
         return repository.findAll();
     }
+
+    public ProfileDto update(ProfileDto profileDto, Long id){
+		Optional<User> optionalUser = repository.findById(id);
+
+		if(!optionalUser.isPresent())
+            throw new UserNotFoundException(id);
+
+		User user = optionalUser.get();
+		user.setUsername(profileDto.getUsername());
+        user.setAvatarId(profileDto.getAvatarId());
+        user.setBio(profileDto.getBio());
+        user.setFullName(profileDto.getFullName());
+
+		return UserMapper.mapProfile(repository.save(user));
+	}
+
     public boolean isNotMatching(String password, String confirmedPassword){ 
         return !password.equals(confirmedPassword); 
     }
@@ -80,16 +97,15 @@ public class UserService implements UserDetailsService {
     }
 
     public AuthenticationDto signup(SignUpDto signUpDto) {
-        String token = KeyUtil.generate(), password = signUpDto.getPassword();
+        String token = KeyUtil.generate();
 
-        
         repository.save(UserMapper.mapSignUp(signUpDto, passwordEncoder.encode(signUpDto.getPassword())));
         
         //emailService.sendVerification(signUpDto.getEmail(), token);
 
         //cacheService.addEmailVerifyingToken(token, signUpDto.getEmail());
 
-        return authenticate(signUpDto.getUsername(), password);
+        return authenticate(signUpDto.getUsername(), signUpDto.getPassword());
     }
 
     public boolean isEmailTokenNotValid(String token){ 

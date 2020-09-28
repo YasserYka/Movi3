@@ -11,8 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import io.stream.com.controllers.exceptions.MovieNotFoundException;
+import io.stream.com.mappers.MovieMapper;
 import io.stream.com.models.Movie;
 import io.stream.com.models.WatchLater;
+import io.stream.com.models.dtos.MovieDto;
 import io.stream.com.models.enums.GenreType;
 
 @Service
@@ -31,16 +34,30 @@ public class MovieService {
 		return repository.findAll(pageable);
 	}
 
-	public List<Movie> getAll(){
-		return repository.findAll();
+	public Movie getById(Long id) {
+		Optional<Movie> movie = repository.findById(id);
+		
+		if(!movie.isPresent())
+			throw new MovieNotFoundException(id);
+
+		 return movie.get(); 
 	}
 
-	public Optional<Movie> getById(Long id) {
-		 return repository.findById(id); 
+	public Movie update(MovieDto movieDto, Long id){
+		Optional<Movie> optionalMovie = repository.findById(id);
+
+		if(!optionalMovie.isPresent())
+			throw new MovieNotFoundException(id);
+
+		Movie movie = optionalMovie.get();
+		movie.setTitle(movieDto.getTitle());
+		movie.setDescription(movieDto.getDescription());
+
+		return repository.save(movie);
 	}
 
-	public void save(Movie movie) {
-		 repository.save(movie); 
+	public Movie create(MovieDto movieDto) {
+		return repository.save(MovieMapper.map(movieDto)); 
 	}
 
 	public Page<Movie> getMostViewed(Pageable pageable){
@@ -59,8 +76,8 @@ public class MovieService {
 		return repository.advancedSearch(title, rating, release, pageable);
 	}
 
-	public List<Movie> findByTitle(String title){ 
-		return repository.findByTitle(title); 
+	public List<Movie> quickSearch(String title){ 
+		return repository.quickSearch(title); 
 	}
 
 	public Page<Movie> getByGenreType(GenreType genre, Pageable pageable) { 
@@ -105,7 +122,7 @@ public class MovieService {
 		return watchLaterRepository.findAll(pageable);
 	}
 
-	public Page<WatchLater> getWatchLaterListByUser(Pageable pageable, Long userId) {
+	public Page<WatchLater> getWatchLaterListByUserId(Pageable pageable, Long userId) {
 		return watchLaterRepository.findByUser(pageable, userId);
 	}
 }
