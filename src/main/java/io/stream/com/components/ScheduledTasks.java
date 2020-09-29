@@ -25,9 +25,10 @@ public class ScheduledTasks {
     @Autowired
     private MovieService movieService;
 
+    // User's view count is kept in the cache to prevent duplicate user views and prevent spamming, this clear the cache and persist the views
     @Scheduled(fixedDelay=THIRTY_MINUTES)
     public void updateViewCounts(){
-        log.info("SCHEDULED TASK: UPDATING VIEW COUNT");
+        log.info("SCHEDULED TASK: Updating view count");
 
         HashMap<Integer, Integer> reduce = new HashMap<Integer, Integer>();
 
@@ -40,7 +41,7 @@ public class ScheduledTasks {
 
     @Scheduled(fixedDelay=TWO_HOURS)
     public void updatePopularityScore(){
-        log.info("SCHEDULED TASK: UPDATING POPULARITY SCORE");
+        log.info("SCHEDULED TASK: Updating popularity score");
 
         movieService.getAll().forEach(movie -> {
             movieService.updatePopularityScore(movie.getMovieId(), PopularityUtil.calculateScore(movie.getLikeCount(), movie.getUploadDate()));

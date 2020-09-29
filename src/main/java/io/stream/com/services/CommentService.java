@@ -7,10 +7,11 @@ import io.stream.com.models.dtos.CommentDto;
 import io.stream.com.repositories.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -25,23 +26,27 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public List<Comment> getAllComments() {
+    public List<Comment> getAll() {
+
         return commentRepository.findAll();
     }
 
-    public List<CommentDto> getAllCommentsDto(){
-        return commentRepository.findAllDto();
+    public Page<CommentDto> getAll(Pageable pageable){
+
+        return commentRepository.findAllDto(pageable);
     }
 
-    public List<CommentDto> getAllCommentsOfMovieId(Long movieId) {
-        return commentRepository.findByMovieId(movieId);
+    public Page<CommentDto> getByMovieId(Long movieId, Pageable pageable) {
+
+        return commentRepository.findByMovieId(movieId, pageable);
     }
 
-    public List<CommentDto> getAllCommentsOfUsername(String username) {
-        return commentRepository.findByUsername(username);
+    public Page<CommentDto> getByUsername(String username, Pageable pageable) {
+
+        return commentRepository.findByUsername(username, pageable);
     }
 
-    public void save(CommentDto commentDto){
+    public void create(CommentDto commentDto){
         Movie movie = movieService.getById(commentDto.getMovieId());
 
         commentRepository.save(CommentMapper.map(movie, commentDto, userService.getCurrentLoggedInUser()));

@@ -31,7 +31,14 @@ public class MovieService {
 	private WatchLaterRepository watchLaterRepository;
 
 	public Page<Movie> getAll(Pageable pageable){
+
 		return repository.findAll(pageable);
+	}
+
+	// Update Popularity Score scheduled task needs this
+	public List<Movie> getAll(){
+
+		return repository.findAll();
 	}
 
 	public Movie getById(Long id) {
@@ -41,6 +48,11 @@ public class MovieService {
 			throw new MovieNotFoundException(id);
 
 		 return movie.get(); 
+	}
+
+	public void deleteById(Long id){
+		
+		repository.deleteById(id);
 	}
 
 	public Movie update(MovieDto movieDto, Long id){
@@ -57,34 +69,42 @@ public class MovieService {
 	}
 
 	public Movie create(MovieDto movieDto) {
+
 		return repository.save(MovieMapper.map(movieDto)); 
 	}
 
 	public Page<Movie> getMostViewed(Pageable pageable){
+
 		return repository.findAllByOrderByViewCountDesc(pageable);
 	}
 	
 	public Page<Movie> getTopRated(Pageable pageable){
+
 		return repository.findTopRated(pageable);
 	}
 
 	public Page<Movie> getMostLiked(Pageable pageable){
+
 		return repository.findAllByOrderByLikeCountDesc(pageable);
 	}
 
 	public Page<Movie> advancedSearch(String title, float rating, int release, Pageable pageable){
+
 		return repository.advancedSearch(title, rating, release, pageable);
 	}
 
 	public List<Movie> quickSearch(String title){ 
+
 		return repository.quickSearch(title); 
 	}
 
 	public Page<Movie> getByGenreType(GenreType genre, Pageable pageable) { 
+
 		return repository.findByGenreType(genre, pageable); 
 	}
 	
 	public List<Movie> get6MoviesBeingWatched() { 
+
 		return cacheService.getListOfMoviesBeingWatched(); 
 	}
 
@@ -95,34 +115,42 @@ public class MovieService {
     }
 
 	public List<Movie> get6MostViewedMovies() { 
+
 		return cacheService.getListOfMoviesBeingWatched(); 
 	}
 
 	public void updatePopularityScore(Long movieId, double popularityScore){ 
+
 		repository.updatePopularityScore(movieId, popularityScore); 
 	}
 
 	public Page<Movie> getTrending(Pageable pageable) { 
+
 		return repository.findAllByOrderByPopularityScoreDesc(pageable); 
 	}
 
-	public void viewed(String ip, Long movieId) { 
+	public void increaseViewCount(String ip, Long movieId) { 
+
 		cacheService.putRecentViewedMovie(ip, movieId); 
 	}
 
 	public void updateViewCount(Long movieId, int newViews){ 
+
 		repository.updateViewCount(movieId, newViews); 
 	}
 
 	public void increamentViewCountById(Long id){
+
 		repository.increamentViewCountById(id);
 	}
 
 	public Page<WatchLater> getWatchLaterList(Pageable pageable) {
+
 		return watchLaterRepository.findAll(pageable);
 	}
 
 	public Page<WatchLater> getWatchLaterListByUserId(Pageable pageable, Long userId) {
+		
 		return watchLaterRepository.findByUser(pageable, userId);
 	}
 }

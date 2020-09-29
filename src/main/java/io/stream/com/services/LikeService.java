@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LikeService {
@@ -28,14 +27,14 @@ public class LikeService {
         return likeRepository.findAll(); 
     }
 
-    public void save(LikeDto likeDto) {
+    public void create(LikeDto likeDto) {
         Movie movie = movieService.getById(likeDto.getMovieId);
         User currentLoggedInUser = userService.getCurrentLoggedInUser();
 
-        /*if(!likeRepository.isExistByMovieIdAndUserId(movie.getMovieId(), currentLoggedInUser.getUserId())){    
+        // User can only like movie once
+        if(!likeRepository.isExistByMovieIdAndUserId(movie.getMovieId(), currentLoggedInUser.getUserId())){    
             likeRepository.save(LikeMapper.map(likeDto, movie, currentLoggedInUser));
             movieService.increamentViewCountById(movie.getMovieId());
-        }*/
-        
+        }
     }
 }

@@ -22,7 +22,7 @@ public class ViewController {
 	@GetMapping("/{movieId}")
 	public ResponseEntity<?> viewd(@PathVariable("movieId") Long movieId, HttpServletRequest HttpServletRequest){
 
-        movieService.viewed(HttpServletRequest.getRemoteAddr(), movieId);
+        movieService.increaseViewCount(HttpServletRequest.getRemoteAddr(), movieId);
 
         return new ResponseEntity<>(HttpStatus.OK);    
     }

@@ -31,12 +31,14 @@ public class StreamingController {
 
 	@GetMapping("/region/{originalFilename}")
 	public ResponseEntity<ResourceRegion> getRegion(@PathVariable("originalFilename") String originalFilename,  @RequestHeader HttpHeaders headers) throws MalformedURLException {
+
 		UrlResource movieResource = new UrlResource(String.format("file:%s%s", uploadPath, originalFilename));
 
 		return	ResponseEntity.status(HttpStatus.PARTIAL_CONTENT).contentType(MediaTypeFactory.getMediaType(movieResource).orElse(MediaType.APPLICATION_OCTET_STREAM)).body(getRange(headers, movieResource));
 	}
 
 	private ResourceRegion getRange(HttpHeaders headers, UrlResource movie){
+
 		long length = getContentLength(movie);
 		HttpRange range = headers.getRange().get(0);
 

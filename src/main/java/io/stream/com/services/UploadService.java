@@ -39,23 +39,7 @@ public class UploadService {
 	private String uploadPath;
 
     public void upload(MultipartFile multipartFile, MovieDto movieDto){
-
-        if(isNotSupported(multipartFile.getOriginalFilename()))
-            return;
-
-        Movie movie = MovieMapper.map(movieDto);
-
-        movie.setRegularStreamingUrl(multipartFile.getOriginalFilename());
-        movie.setStoredInS3(s3Enabled);
-
-        movieService.save(movie);
-
-        if(s3Enabled)
-            s3Client.upload(multipartFile);
-        else
-            upload(multipartFile);
-
-        notifyMQ(movie.getRegularStreamingUrl(), movie.isStoredInS3());
+        // Nope think it throw
     }
 
     private void notifyMQ(String originalFilename, boolean isStoredInS3){
