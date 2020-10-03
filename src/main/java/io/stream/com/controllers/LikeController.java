@@ -20,14 +20,14 @@ public class LikeController {
 
     @GetMapping
     public ResponseEntity<?> getAll(){ 
-        
-        return ResponseEntity.ok(service.getAll()); 
+
+        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> add(LikeDto likeDto){
+    public ResponseEntity<?> create(LikeDto likeDto){
         service.create(likeDto);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -6,6 +6,7 @@ import io.stream.com.models.Movie;
 import io.stream.com.models.User;
 import io.stream.com.models.dtos.LikeDto;
 import io.stream.com.repositories.LikeRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class LikeService {
     private MovieService movieService;
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     public List<Like> getAll(){ 
         return likeRepository.findAll(); 
@@ -29,7 +30,7 @@ public class LikeService {
 
     public void create(LikeDto likeDto) {
         Movie movie = movieService.getById(likeDto.getMovieId);
-        User currentLoggedInUser = userService.getCurrentLoggedInUser();
+        User currentLoggedInUser = authService.getCurrentLoggedInUser();
 
         // User can only like movie once
         if(!likeRepository.isExistByMovieIdAndUserId(movie.getMovieId(), currentLoggedInUser.getUserId())){    

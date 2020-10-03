@@ -22,6 +22,7 @@ import io.stream.com.models.dtos.ContactFormDto;
 import io.stream.com.models.dtos.LoginDto;
 import io.stream.com.models.dtos.ProfileDto;
 import io.stream.com.models.dtos.SignUpDto;
+import io.stream.com.services.AuthService;
 import io.stream.com.services.EmailService;
 import io.stream.com.services.UserService;
 
@@ -32,6 +33,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthService authService;
+    
     @Autowired
     private EmailService emailService;
 
@@ -46,13 +50,13 @@ public class UserController {
         if(userService.isEmailExists(signUpDto.getEmail()))
             return new ResponseEntity<>("This email already exists", HttpStatus.CONFLICT);
     
-        if(userService.isNotMatching(signUpDto.getPassword(), signUpDto.getConfirmedPassword()))
+        if(!signUpDto.getPassword().equals(signUpDto.getConfirmedPassword()))
             return new ResponseEntity<>("The confirmed password does not match", HttpStatus.UNPROCESSABLE_ENTITY);
 
         if(userService.isUsernameExists(signUpDto.getUsername()))
             return new ResponseEntity<>("This Username already exists", HttpStatus.CONFLICT);
         
-        return new ResponseEntity<>(userService.signup(signUpDto), HttpStatus.CREATED);    
+        return new ResponseEntity<>(authService.signup(signUpDto), HttpStatus.CREATED);    
     }
 
     @PutMapping("/{id}")
@@ -63,7 +67,8 @@ public class UserController {
 
     @GetMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam Optional<String> token){
-        if(userService.isEmailTokenNotValid(token.get()))
+
+        if(authService.isEmailTokenNotValid(token.get()))
             return new ResponseEntity<>("Token is not valid", HttpStatus.UNAUTHORIZED);
         
         userService.enableAccount(token.get());
@@ -81,13 +86,14 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto){ 
         
-        return new ResponseEntity<>(userService.authenticate(loginDto.getUsername(), loginDto.getPassword()), HttpStatus.OK);
+        return new ResponseEntity<>(authService.authenticate(loginDto.getUsername(), loginDto.getPassword()), HttpStatus.OK);
     }
 
     @GetMapping("/lastseen")
     public ResponseEntity<?> lastseen(){ 
 
-        userService.lastseen();
+        userService.updateLastseen();
+        
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

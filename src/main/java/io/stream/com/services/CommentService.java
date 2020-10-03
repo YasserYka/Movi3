@@ -5,7 +5,7 @@ import io.stream.com.models.Comment;
 import io.stream.com.models.Movie;
 import io.stream.com.models.dtos.CommentDto;
 import io.stream.com.repositories.CommentRepository;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,12 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Slf4j
 @Service
 public class CommentService {
 
     @Autowired
-    private UserService userService;
+    private AuthService authService;
 
     @Autowired
     private MovieService movieService;
@@ -49,6 +48,6 @@ public class CommentService {
     public void create(CommentDto commentDto){
         Movie movie = movieService.getById(commentDto.getMovieId());
 
-        commentRepository.save(CommentMapper.map(movie, commentDto, userService.getCurrentLoggedInUser()));
+        commentRepository.save(CommentMapper.map(movie, commentDto, authService.getCurrentLoggedInUser()));
     }
 }
