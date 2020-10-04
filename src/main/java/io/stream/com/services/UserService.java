@@ -1,5 +1,6 @@
 package io.stream.com.services;
 
+import io.stream.com.cache.EmailCache;
 import io.stream.com.controllers.exceptions.UserNotFoundException;
 import io.stream.com.mappers.UserMapper;
 import io.stream.com.models.User;
@@ -26,7 +27,7 @@ public class UserService implements UserDetailsService {
     private AuthService authService;
 
     @Autowired
-    private CacheService cacheService;
+    private EmailCache emailCache;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -71,12 +72,16 @@ public class UserService implements UserDetailsService {
 
     public void enableAccount(String token){
 
-        repository.enableAccountByEmail(cacheService.getEmailOfToken(token));
+        // TODO: throw custom message
+        if(emailCache.isValidToken(token))
+            return;
+
+        repository.enableAccountByEmail(emailCache.getEmailOf(token));
     }
 
     public void updateLastseen(){
 
-        repository.updateLastSeen(authService.getCurrentLoggedInUser().getUserId(), new Date());
+        repository.updateLastseen(authService.getCurrentLoggedInUser().getUserId(), new Date());
     }
 
     public ProfileDto getProfile() { 

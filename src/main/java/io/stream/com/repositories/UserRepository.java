@@ -29,6 +29,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE User a set a.lastSeen = :newDate WHERE a.userId = :userId")
-    public void updateLastSeen(Long userId, Date newDate);
+    public void updateLastseen(Long userId, Date newDate);
 
 }

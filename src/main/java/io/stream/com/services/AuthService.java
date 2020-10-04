@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import io.stream.com.cache.EmailCache;
 import io.stream.com.mappers.UserMapper;
 import io.stream.com.models.User;
 import io.stream.com.models.dtos.AuthenticationDto;
@@ -37,7 +38,7 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private CacheService cacheService;
+    private EmailCache emailCache;
 
     public User getCurrentLoggedInUser(){ 
 
@@ -47,7 +48,7 @@ public class AuthService {
     // Check if Email validation token is not expired 
     public boolean isEmailTokenNotValid(String token){ 
         
-        return !cacheService.isExistAndValidEmailToken(token); 
+        return !emailCache.isValidToken(token); 
     }
 
     // Signup and send verfication email 

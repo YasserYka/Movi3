@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import io.stream.com.cache.MovieCache;
 import io.stream.com.controllers.exceptions.MovieNotFoundException;
 import io.stream.com.mappers.MovieMapper;
 import io.stream.com.models.Movie;
@@ -25,7 +26,7 @@ public class MovieService {
 	private MovieRepository repository;
 
 	@Autowired
-	private CacheService cacheService;
+	private MovieCache movieCache;
 
 	@Autowired
 	private WatchLaterRepository watchLaterRepository;
@@ -102,22 +103,6 @@ public class MovieService {
 
 		return repository.findByGenreType(genre, pageable); 
 	}
-	
-	public List<Movie> get6MoviesBeingWatched() { 
-
-		return cacheService.getListOfMoviesBeingWatched(); 
-	}
-
-    public void addToMoviesBeingWatched(Movie movie){
-        if(cacheService.getSizeMoviesBeingWatched() == 6)
-			cacheService.rightPopMovieBeingWatched();
-		cacheService.leftPushMovieBeingWatched(movie);
-    }
-
-	public List<Movie> get6MostViewedMovies() { 
-
-		return cacheService.getListOfMoviesBeingWatched(); 
-	}
 
 	public void updatePopularityScore(Long movieId, double popularityScore){ 
 
@@ -131,9 +116,9 @@ public class MovieService {
 
 	public void increaseViewCount(String ip, Long movieId) { 
 
-		cacheService.putRecentViewedMovie(ip, movieId); 
+		movieCache.pushToUniqueViews(movieId, ip); 
 	}
-
+	
 	public void updateViewCount(Long movieId, int newViews){ 
 
 		repository.updateViewCount(movieId, newViews); 

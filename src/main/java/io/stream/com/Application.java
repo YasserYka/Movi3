@@ -1,5 +1,6 @@
 package io.stream.com;
 
+import io.stream.com.cache.EmailCache;
 import io.stream.com.models.Comment;
 import io.stream.com.models.Genre;
 import io.stream.com.models.Like;
@@ -14,7 +15,6 @@ import io.stream.com.repositories.LikeRepository;
 import io.stream.com.repositories.MovieRepository;
 import io.stream.com.repositories.UserRepository;
 import io.stream.com.repositories.WatchLaterRepository;
-import io.stream.com.services.CacheService;
 import io.stream.com.services.EmailService;
 import io.stream.com.services.MovieService;
 import io.stream.com.utils.TimeUtil;
@@ -36,7 +36,7 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner loadBooks(CacheService cacheService, MovieRepository movieRepository,
+	public CommandLineRunner loadBooks(EmailCache emailCache, MovieRepository movieRepository,
 			UserRepository userRepository, MovieService movieService, EmailService emailService,
 			GenreRepository genreRepository, LikeRepository likeRepository, CommentRepository commentRepository,
 			WatchLaterRepository watchLaterRepository) {
