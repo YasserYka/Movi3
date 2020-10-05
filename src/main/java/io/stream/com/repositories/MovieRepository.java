@@ -24,7 +24,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query(value = "SELECT * FROM Movie WHERE title LIKE :title% LIMIT 6", nativeQuery = true)
     public List<Movie> quickSearch(String title);
 
-    @Query("SELECT m FROM Movie m join a.genres g where g.type = :genre")
+    @Query("SELECT m FROM Movie m join m.genres g where g.type = :genre")
     public Page<Movie> findByGenreType(GenreType genre, Pageable pageable);
 
     @Transactional

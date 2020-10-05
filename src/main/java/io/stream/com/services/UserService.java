@@ -76,7 +76,7 @@ public class UserService implements UserDetailsService {
         if(emailCache.isValidToken(token))
             return;
 
-        repository.enableAccountByEmail(emailCache.getEmailOf(token));
+        //repository.enableAccountByEmail(emailCache.getEmailOf(token));
     }
 
     public void updateLastseen(){
