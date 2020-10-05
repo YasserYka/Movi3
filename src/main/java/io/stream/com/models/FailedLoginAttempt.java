@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailTokenTTL {
+public class FailedLoginAttempt {
     
-    private String email;
+    private int failedAttemptsCount;
 
-    // creation time in milliseconds
-    private Long generatedTime;
+    // Next attempt allowed time in milliseconds after exceeding maximum number of failed attempts
+    private Long nextAttemptAllowed;
 
 }
