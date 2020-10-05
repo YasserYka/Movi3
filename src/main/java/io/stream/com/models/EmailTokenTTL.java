@@ -1,4 +1,4 @@
-package io.stream.com.cache;
+package io.stream.com.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenTTL {
+public class EmailTokenTTL {
     
     private String email;
     private Long generatedTime;

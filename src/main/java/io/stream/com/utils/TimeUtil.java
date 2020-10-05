@@ -8,19 +8,15 @@ public class TimeUtil {
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
+    // convert date into mm/dd/yyyy string format
     public static String convertToSimpleFormat(Date date) {
 
         return simpleDateFormat.format(new Date());
     }
 
-    public static Long getCurrentTimeInMilliseconds(){ 
-
-        return new Date().getTime(); 
-    }
-
     private static int getCreationTimeInMilliseconds(Date date){ 
 
-        return (int) (date.getTime() - getCurrentTimeInMilliseconds()); 
+        return (int) (date.getTime() - System.currentTimeMillis()); 
     }
 
     public static Long dateToMilliseconds(Date date) { 
@@ -28,6 +24,7 @@ public class TimeUtil {
         return date.getTime(); 
     }
 
+    // Convert date into hours
     public static int creationDateInHours(Date date){ 
 
         return (getCreationTimeInMilliseconds(date) / (1000*60*60)) % 24; 

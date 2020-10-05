@@ -1,13 +1,10 @@
 package io.stream.com.cache;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.AbstractMap.SimpleEntry;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import io.stream.com.models.EmailTokenTTL;
 import io.stream.com.utils.TimeUtil;
 
 @Service
@@ -29,7 +26,7 @@ public class EmailCache {
 
     public void addToken(String token, String email){ 
 
-        redisTemplate.opsForHash().put(EMAIL_VERIFICATION_TOKEN_KEY, token, new TokenTTL(email, TimeUtil.currentTimeInMillisecondsAfter(EXPIRATION_TIME)));
+        redisTemplate.opsForHash().put(EMAIL_VERIFICATION_TOKEN_KEY, token, new EmailTokenTTL(email, TimeUtil.currentTimeInMillisecondsAfter(EXPIRATION_TIME)));
     }
 
     public boolean isValidToken(String token){
@@ -47,12 +44,12 @@ public class EmailCache {
 
     private Long getGeneratedTime(Object object){
 
-        return ((TokenTTL) object).getGeneratedTime();
+        return ((EmailTokenTTL) object).getGeneratedTime();
     }
 
     private String getEmailOf(Object object){
 
-        return ((TokenTTL) object).getEmail();
+        return ((EmailTokenTTL) object).getEmail();
     }
 
 }

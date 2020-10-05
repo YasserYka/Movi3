@@ -31,10 +31,16 @@ public class MovieCache {
         return (List<Integer>) (List) redisTemplate.opsForList().range(UNIQUE_VIEWS_KEY, 0, -1); 
     }
 
-    // store movieId and IP of the user to persist unique viewing count in scheduled task
+    // Store movieId and IP of the user to persist unique viewing count in scheduled task
     public void pushToUniqueViews(Long movieId, String ip){
 
         redisTemplate.opsForHash().putIfAbsent(UNIQUE_VIEWS_KEY, ip + movieId, movieId); 
+    }
+
+    // Gets movies recntly pushed in viewing history
+    public List<Integer> getRecentlyWatchedMovies(){
+
+        return (List<Integer>) (List) redisTemplate.opsForList().range(UNIQUE_VIEWS_KEY, 0, LIST_SIZE); 
     }
 
 }

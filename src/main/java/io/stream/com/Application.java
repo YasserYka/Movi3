@@ -1,5 +1,6 @@
 package io.stream.com;
 
+import io.stream.com.cache.AuthCache;
 import io.stream.com.cache.EmailCache;
 import io.stream.com.models.Comment;
 import io.stream.com.models.Genre;
@@ -36,7 +37,7 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner loadBooks(EmailCache emailCache, MovieRepository movieRepository,
+	public CommandLineRunner loadBooks(AuthCache authCache, MovieRepository movieRepository,
 			UserRepository userRepository, MovieService movieService, EmailService emailService,
 			GenreRepository genreRepository, LikeRepository likeRepository, CommentRepository commentRepository,
 			WatchLaterRepository watchLaterRepository) {
@@ -183,6 +184,8 @@ public class Application {
 			watchLater1.setUser(user1);
 
 			watchLaterRepository.save(watchLater1);
+
+			authCache.resetLoginAttempts("Yasser");
 		};
 	}
 
