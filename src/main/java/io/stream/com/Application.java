@@ -185,7 +185,6 @@ public class Application {
 
 			watchLaterRepository.save(watchLater1);
 
-			authCache.resetLoginAttempts("Saad");
 		};
 	}
 
