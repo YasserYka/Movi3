@@ -184,7 +184,6 @@ public class Application {
 			watchLater1.setUser(user1);
 
 			watchLaterRepository.save(watchLater1);
-
 		};
 	}
 

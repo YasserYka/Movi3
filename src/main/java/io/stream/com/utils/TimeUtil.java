@@ -39,4 +39,8 @@ public class TimeUtil {
 
         return System.currentTimeMillis() + seconds;
     }
+
+    public static int millisecondsToMinutes(Long milliseconds){
+        return (int) (milliseconds / 1000) / 60;
+    }
 }

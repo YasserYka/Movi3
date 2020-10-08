@@ -16,4 +16,7 @@ public class FailedLoginAttempt {
     // Next attempt allowed time in milliseconds after exceeding maximum number of failed attempts
     private Long nextAttemptAllowed;
 
+    // To clean unused keys in redis 
+    private Long lastAttempt;
+
 }

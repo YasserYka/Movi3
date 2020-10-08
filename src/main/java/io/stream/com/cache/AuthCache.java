@@ -1,6 +1,12 @@
 package io.stream.com.cache;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.StringRedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -27,22 +33,25 @@ public class AuthCache {
         int previousFailedLoginAttemptCount = 1;
         Long backoffTime = 0L;
 
-        if(!redisTemplate.opsForHash().hasKey(FAILED_LOGIN_ATTEMPTS_KEY, username))
+        if(redisTemplate.opsForHash().hasKey(FAILED_LOGIN_ATTEMPTS_KEY, username))
             previousFailedLoginAttemptCount = getLoginAttemptsCount(username);
 
-        if(previousFailedLoginAttemptCount == MAXIMUM_FAILED_LOGIN_ATTEMPTS)
+            System.out.println(username);
+            System.out.println("prev" + redisTemplate.opsForHash().hasKey(FAILED_LOGIN_ATTEMPTS_KEY, username));
+
+        if(previousFailedLoginAttemptCount >= MAXIMUM_FAILED_LOGIN_ATTEMPTS)
             backoffTime = TimeUtil.currentTimeInMillisecondsAfter(LOCK_TIME);
             
-        redisTemplate.opsForHash().put(FAILED_LOGIN_ATTEMPTS_KEY, username, new FailedLoginAttempt(previousFailedLoginAttemptCount + 1, backoffTime));
+        redisTemplate.opsForHash().put(FAILED_LOGIN_ATTEMPTS_KEY, username, new FailedLoginAttempt(previousFailedLoginAttemptCount + 1, backoffTime, System.currentTimeMillis()));
     }
 
     // Check if not failed login attempts before or not exceeded maximum attempts
-    public Long isAllowedToLogin(String username){
+    public Long isAllowedToLoginAttempt(String username){
 
-        if (!redisTemplate.opsForHash().hasKey(FAILED_LOGIN_ATTEMPTS_KEY, username) || getLoginAttemptsCount(username) != MAXIMUM_FAILED_LOGIN_ATTEMPTS)
+        if (!redisTemplate.opsForHash().hasKey(FAILED_LOGIN_ATTEMPTS_KEY, username) || getLoginAttemptsCount(username) <= MAXIMUM_FAILED_LOGIN_ATTEMPTS)
             return 0L;
-        
-        return System.currentTimeMillis() - getNextAttemptAllowed(username);
+
+        return getNextAttemptAllowed(username) - System.currentTimeMillis();
     }
 
     // Rest login attempts after successful login
@@ -59,6 +68,20 @@ public class AuthCache {
     private int getLoginAttemptsCount(String username){
 
         return ((FailedLoginAttempt) redisTemplate.opsForHash().get(FAILED_LOGIN_ATTEMPTS_KEY, username)).getFailedAttemptsCount();
+    }
+
+    public void deleteUnusedOrExpiredKeys(){
+
+        redisTemplate.opsForHash().keys(FAILED_LOGIN_ATTEMPTS_KEY).forEach(hashKey -> {
+
+            FailedLoginAttempt failedLoginAttempt = (FailedLoginAttempt) redisTemplate.opsForHash().get(FAILED_LOGIN_ATTEMPTS_KEY, hashKey);
+            
+            // If last attempt is old or is allowed to attempt login after the lock 
+            if(failedLoginAttempt.getNextAttemptAllowed() < System.currentTimeMillis() || failedLoginAttempt.getLastAttempt() + LOCK_TIME < System.currentTimeMillis())
+                redisTemplate.opsForHash().delete(FAILED_LOGIN_ATTEMPTS_KEY, hashKey);
+
+        });
+
     }
 
 }
