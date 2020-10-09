@@ -5,11 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import io.stream.com.models.MQVideoProcessingMessage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class MQService{
+public class MQService {
 
     @Autowired
     private RabbitTemplate template;
@@ -20,7 +21,7 @@ public class MQService{
     @Value("${mq.queue.routing.key}")
     private String routingKey;
 
-    public void send(String message){ 
+    public void send(MQVideoProcessingMessage message){ 
         template.convertAndSend(exchangeName, routingKey, message); 
         log.info("Message sent to queue with routing {} and body {}", routingKey, message);
     }

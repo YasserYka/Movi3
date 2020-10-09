@@ -1,11 +1,9 @@
 package io.stream.com.services;
 
 import io.stream.com.mappers.MovieMapper;
-import io.stream.com.models.MQMessage;
 import io.stream.com.models.Movie;
 import io.stream.com.models.dtos.MovieDto;
 import io.stream.com.utils.MediaUtil;
-import io.stream.com.utils.VideoProcessType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,12 +37,12 @@ public class UploadService {
 	private String uploadPath;
 
     public void upload(MultipartFile multipartFile, MovieDto movieDto){
-        // Nope think it throw
+        // Nope think it through
     }
 
     private void notifyMQ(String originalFilename, boolean isStoredInS3){
 
-        mqService.send(new MQMessage(VideoProcessType.extract_audio, originalFilename, isStoredInS3).toString());
+        //mqService.send(new MQMessage(VideoProcessType.extract_audio, originalFilename, isStoredInS3).toString());
         
     }
 
@@ -53,12 +51,12 @@ public class UploadService {
 		 Files.copy(multipartFile.getInputStream(), Paths.get(uploadPath + multipartFile.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING); 
     }
     
-    private boolean isNotSupported(String filename) {
-        if(!MediaUtil.isFormatSupported(filename))
+    /*private boolean isNotSupported(String filename) {
+        //if(!MediaUtil.isFormatSupported(filename))
             return false;
         log.warn("File With Not Supported Format Was Uploaded {}", filename);
         return true;
-    }
+    }*/
 
 
 }

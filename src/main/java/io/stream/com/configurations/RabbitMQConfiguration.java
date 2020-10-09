@@ -13,45 +13,35 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 
 @Configuration
 public class RabbitMQConfiguration{
 
-    @Value("${mq.queue.name}")
-    private String queueName;
+    public static final String queueName = "processqueue";
     
-    @Value("${mq.queue.exchange}")
-    private String exchangeName;
+    public static final String exchangeName = "processexchange";
 
-    @Value("${mq.queue.routing.key}")
-    private String routingKey;
 
     @Bean 
     public Queue queue(){ return new Queue(queueName, false); }
 
     @Bean
     public Binding biniding(Queue queue, TopicExchange exchange){ 
-      return BindingBuilder.bind(queue).to(exchange).with(routingKey); 
+
+      return BindingBuilder.bind(queue).to(exchange).with(queueName); 
     }
 
     @Bean
-    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter messageListenerAdapter){
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(queueName);
-        container.setMessageListener(messageListenerAdapter);
-        container.setPrefetchCount(1);
-        return container;
+    public MessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 
     @Bean
     public TopicExchange topicExchange(){ 
-      return new TopicExchange(exchangeName); 
-    }
 
-    @Bean
-    public MessageListenerAdapter listenerAdapter(MQReceiver receiver) {
-      return new MessageListenerAdapter(receiver, "receiver");
+      return new TopicExchange(exchangeName); 
     }
 
 }

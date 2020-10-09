@@ -5,10 +5,12 @@ import io.stream.com.cache.EmailCache;
 import io.stream.com.models.Comment;
 import io.stream.com.models.Genre;
 import io.stream.com.models.Like;
+import io.stream.com.models.MQVideoProcessingMessage;
 import io.stream.com.models.Movie;
 import io.stream.com.models.User;
 import io.stream.com.models.WatchLater;
 import io.stream.com.models.enums.GenreType;
+import io.stream.com.models.enums.VideoProcessType;
 import io.stream.com.models.enums.Roles;
 import io.stream.com.repositories.CommentRepository;
 import io.stream.com.repositories.GenreRepository;
@@ -17,6 +19,7 @@ import io.stream.com.repositories.MovieRepository;
 import io.stream.com.repositories.UserRepository;
 import io.stream.com.repositories.WatchLaterRepository;
 import io.stream.com.services.EmailService;
+import io.stream.com.services.MQService;
 import io.stream.com.services.MovieService;
 import io.stream.com.utils.TimeUtil;
 
@@ -37,7 +40,7 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner loadBooks(AuthCache authCache, MovieRepository movieRepository,
+	public CommandLineRunner loadBooks(MQService mqService, AuthCache authCache, MovieRepository movieRepository,
 			UserRepository userRepository, MovieService movieService, EmailService emailService,
 			GenreRepository genreRepository, LikeRepository likeRepository, CommentRepository commentRepository,
 			WatchLaterRepository watchLaterRepository) {
@@ -184,6 +187,7 @@ public class Application {
 			watchLater1.setUser(user1);
 
 			watchLaterRepository.save(watchLater1);
+			mqService.send(new MQVideoProcessingMessage(VideoProcessType.convert, "home/src"));
 		};
 	}
 
