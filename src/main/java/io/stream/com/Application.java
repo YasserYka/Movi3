@@ -187,7 +187,6 @@ public class Application {
 			watchLater1.setUser(user1);
 
 			watchLaterRepository.save(watchLater1);
-			mqService.send(new MQVideoProcessingMessage(VideoProcessType.convert, "home/src"));
 		};
 	}
 

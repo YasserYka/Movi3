@@ -7,7 +7,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-@SuppressWarnings({ "unchecked", "rawtypes" }) 
 public class MovieCache {
 
     private static final String VIEWING_HISTORY_KEY = "viewing:history:movieId";

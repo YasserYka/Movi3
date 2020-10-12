@@ -8,7 +8,6 @@ import io.stream.com.models.EmailTokenTTL;
 import io.stream.com.utils.TimeUtil;
 
 @Service
-@SuppressWarnings({ "unchecked", "rawtypes" }) 
 public class EmailCache {
     
     private static final String EMAIL_VERIFICATION_TOKEN_KEY = "viewing:history:movie";

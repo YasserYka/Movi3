@@ -21,8 +21,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query("SELECT m FROM Movie m WHERE (:title is null or m.title like :title) AND (:rating = 0.0f or m.rating >= :rating) AND (:release = 0 or m.release >= :release)")
     public Page<Movie> advancedSearch(String title, float rating, int release, Pageable pageable);
 
-    @Query(value = "SELECT * FROM Movie WHERE title LIKE :title% LIMIT 6", nativeQuery = true)
-    public List<Movie> quickSearch(String title);
+    public List<Movie> findTop6ByTitleContainingIgnoreCase(String title);
 
     @Query("SELECT m FROM Movie m join m.genres g where g.type = :genre")
     public Page<Movie> findByGenreType(GenreType genre, Pageable pageable);

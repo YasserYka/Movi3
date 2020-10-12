@@ -96,7 +96,7 @@ public class MovieService {
 
 	public List<Movie> quickSearch(String title){ 
 
-		return repository.quickSearch(title); 
+		return repository.findTop6ByTitleContainingIgnoreCase(title.toLowerCase()); 
 	}
 
 	public Page<Movie> getByGenreType(GenreType genre, Pageable pageable) { 
