@@ -37,7 +37,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/api/v1/users/signup", "/api/v1/users/login").permitAll()
                 //.antMatchers("/**").hasAnyRole("ADMIN", "USER");
                 .antMatchers("/**").permitAll();
-                http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // to allow h2 console to open
+        http.headers().frameOptions().disable();
     }
 
     @Bean

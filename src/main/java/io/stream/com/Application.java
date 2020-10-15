@@ -134,17 +134,26 @@ public class Application {
 			movie1.setGenres(new HashSet<Genre>());
 			movie2.setGenres(new HashSet<Genre>());
 
-			Genre genre1 = Genre.builder().type(GenreType.horror).movie(movie1).build();
-			Genre genre2 = Genre.builder().type(GenreType.action).movie(movie1).build();
 
 			Genre genre3 = Genre.builder().type(GenreType.horror).movie(movie2).build();
 			Genre genre4 = Genre.builder().type(GenreType.action).movie(movie2).build();
 
-			movie1.getGenres().add(genre1);
-			movie1.getGenres().add(genre2);
+			movie1.getGenres().add(Genre.builder().type(GenreType.horror).movie(movie1).build());
+			movie1.getGenres().add(Genre.builder().type(GenreType.action).movie(movie1).build());
 
-			movie2.getGenres().add(genre3);
-			movie2.getGenres().add(genre4);
+			/*Comment comment1 = Comment.builder().body("Cool!").user(user1).movie(movie1).date(new Date()).build();
+			Comment comment2 = Comment.builder().body("Nice").user(user1).movie(movie1).date(new Date()).build();
+
+			commentRepository.save(comment1);
+			commentRepository.save(comment2);
+
+			WatchLater watchLater1 = new WatchLater();
+			watchLater1.setMovies(new HashSet<Movie>());
+
+			watchLater1.getMovies().add(movie1);
+			watchLater1.setUser(user1);
+
+			watchLaterRepository.save(watchLater1);*/
 
 			movieRepository.save(movie1);
 			movieRepository.save(movie2);
@@ -173,20 +182,6 @@ public class Application {
 
 			Like like1 = Like.builder().movie(movie1).user(user1).build();
 			likeRepository.save(like1);
-
-			Comment comment1 = Comment.builder().body("Cool!").user(user1).movie(movie1).date(new Date()).build();
-			Comment comment2 = Comment.builder().body("Nice").user(user1).movie(movie1).date(new Date()).build();
-
-			commentRepository.save(comment1);
-			commentRepository.save(comment2);
-
-			WatchLater watchLater1 = new WatchLater();
-			watchLater1.setMovies(new HashSet<Movie>());
-
-			watchLater1.getMovies().add(movie1);
-			watchLater1.setUser(user1);
-
-			watchLaterRepository.save(watchLater1);
 		};
 	}
 

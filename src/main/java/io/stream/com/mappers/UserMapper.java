@@ -27,6 +27,7 @@ public class UserMapper {
 
     public static ProfileDto mapProfile(User user){
         return ProfileDto.builder()
+            .userId(user.getUserId())
             .username(user.getUsername())
             .email(user.getEmail())
             .avatarId(user.getAvatarId())

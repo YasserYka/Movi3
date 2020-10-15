@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@SuppressWarnings({ "unchecked", "rawtypes" }) 
 public class MovieCache {
 
     private static final String VIEWING_HISTORY_KEY = "viewing:history:movieId";
@@ -21,7 +22,7 @@ public class MovieCache {
 
     // This will be used by the scheduled task that reduce unique views
     public void pushToViewingHistory(Long movieId){
-
+        
         redisTemplate.opsForList().leftPush(VIEWING_HISTORY_KEY, movieId);
     }
  

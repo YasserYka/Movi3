@@ -27,11 +27,11 @@ public class Comment {
     @NotEmpty
     private String body;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="userId", referencedColumnName="userId")
     private User user;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="movieId", referencedColumnName="movieId")
     private Movie movie;
 

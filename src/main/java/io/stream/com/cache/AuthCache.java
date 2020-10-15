@@ -15,7 +15,7 @@ public class AuthCache {
     private static final int MAXIMUM_FAILED_LOGIN_ATTEMPTS = 5;
 
     // 30 minutes in milliseconds
-    private static final int LOCK_TIME = 1800000;
+    private static final int LOCK_TIME = 0;
     
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;

@@ -2,6 +2,7 @@ package io.stream.com.models;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,10 +29,10 @@ public class WatchLater {
     private Long watchLaterId;
 
     @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="userId")
+    @JoinColumn(name="userId", referencedColumnName="userId")
     private User user;
-
-    @OneToMany
+    
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Movie> movies;
 
 }

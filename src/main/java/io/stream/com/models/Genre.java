@@ -33,7 +33,7 @@ public class Genre {
     private GenreType type;
     
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="movieId", referencedColumnName="movieId")
     private Movie movie;
     

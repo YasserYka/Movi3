@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,11 +22,14 @@ public class Like {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long likeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.REMOVE)
     @JoinColumn(name="movieId", referencedColumnName="movieId")
     private Movie movie;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.REMOVE)
+    @JoinColumn(name="userId", referencedColumnName="userId")
     private User user;
 
 }

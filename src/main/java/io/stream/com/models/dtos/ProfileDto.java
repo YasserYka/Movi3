@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProfileDto {
 
+    private Long userId;
     private String username;
     private String email;
     private int avatarId;
