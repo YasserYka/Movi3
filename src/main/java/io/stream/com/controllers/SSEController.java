@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import io.stream.com.services.ProcessService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,13 +23,12 @@ public class SSEController {
     @SneakyThrows(IOException.class)
     public void emitterSend(SseEmitter emitter){
 
-        // TODO: pass processing information
-        emitter.send("Hi!");
+        emitter.send(ProcessService.PROCESS_STATUS);
     }
 
-    @GetMapping("/sse-video-processing")
+    @GetMapping("/sse-process")
     public SseEmitter fetchData() {
-        SseEmitter emitter = new SseEmitter(30000L);
+        SseEmitter emitter = new SseEmitter(3600000L);
 
         emitter.onTimeout(() -> {
 
