@@ -1,45 +1,35 @@
 package io.stream.com.utils;
 
-import lombok.SneakyThrows;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.stream.com.models.enums.MQEvent;
 
 public class BashUtil {
 
-    private static final String BASH_SCRIPTS_PATH = "src/main/resources/bash/";
+    private final static Map<MQEvent, String> BASH_SCRIPT_MAPPER = BashUtil.buildEventToScriptMapper();
 
-    private static final String AUDIO_EXTRACTOR_BASH_FILENAME = "audio_extractor";
+    public static Map<MQEvent, String> buildEventToScriptMapper(){
+        Map<MQEvent, String> mapper = new HashMap<MQEvent, String>();
 
-    private static final String MEDIA_CONVERTER_BASH_FILENAME = "converter";
-
-    /*public static ProcessBuilder processBuilder(VideoProcessType processType, String... args){
-        String[] commands = new String[args.length + 2];
-        int i = 0;
-
-        commands[i++] = "/bin/bash";
-        commands[i++] = pathOfBashScript(processType);
-
-        for (String arg : args){ commands[i++] = arg; }
-
-        return new ProcessBuilder(commands);
+        mapper.put(MQEvent.TO_720p, "yes y | ffmpeg -i sample.mp4 -an -c:v libx264 -x264opts 'keyint=24:min-keyint=24:no-scenecut' -vf 'scale=-1:720' -crf 27 720.mp4 2>&1");
+        mapper.put(MQEvent.TO_480p, "yes y | ffmpeg -i sample.mp4 -an -c:v libx264 -x264opts 'keyint=24:min-keyint=24:no-scenecut' -vf 'scale=-1:480' -crf 27 480.mp4 2>&1");
+        mapper.put(MQEvent.TO_360p, "yes y | ffmpeg -i sample.mp4 -an -c:v libx264 -x264opts 'keyint=24:min-keyint=24:no-scenecut' -vf 'scale=-1:360' -crf 27 360.mp4 2>&1");
+        mapper.put(MQEvent.GENERATE_MANIFEST, "yes y | MP4Box -dash 1000 -rap -frag-rap -profile onDemand -out manifest.mpd 480.mp4 360.mp4 240.mp4 audio.mp4 2>&1");
+        mapper.put(MQEvent.EXTRACT_AUDIO, "yes y | ffmpeg -i sample.mp4 -c:a copy -vn audio.mp4 2>&1");
+        
+        return mapper;
     }
-*/
-    /*private static String pathOfBashScript(VideoProcessType processType){
-        if(processType == VideoProcessType.extract_audio)
-            return BASH_SCRIPTS_PATH + AUDIO_EXTRACTOR_BASH_FILENAME;
-        if(processType == VideoProcessType.convert)
-            return BASH_SCRIPTS_PATH + MEDIA_CONVERTER_BASH_FILENAME;
-        return null;
-    }*/
 
-    /*@SneakyThrows(IOException.class)
-    public static void runProcess(ProcessBuilder processBuilder){
-        Process process = processBuilder.start();
-        BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
+    public static ProcessBuilder buildProcessFor(MQEvent event){
 
-        while ((line = br.readLine()) != null) { System.out.println(line); }
-    }*/
+        return new ProcessBuilder("/bin/bash", "-c", BASH_SCRIPT_MAPPER.get(event));
+    }
+
+    public static BufferedReader getBufferedReader(Process process){
+
+        return new BufferedReader(new InputStreamReader(process.getInputStream()));
+    }
 }

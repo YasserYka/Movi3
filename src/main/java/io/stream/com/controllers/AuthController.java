@@ -35,6 +35,19 @@ public class AuthController {
     @Autowired
     private AuthCache authCache;
 
+    @PostMapping("/sendresetpassword")
+    public ResponseEntity<?> resetpassword(@RequestBody ResetPasswordDto){
+
+        if(!userService.isEmailExists(ResetPasswordDto.getEmail()))
+            return new ResponseEntity<>("Email does not exists", HttpStatus.UNPROCESSABLE_ENTITY);
+
+        authCache.generateResetPasswordToken(ResetPasswordDto.getEmail());
+
+        emailService.sendResetpassword(ResetPasswordDto.getEmail());
+
+        return new ResponseEntity<>("Reset password email sent to " + ResetPasswordDto.getEmail(), HttpStatus.OK); 
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignUpDto signUpDto){
 
@@ -71,4 +84,6 @@ public class AuthController {
         
         return new ResponseEntity<>(authService.authenticate(loginDto.getUsername(), loginDto.getPassword()), HttpStatus.OK);
     }
+
+    
 }
