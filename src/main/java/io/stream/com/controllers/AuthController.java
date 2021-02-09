@@ -48,6 +48,17 @@ public class AuthController {
         return new ResponseEntity<>("Reset password email sent to " + ResetPasswordDto.getEmail(), HttpStatus.OK); 
     }
 
+    @PostMapping("/resetpassword/{token}")
+    public ResponseEntity<?> resetpassword(@PathVariable("token") String token){
+
+        if (authCache.isResetPasswordTokenNotValid(token))
+            return new ResponseEntity<>("Reset password token expired", HttpStatus.UNAUTHORIZED);
+
+        UserService.resetpassword(authCache.getEmailOfResetpasswordToken(token));
+
+        return new ResponseEntity<>("Your password was reseted successfully", HttpStatus.OK); 
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignUpDto signUpDto){
 
