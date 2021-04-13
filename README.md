@@ -2,7 +2,7 @@
 
 Movi3 is learning based full stack web application for streaming, storing and transcoding movies. Built using [Spring Boot](https://github.com/YasserYka/Movi3), [React](https://github.com/YasserYka/Movi3-React) and flutter.
 
-# Features
+### Features
 | Features |
 |-|
 | Reset password token will be sent to the client email as url, token is stored in redis and removed after TTL expiration. |
@@ -20,3 +20,7 @@ Movi3 is learning based full stack web application for streaming, storing and tr
 | Support JWT authentication |
 | Support Swagger UI |
 | Calculate trending score for each movie every two hours based on views and likes ratio |
+
+### System Components
+
+![plot](./systemcomponents.jpg)
